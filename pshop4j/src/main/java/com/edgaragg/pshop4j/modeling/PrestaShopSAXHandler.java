@@ -24,7 +24,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
-import com.edgaragg.pshop4j.pojos.entities.Customer;
 
 /**
  * @author Edgar Gonzalez

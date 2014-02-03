@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Edgar Gonzalez
+ * Matches any attribute on the XML with any object field 
  *
  */
 @Target({ElementType.FIELD})

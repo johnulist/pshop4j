@@ -9,7 +9,7 @@ import com.edgaragg.pshop4j.model.Resources;
 
 /**
  * @author Edgar Gonzalez
- *
+ * Indicates the PrestaShop resource associated with this type
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

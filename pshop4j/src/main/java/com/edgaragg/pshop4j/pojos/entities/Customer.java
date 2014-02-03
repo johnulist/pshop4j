@@ -7,87 +7,151 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.edgaragg.pshop4j.model.Resources;
+import com.edgaragg.pshop4j.modeling.annotations.IsBirthDate;
+import com.edgaragg.pshop4j.modeling.annotations.IsBool;
+import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
+import com.edgaragg.pshop4j.modeling.annotations.IsFloat;
+import com.edgaragg.pshop4j.modeling.annotations.IsGenericName;
+import com.edgaragg.pshop4j.modeling.annotations.IsMD5;
+import com.edgaragg.pshop4j.modeling.annotations.IsName;
+import com.edgaragg.pshop4j.modeling.annotations.IsPasswd;
+import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedId;
+import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
+import com.edgaragg.pshop4j.modeling.annotations.IsUrl;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
-import com.edgaragg.pshop4j.pojos.list.Associations;
 
 
 /**
  * @author Edgar Gonzalez
- *
+ * Customer entity
+ * @see 
  */
 @PrestaShopResource(resource = Resources.customers)
 @PrestaShopElement(name = "customers")
 @PrestaShopIgnore(elements = "associations")
 public class Customer implements PrestaShopPojo {
 
+	@PrestaShopVirtual()
 	@PrestaShopAttribute(name = "id")
 	@PrestaShopText(element = "id")
 	private long id;
+	
 	@PrestaShopText(element = "id_default_group")
 	private long idDefaultGroup;
+	
+	@IsUnsignedId
 	@PrestaShopText(element = "id_lang")
 	private long idLang;
+	
 	@PrestaShopText(element = "newsletter_date_add")
 	private Date newsletterDateAdd;
+	
 	@PrestaShopText(element = "ip_registration_newsletter")
 	private String ipRegistrationNewsletter;
+	
 	@PrestaShopText(element = "last_passwd_gen")
 	private Date lastPasswdGen;
+	
+	@IsMD5
 	@PrestaShopText(element = "secure_key")
 	private String secureKey;
+	
+	@IsBool
 	@PrestaShopText(element = "deleted")
 	private short deleted;
+	
+	@IsPasswd(required = true, maxSize = 32)
 	@PrestaShopText(element = "passwd")
 	private String passwd;
+	
+	@IsName(required = true, maxSize = 32)
 	@PrestaShopText(element = "lastname")
 	private String lastName;
+	
+	@IsName(required = true, maxSize = 32)
 	@PrestaShopText(element = "firstname")
 	private String firstName;
+	
 	@PrestaShopText(element = "email")
 	private String email;
+	
+	@IsUnsignedId
 	@PrestaShopText(element = "id_gender")
 	private short idGender;
+	
+	@IsBirthDate
 	@PrestaShopText(element = "birthday")
 	private Date birthday;
+	
 	@PrestaShopText(element = "newsletter")
 	private int newsletter;
+	
+	@IsBool
 	@PrestaShopText(element = "optin")
-	private int optin;
+	private short optin;
+	
+	@IsUrl
 	@PrestaShopText(element = "website")
 	private String website;
+	
+	@IsGenericName
 	@PrestaShopText(element = "company")
 	private String company;
+	
 	@PrestaShopText(element = "siret")
 	private String siret;
+	
 	@PrestaShopText(element = "ape")
 	private String ape;
+
+	@IsFloat
 	@PrestaShopText(element = "outstanding_allow_amount")
 	BigDecimal outstandingAllowAmount;
+	
+	@IsBool
 	@PrestaShopText(element = "show_public_prices")
 	private short showPublicPrices;
+	
+	@IsUnsignedInt
 	@PrestaShopText(element = "id_risk")
 	private short idRisk;
+	
+	@IsUnsignedInt
 	@PrestaShopText(element = "max_payment_days")
 	private int maxPaymentDays;
+	
+	@IsBool
 	@PrestaShopText(element = "active")
 	private short active;
+	
+	@IsCleanHtml(maxSize = 65000)
 	@PrestaShopText(element = "note")
 	private String note;
+	
+	@IsBool
 	@PrestaShopText(element = "is_guest")
 	private short isGuest;
+	
+	@IsUnsignedId
 	@PrestaShopText(element = "id_shop")
 	private long idShop;
+	
+	@IsUnsignedId
 	@PrestaShopText(element = "id_shop_group")
 	private long idShopGroup;
+	
 	@PrestaShopText(element = "date_add")
 	private Date dateAdd;
+	
 	@PrestaShopText(element = "date_upd")
 	private Date dateUpd;
+	
 //	@PrestaShopText(element = "associations")
 //	private Associations associations;
 	/**
@@ -273,13 +337,13 @@ public class Customer implements PrestaShopPojo {
 	/**
 	 * @return the optin
 	 */
-	public int getOptin() {
+	public short getOptin() {
 		return optin;
 	}
 	/**
 	 * @param optin the optin to set
 	 */
-	public void setOptin(int optin) {
+	public void setOptin(short optin) {
 		this.optin = optin;
 	}
 	/**

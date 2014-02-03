@@ -8,9 +8,6 @@ package com.edgaragg.pshop4j.modeling;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import javax.swing.event.ListSelectionEvent;
 
 import com.edgaragg.pshop4j.PrestaShopWebservice;
 import com.edgaragg.pshop4j.model.Filter;

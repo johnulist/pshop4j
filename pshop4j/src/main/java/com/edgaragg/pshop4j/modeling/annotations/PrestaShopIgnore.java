@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Edgar Gonzalez
- *
+ * Ignores the elements indicates.  It can accept any number of elements, the elements must be comma separated.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

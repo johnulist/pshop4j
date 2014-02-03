@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Edgar Gonzalez
- *
+ * Indicates that the field is an ID
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

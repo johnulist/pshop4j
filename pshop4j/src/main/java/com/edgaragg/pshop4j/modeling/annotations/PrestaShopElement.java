@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Edgar Gonzalez
- *
+ * Matches any element in the XML with any object field
  */
 @Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
