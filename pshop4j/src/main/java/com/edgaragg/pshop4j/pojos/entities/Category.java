@@ -6,8 +6,11 @@ package com.edgaragg.pshop4j.pojos.entities;
 import java.util.Date;
 
 import com.edgaragg.pshop4j.model.Resources;
+import com.edgaragg.pshop4j.modeling.annotations.IsBool;
+import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 
@@ -17,26 +20,39 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
  */
 @PrestaShopResource(resource = Resources.categories)
 @PrestaShopElement(name = "category")
+@PrestaShopIgnore(elements = "associations")
 public class Category implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute(name = "id")
 	@PrestaShopText(element = "id")
 	private long id;
+	
+	@IsUnsignedInt
 	@PrestaShopText(element = "id_parent")
 	private long idParent;
+	
 	@PrestaShopText(element = "level_depth")
 	private int levelDepth;
+	
 	// nb_products_recursive
+	@IsBool
 	@PrestaShopText(element = "active")
 	private short active;
+	
+	@IsUnsignedInt
 	@PrestaShopText(element = "id_shop_default")
 	private long idShopDefault;
+	
+	@IsBool
 	@PrestaShopText(element = "is_root_category")
 	private short isRootCategory;
+	
 	@PrestaShopText(element = "position")
 	private long position;
+	
 	@PrestaShopText(element = "date_add")
 	private Date dateAdd;
+	
 	@PrestaShopText(element = "date_upd")
 	private Date dateUpd;
 	
