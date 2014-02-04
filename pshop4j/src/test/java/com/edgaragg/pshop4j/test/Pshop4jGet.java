@@ -3,14 +3,7 @@
  */
 package com.edgaragg.pshop4j.test;
 
-import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,21 +11,15 @@ import org.junit.Test;
 
 import com.edgaragg.pshop4j.PrestaShopWebservice;
 import com.edgaragg.pshop4j.model.Filter;
-import com.edgaragg.pshop4j.model.GetRequest;
 import com.edgaragg.pshop4j.model.Limit;
-import com.edgaragg.pshop4j.model.PrestaShopRequest;
-import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapper;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperListener;
 import com.edgaragg.pshop4j.pojos.entities.Customer;
-import com.edgaragg.pshop4j.pojos.list.Associations;
 import com.edgaragg.pshop4j.pojos.list.Customers;
-import com.edgaragg.pshop4j.pojos.storedesc.StoreDescription;
 
 /**
- * @author egonzalez
- * @param <Filters>
+ * @author Edgar Gonzalez
  *
  */
 public class Pshop4jGet {
@@ -112,6 +99,7 @@ public class Pshop4jGet {
 			}*/
 			System.out.println("----------------------------------------------");
 			Field[] fields = Customer.class.getDeclaredFields();
+			System.out.println("Results: " + result.size());
 			for(int index = 0; index < result.size(); index++){
 				for(Field f : fields){
 					f.setAccessible(true);

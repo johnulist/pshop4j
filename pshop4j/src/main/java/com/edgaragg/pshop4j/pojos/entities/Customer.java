@@ -25,16 +25,16 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
+import com.edgaragg.pshop4j.pojos.associations.Associations;
 
 
 /**
  * @author Edgar Gonzalez
  * Customer entity
- * @see 
  */
 @PrestaShopResource(resource = Resources.customers)
 @PrestaShopElement(name = "customers")
-@PrestaShopIgnore(elements = "associations")
+@PrestaShopIgnore(elements="associations")
 public class Customer implements PrestaShopPojo {
 
 	@PrestaShopVirtual()
@@ -152,8 +152,8 @@ public class Customer implements PrestaShopPojo {
 	@PrestaShopText(element = "date_upd")
 	private Date dateUpd;
 	
-//	@PrestaShopText(element = "associations")
-//	private Associations associations;
+	@PrestaShopText(element = "associations")
+	private Associations associations;
 	/**
 	 * @return the id
 	 */
@@ -526,18 +526,18 @@ public class Customer implements PrestaShopPojo {
 	public void setDateUpd(Date dateUpd) {
 		this.dateUpd = dateUpd;
 	}
-//	/**
-//	 * @return the associations
-//	 */
-//	public Associations getAssociations() {
-//		return associations;
-//	}
-//	/**
-//	 * @param associations the associations to set
-//	 */
-//	public void setAssociations(Associations associations) {
-//		this.associations = associations;
-//	}
+	/**
+	 * @return the associations
+	 */
+	public Associations getAssociations() {
+		return associations;
+	}
+	/**
+	 * @param associations the associations to set
+	 */
+	public void setAssociations(Associations associations) {
+		this.associations = associations;
+	}
 	
 	
 }

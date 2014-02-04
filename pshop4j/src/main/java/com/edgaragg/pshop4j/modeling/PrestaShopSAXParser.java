@@ -47,7 +47,7 @@ public class PrestaShopSAXParser implements PrestaShopXMLParser {
 			PrestaShopSAXHandler handler = new PrestaShopSAXHandler(clazz);
 			this.saxParser.parse(stream, handler);
 			return handler.getObject(clazz);
-		} catch (SAXException | IOException | InstantiationException | IllegalAccessException e) {
+		} catch (SAXException | IOException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -61,7 +61,7 @@ public class PrestaShopSAXParser implements PrestaShopXMLParser {
 			InputStream stream) {
 		try {
 			this.saxParser.parse(stream, new PrestaShopSAXHandler(clazz));
-		} catch (SAXException | IOException | InstantiationException | IllegalAccessException e) {
+		} catch (SAXException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;

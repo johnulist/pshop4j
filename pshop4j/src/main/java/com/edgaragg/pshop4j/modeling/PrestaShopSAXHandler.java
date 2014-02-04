@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -30,9 +31,8 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 public class PrestaShopSAXHandler extends DefaultHandler {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static final SimpleDateFormat BIRTHDAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	
+	private static final List<String> ALLOWED_CLASSES = Arrays.asList("string", "bigdecimal", "date");
 	private static final String PRESTASHOP = "prestashop";
-	private boolean firstElement = true;
 	private Class<?> clazz;
 	private String text;
 	private Vector<SAXObjectDescription> heap;
@@ -44,10 +44,9 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	 * @throws InstantiationException 
 	 * 
 	 */
-	public <T extends PrestaShopPojo> PrestaShopSAXHandler(Class<T> clazz) throws InstantiationException, IllegalAccessException {
+	public <T extends PrestaShopPojo> PrestaShopSAXHandler(Class<T> clazz) {
 		this.clazz = clazz;
 		this.heap = new Vector<SAXObjectDescription>();
-		this.heap.add(new SAXObjectDescription((PrestaShopPojo)this.clazz.newInstance()));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -83,16 +82,16 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		super.endElement(uri, localName, qName);
 		
 		// end ignoring element
-		SAXObjectDescription desc = this.heap.get(this.heap.size() - 1);
+		SAXObjectDescription desc = getLastObjectDescription();
 		if(desc.isIgnoringElement(qName)){
 			desc.setIgnore(null);
 			return;
 		}
 		if(desc.isIgnoring()) return;
-		
+		System.out.println("End" + qName);
 		// first of all, we assign the text attribute if exists
 		if(text.trim().length() > 0){
-			PrestaShopPojo textElement = this.heap.get(this.heap.size()-1).getPojo();
+			PrestaShopPojo textElement = getLastObjectDescription().getPojo();
 			Field field = this.getFieldElementFor(textElement.getClass(), qName);
 			if(field != null){
 				field.setAccessible(true);
@@ -106,7 +105,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		}
 		
 		if(this.heap.size() > 1){
-			PrestaShopPojo lastElement = this.heap.get(this.heap.size() - 1).getPojo();			
+			PrestaShopPojo lastElement = getLastObjectDescription().getPojo();			
 			PrestaShopPojo owner = this.heap.get(this.heap.size() - 2).getPojo();
 
 			// look into the owner object the field for the last element
@@ -149,9 +148,9 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		super.startDocument();
 	}
 	
-	
-	
-	
+	/**
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	protected <T> T cast(Object o, Class<T> clazz){
 		Object instance = null;
@@ -187,6 +186,12 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		return (T) instance;
 	}
 
+	/**
+	 * 
+	 * @param searchClazz
+	 * @param element
+	 * @return
+	 */
 	protected <T> Field getFieldElementFor(Class<T> searchClazz, String element){
 		Field[] fields = searchClazz.getDeclaredFields();
 		for(Field field : fields){
@@ -201,10 +206,12 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		return null;
 	}
 	
-	
-	
-	
-	
+	/**
+	 * 
+	 * @param clazz
+	 * @param currentObj
+	 * @param attributes
+	 */
 	protected <T> void fillAttributes(Class<T> clazz, Object currentObj, Attributes attributes){
 		Field[] fields = clazz.getDeclaredFields();
 		
@@ -233,7 +240,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		super.startElement(uri, localName, qName, attributes);
 		if(PRESTASHOP.equals(qName)) return;
 		
-		SAXObjectDescription desc = this.heap.get(this.heap.size() - 1); 
+		SAXObjectDescription desc = getLastObjectDescription(); 
 		if(desc.isIgnoring()){
 			return;
 		}
@@ -241,47 +248,90 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			desc.setIgnore(qName);
 			return;
 		}
-			
-		if(this.firstElement){
-			firstElement = false;
-			PrestaShopElement element = this.clazz.getAnnotation(PrestaShopElement.class);
-			if(!element.name().equals(qName)){
-				this.fatalError(new SAXParseException("Class element does not match with XML document", null));
-				return;
-			}
-			this.fillAttributes(this.clazz, this.heap.get(0), attributes);
+		// if the heap is empty, we are in the first element of the docuemnt
+		if(this.heap.isEmpty()){
+			createFirstElement(qName, attributes);
 		}else{
-			// we are in an element that can be or not another object.
-			// we must to check for it.  To do this, we find the field into the current object
-			// and iterate
-			Class<?> currentClass = this.heap.get(this.heap.size()-1).getPojo().getClass();
-			Field elementField = this.getFieldElementFor(currentClass, qName);
-			if(elementField == null){
-				return;
-			}
-			if(!elementField.getType().isPrimitive() && !elementField.getType().getSimpleName().equalsIgnoreCase("string")
-					&& !elementField.getType().getSimpleName().equalsIgnoreCase("bigdecimal")
-					&& !elementField.getType().getSimpleName().equalsIgnoreCase("date")){
-				try {
-					Class<?> newClass = elementField.getType();
-					
-					if(newClass.isAssignableFrom(List.class) && elementField.isAnnotationPresent(PrestaShopList.class)){			
-						Class<?> listClass = elementField.getAnnotation(PrestaShopList.class).type(); 
-						PrestaShopPojo currentObject = (PrestaShopPojo)listClass.newInstance();
-						this.fillAttributes(listClass, currentObject, attributes);
-						this.heap.add(new SAXObjectDescription(currentObject));
-					}else{
-						PrestaShopPojo currentObject = (PrestaShopPojo)newClass.newInstance();
-						this.fillAttributes(newClass, currentObject, attributes);
-						this.heap.add(new SAXObjectDescription(currentObject));
-					}
-				} catch (InstantiationException | IllegalAccessException e) {
-					e.printStackTrace();
-				}
-					
-			}
+			createPojoFromElement(qName, attributes);
 		}
 		
+	}
+
+	/**
+	 * @param qName
+	 * @param attributes
+	 */
+	private void createPojoFromElement(String qName, Attributes attributes) {
+		// we are in an element that can be or not another pojo.
+		// we must to check for it.  To do this, we find the field into the current object
+		// and iterate
+		Class<?> currentClass = getLastObjectDescription().getPojo().getClass();
+		Field elementField = this.getFieldElementFor(currentClass, qName);
+		if(elementField == null){
+			return;
+		}
+		// checking if the field is not a primitive or an allowed class
+		// if it is a primitive or an allowed class, we do nothing because the content is on the element text
+		// we don't seek in attributes in this case
+		if(!elementField.getType().isPrimitive() && ALLOWED_CLASSES.contains(elementField.getType().getSimpleName().toLowerCase())){
+			try {
+				// get the element type
+				Class<?> newClass = elementField.getType();
+				
+				// check if the type is a list and it has the associated type
+				if(newClass.isAssignableFrom(List.class) && elementField.isAnnotationPresent(PrestaShopList.class)){
+					// if it is the case, create a new pojo of this type, fill its attributes and add it to the heap
+					// in order to seek for childrens
+					Class<?> listClass = elementField.getAnnotation(PrestaShopList.class).type(); 
+					PrestaShopPojo currentObject = (PrestaShopPojo)listClass.newInstance();
+					this.fillAttributes(listClass, currentObject, attributes);
+					this.addToHeap(currentObject);
+				}else{
+					// It is a entity object (not a list), now, we fill its attributes and add into the heap
+					PrestaShopPojo currentObject = (PrestaShopPojo)newClass.newInstance();
+					this.fillAttributes(newClass, currentObject, attributes);
+					this.addToHeap(currentObject);
+				}
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+				
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	private SAXObjectDescription getLastObjectDescription() {
+		return this.heap.get(this.heap.size()-1);
+	}
+
+	/**
+	 * @param qName
+	 * @param attributes
+	 * @throws SAXException
+	 */
+	private void createFirstElement(String qName, Attributes attributes)
+			throws SAXException {
+		PrestaShopElement element = this.clazz.getAnnotation(PrestaShopElement.class);
+		if(!element.name().equals(qName)){
+			this.fatalError(new SAXParseException("Class element does not match with XML document", null));
+			return;
+		}
+		try {
+			this.addToHeap((PrestaShopPojo)this.clazz.newInstance());
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		this.fillAttributes(this.clazz, this.heap.get(0), attributes);
+	}
+	
+	/**
+	 * 
+	 * @param pojo
+	 */
+	private void addToHeap(PrestaShopPojo pojo){
+		this.heap.add(new SAXObjectDescription(pojo));
 	}
 
 }

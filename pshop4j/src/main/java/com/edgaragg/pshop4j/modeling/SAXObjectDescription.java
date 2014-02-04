@@ -3,12 +3,12 @@
  */
 package com.edgaragg.pshop4j.modeling;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
+import com.edgaragg.pshop4j.pojos.associations.Associations;
 
 /**
  * @author Edgar Gonzalez
@@ -19,6 +19,7 @@ public class SAXObjectDescription {
 	private List<String> ignoreList;
 	private PrestaShopPojo pojo;
 	private String ignore;
+	private boolean isAssociationList;
 	
 	/**
 	 * 
@@ -30,22 +31,14 @@ public class SAXObjectDescription {
 		this.ignore = null;
 		
 		Class<?> cls = pojo.getClass();
-		System.out.println("Creating ignore list for " + cls.getSimpleName());
-		Annotation[] ann = cls.getAnnotations();
-		for(Annotation a : ann){
-			System.out.println("\t" + a.annotationType().getSimpleName());
-		}
 		PrestaShopIgnore ignoreAnnotation = cls.getAnnotation(PrestaShopIgnore.class);
 		if(ignoreAnnotation != null){
-			System.out.println("HAS SOMETHING");
 			String[] items = ignoreAnnotation.elements().split(",");
 			for(String item : items){
-				System.out.println("Ignore " + item);
 				this.ignoreList.add(item.trim().toLowerCase());
 			}
-		}else{
-			System.out.println("NO IGNORABLE ITEMS");
 		}
+		this.setAssociationList(Associations.class.isInstance(pojo));
 	}
 	/**
 	 * @return the pojo
@@ -77,6 +70,18 @@ public class SAXObjectDescription {
 	
 	public boolean isIgnoring(){
 		return this.ignore != null;
+	}
+	/**
+	 * @return the isAssociationList
+	 */
+	public boolean isAssociationList() {
+		return isAssociationList;
+	}
+	/**
+	 * @param isAssociationList the isAssociationList to set
+	 */
+	private void setAssociationList(boolean isAssociationList) {
+		this.isAssociationList = isAssociationList;
 	}
 	
 
