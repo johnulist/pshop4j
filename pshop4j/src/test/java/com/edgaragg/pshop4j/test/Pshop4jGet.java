@@ -15,8 +15,11 @@ import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapper;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperListener;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
+import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.entities.Customer;
 import com.edgaragg.pshop4j.pojos.list.Customers;
+import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
 
 /**
  * @author Edgar Gonzalez
@@ -105,13 +108,17 @@ public class Pshop4jGet {
 					f.setAccessible(true);
 					System.out.printf("%s: %s\n", f.getName(), f.get(result.get(index)));
 					f.setAccessible(false);
-					/*if(f.getType().getSimpleName().equalsIgnoreCase("associations")){
+					
+					if(f.getType().getSimpleName().equalsIgnoreCase("associations")){
 						Associations asso = result.get(index).getAssociations();
-						System.out.printf("\t%d Associations groups\n", asso.getGroups().size());
-						for(int aindex = 0; aindex < asso.getGroups().size(); aindex++){
-							System.out.printf("\tid: %d\n", asso.getGroups().get(aindex).getId());
+						System.out.printf("\t%d Associations groups\n", asso.getAssociation().size());
+						for(PrestaShopPojoList<?> pojos : asso.getAssociation()){
+							for(int aindex = 0; aindex < pojos.size(); aindex++){
+								 System.out.println(pojos.get(aindex).getClass().getSimpleName());
+							}	
 						}
-					}*/
+						
+					}
 				}
 			}
 			//web.setDescription(desc);

@@ -10,10 +10,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author Edgar Gonzalez
- * Indicates that the field is a list of the Class type
+ *
  */
-@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PrestaShopList {
-	Class<?> type() default Object.class;
+@Target(ElementType.TYPE)
+public @interface PrestaShopAssociationMapping {
+	PrestaShopElementMapping[] value() default {};
 }

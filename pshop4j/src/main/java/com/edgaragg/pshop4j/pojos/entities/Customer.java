@@ -18,14 +18,18 @@ import com.edgaragg.pshop4j.modeling.annotations.IsPasswd;
 import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedId;
 import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
 import com.edgaragg.pshop4j.modeling.annotations.IsUrl;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
+import com.edgaragg.pshop4j.pojos.list.Groups;
 
 
 /**
@@ -34,7 +38,10 @@ import com.edgaragg.pshop4j.pojos.associations.Associations;
  */
 @PrestaShopResource(resource = Resources.customers)
 @PrestaShopElement(name = "customers")
-@PrestaShopIgnore(elements="associations")
+@PrestaShopAssociationMapping({
+	@PrestaShopElementMapping(element = "groups", type = Groups.class)
+})
+//@PrestaShopIgnore(elements="associations")
 public class Customer implements PrestaShopPojo {
 
 	@PrestaShopVirtual()
@@ -152,7 +159,7 @@ public class Customer implements PrestaShopPojo {
 	@PrestaShopText(element = "date_upd")
 	private Date dateUpd;
 	
-	@PrestaShopText(element = "associations")
+	@PrestaShopElement(name = "associations")
 	private Associations associations;
 	/**
 	 * @return the id

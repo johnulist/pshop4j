@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.modeling;
+package com.edgaragg.pshop4j.modeling.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +13,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
+import com.edgaragg.pshop4j.modeling.PrestaShopXMLParser;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 
 /**

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.modeling;
+package com.edgaragg.pshop4j.modeling.parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +15,13 @@ import com.edgaragg.pshop4j.pojos.associations.Associations;
  *
  */
 public class SAXObjectDescription {
-
+	public static final SAXObjectDescription EMPTY_DESCRIPTION = new SAXObjectDescription(null);
+	
 	private List<String> ignoreList;
 	private PrestaShopPojo pojo;
 	private String ignore;
 	private boolean isAssociationList;
+	
 	
 	/**
 	 * 
@@ -29,7 +31,7 @@ public class SAXObjectDescription {
 		this.ignoreList = new ArrayList<String>();
 		this.setPojo(pojo);
 		this.ignore = null;
-		
+		if(pojo == null) return;
 		Class<?> cls = pojo.getClass();
 		PrestaShopIgnore ignoreAnnotation = cls.getAnnotation(PrestaShopIgnore.class);
 		if(ignoreAnnotation != null){

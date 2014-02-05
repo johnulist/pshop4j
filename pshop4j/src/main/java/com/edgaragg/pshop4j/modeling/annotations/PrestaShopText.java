@@ -9,8 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Edgar Gonzalez
  * Associates the text of the element with any field on the object
+ * @author Edgar Gonzalez
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

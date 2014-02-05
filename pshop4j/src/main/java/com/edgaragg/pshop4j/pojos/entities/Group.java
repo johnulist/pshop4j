@@ -7,6 +7,7 @@ import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 
 
 /**
@@ -17,6 +18,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 @PrestaShopElement(name = "group")
 public class Group implements PrestaShopPojoEntity {
 
+	@PrestaShopVirtual()
 	@PrestaShopElement(name = "id")
 	@PrestaShopAttribute(name = "id")
 	private long id;

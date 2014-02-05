@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.modeling;
+package com.edgaragg.pshop4j.modeling.parser;
 
 
 import java.lang.reflect.Field;
@@ -17,11 +17,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
+import com.edgaragg.pshop4j.pojos.associations.Associations;
+import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
 
 /**
  * @author Edgar Gonzalez
@@ -87,8 +91,9 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			desc.setIgnore(null);
 			return;
 		}
+		
+				
 		if(desc.isIgnoring()) return;
-		System.out.println("End" + qName);
 		// first of all, we assign the text attribute if exists
 		if(text.trim().length() > 0){
 			PrestaShopPojo textElement = getLastObjectDescription().getPojo();
@@ -105,27 +110,37 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		}
 		
 		if(this.heap.size() > 1){
-			PrestaShopPojo lastElement = getLastObjectDescription().getPojo();			
-			PrestaShopPojo owner = this.heap.get(this.heap.size() - 2).getPojo();
+			PrestaShopPojo lastElement = getLastObjectDescription().getPojo();
+			SAXObjectDescription ownerDesc = this.heap.get(this.heap.size() - 2); 
+			PrestaShopPojo owner = ownerDesc.getPojo();
 
 			// look into the owner object the field for the last element
 			Field field = this.getFieldElementFor(owner.getClass(), qName);
 		
-			if(field == null || field.getType().isPrimitive() || field.getType().getSimpleName().equalsIgnoreCase("string")){
+			System.out.printf("End element %s (%s -> %s)\n", qName, lastElement.getClass().getSimpleName(), owner.getClass().getSimpleName());
+			
+			if(ownerDesc.isAssociationList()){
+				Associations associations = (Associations)ownerDesc.getPojo();
+				associations.addAssociation((PrestaShopPojoList<?>)lastElement);
+				this.heap.removeElementAt(this.heap.size()-1);
+				return;
+			}
+			
+			if(field == null || field.getType().isPrimitive() || ALLOWED_CLASSES.contains(field.getType().getSimpleName().toLowerCase())){
 				return;
 			}
 			
 			// checking if the field is a list
-			if(field.getType().isAssignableFrom(List.class)){				
+			if(field.getType().isAssignableFrom(List.class)){	
+				field.setAccessible(true);
 				try {
-					field.setAccessible(true);
 					@SuppressWarnings("unchecked")
 					List<Object> innerList =  (List<Object>) field.get(owner);
 					innerList.add(lastElement);
-					field.setAccessible(false);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
-				}	
+				}
+				field.setAccessible(false);
 			}else{
 				field.setAccessible(true);
 				try {
@@ -135,9 +150,9 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				}
 				field.setAccessible(false);
 			}
-			this.heap.remove(lastElement);
+			// remove last element
+			this.heap.removeElementAt(this.heap.size()-1);
 		}
-		
 	}
 
 	/* (non-Javadoc)
@@ -192,7 +207,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	 * @param element
 	 * @return
 	 */
-	protected <T> Field getFieldElementFor(Class<T> searchClazz, String element){
+	protected Field getFieldElementFor(Class<?> searchClazz, String element){
 		Field[] fields = searchClazz.getDeclaredFields();
 		for(Field field : fields){
 			PrestaShopElement fieldElement = field.getAnnotation(PrestaShopElement.class);
@@ -205,6 +220,20 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		}
 		return null;
 	}
+	
+	
+//	protected <T extends PrestaShopPojo> Field getFieldListFor(Class<T> searchClazz, Class<T> targetClass){
+//		Field[] fields = searchClazz.getDeclaredFields();
+//		for(Field field : fields){
+//			PrestaShopList fieldList = field.getAnnotation(PrestaShopList.class);
+//				
+//			if(fieldList != null && ((fieldList.type() != null && fieldList.type().equals(targetClass)) || 
+//					(fieldList.types().length > 0 && Arrays.binarySearch(fieldList.types(), targetClass) >= 0))) {
+//				return field;
+//			}
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * 
@@ -239,7 +268,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			String qName, Attributes attributes) throws SAXException {
 		super.startElement(uri, localName, qName, attributes);
 		if(PRESTASHOP.equals(qName)) return;
-		
+		System.out.println("-> start " + qName);
 		SAXObjectDescription desc = getLastObjectDescription(); 
 		if(desc.isIgnoring()){
 			return;
@@ -265,15 +294,43 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		// we are in an element that can be or not another pojo.
 		// we must to check for it.  To do this, we find the field into the current object
 		// and iterate
-		Class<?> currentClass = getLastObjectDescription().getPojo().getClass();
+		SAXObjectDescription desc = this.getLastObjectDescription();
+		Class<?> currentClass = desc.getPojo().getClass();
 		Field elementField = this.getFieldElementFor(currentClass, qName);
 		if(elementField == null){
+			if(desc.isAssociationList()){
+				// we don't have the element defined in our class, but we have this info
+				// in the PrestaShopAssociationMapping annotation, we get it and search for
+				// the corresponding element
+				// first we got the top parent object class
+				SAXObjectDescription parentDesc = this.heap.get(this.heap.indexOf(desc)-1);
+				// now, we find the association mapping for the parent element
+				PrestaShopAssociationMapping mapping = parentDesc.getPojo().getClass().getAnnotation(PrestaShopAssociationMapping.class);
+				// we found an association mapping, now search for the class corresponding to this element
+				if(mapping != null){
+					for(PrestaShopElementMapping elementMap : mapping.value()){
+						if(elementMap.element().equals(qName)){
+							Class<?> associatedClass = elementMap.type();
+							// Now we have the class, create an instance and store it into the heap
+							try {
+								PrestaShopPojo currentObject = (PrestaShopPojo)associatedClass.newInstance();
+								this.fillAttributes(associatedClass, currentObject, attributes);
+								this.addToHeap(currentObject);
+							} catch (InstantiationException | IllegalAccessException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}else{
+				System.out.println("null for " + qName);
+			}
 			return;
 		}
 		// checking if the field is not a primitive or an allowed class
 		// if it is a primitive or an allowed class, we do nothing because the content is on the element text
 		// we don't seek in attributes in this case
-		if(!elementField.getType().isPrimitive() && ALLOWED_CLASSES.contains(elementField.getType().getSimpleName().toLowerCase())){
+		if(!elementField.getType().isPrimitive() && !ALLOWED_CLASSES.contains(elementField.getType().getSimpleName().toLowerCase())){
 			try {
 				// get the element type
 				Class<?> newClass = elementField.getType();
@@ -289,7 +346,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				}else{
 					// It is a entity object (not a list), now, we fill its attributes and add into the heap
 					PrestaShopPojo currentObject = (PrestaShopPojo)newClass.newInstance();
-					this.fillAttributes(newClass, currentObject, attributes);
+					this.fillAttributes(newClass, currentObject, attributes);	
 					this.addToHeap(currentObject);
 				}
 			} catch (InstantiationException | IllegalAccessException e) {
@@ -303,7 +360,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	 * @return
 	 */
 	private SAXObjectDescription getLastObjectDescription() {
-		return this.heap.get(this.heap.size()-1);
+		return this.heap.isEmpty() ? SAXObjectDescription.EMPTY_DESCRIPTION : this.heap.get(this.heap.size()-1);
 	}
 
 	/**
@@ -331,7 +388,11 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	 * @param pojo
 	 */
 	private void addToHeap(PrestaShopPojo pojo){
+		SAXObjectDescription desc = new SAXObjectDescription(pojo);
 		this.heap.add(new SAXObjectDescription(pojo));
+		if(desc.isAssociationList()){
+			System.out.println("ADDING ASSOCIATION LIST");
+		}
 	}
 
 }

@@ -16,6 +16,7 @@ import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.PrestaShopResponse;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
+import com.edgaragg.pshop4j.modeling.parser.PrestaShopSAXParser;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity;
 
