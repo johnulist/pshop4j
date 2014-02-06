@@ -17,29 +17,15 @@ import com.edgaragg.pshop4j.pojos.entities.Category;
  */
 @PrestaShopResource(resource = Resources.categories)
 @PrestaShopElement(name = "categories")
-public class Categories implements PrestaShopPojoList<Category> {
+public class Categories extends PrestaShopPojoList<Category> {
 
 	private List<Category> categories;
 	/**
 	 * 
 	 */
 	public Categories() {
+		super();
 		this.categories = new ArrayList<Category>();
+		this.setList(this.categories);
 	}
-
-	@Override
-	public Category get(int index) {
-		return this.categories.size() < index ? null : this.categories.get(index);
-	}
-
-	@Override
-	public void add(Category newObject) {
-		this.categories.add(newObject);		
-	}
-
-	@Override
-	public int size() {
-		return this.categories.size();
-	}
-
 }

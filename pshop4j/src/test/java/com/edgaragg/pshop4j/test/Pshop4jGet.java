@@ -18,7 +18,9 @@ import com.edgaragg.pshop4j.modeling.PrestaShopMapperListener;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.entities.Customer;
+import com.edgaragg.pshop4j.pojos.entities.Language;
 import com.edgaragg.pshop4j.pojos.list.Customers;
+import com.edgaragg.pshop4j.pojos.list.Languages;
 import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
 
 /**
@@ -94,14 +96,14 @@ public class Pshop4jGet {
 			//customer.setId(1);*/
 			List<Filter> filters = Collections.emptyList();
 			//Customers result = mapper.list(Customers.class, Arrays.asList("firstname", "lastname"), filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-			Customers result = mapper.listFullDisplay(Customers.class, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			Languages result = mapper.listFullDisplay(Languages.class, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
 			/*System.out.printf("CUSTOMERS: %d\n", result.size());
 			for(int i = 0; i < result.size(); i++){
 				Customer cus = result.getCustomer(i);
 				System.out.printf("%s,  %s\n", cus.getLastName(), cus.getFirstName());
 			}*/
 			System.out.println("----------------------------------------------");
-			Field[] fields = Customer.class.getDeclaredFields();
+			Field[] fields = Language.class.getDeclaredFields();
 			System.out.println("Results: " + result.size());
 			for(int index = 0; index < result.size(); index++){
 				for(Field f : fields){
@@ -109,7 +111,7 @@ public class Pshop4jGet {
 					System.out.printf("%s: %s\n", f.getName(), f.get(result.get(index)));
 					f.setAccessible(false);
 					
-					if(f.getType().getSimpleName().equalsIgnoreCase("associations")){
+					/*if(f.getType().getSimpleName().equalsIgnoreCase("associations")){
 						Associations asso = result.get(index).getAssociations();
 						System.out.printf("\t%d Associations groups\n", asso.getAssociation().size());
 						for(PrestaShopPojoList<?> pojos : asso.getAssociation()){
@@ -118,7 +120,7 @@ public class Pshop4jGet {
 							}	
 						}
 						
-					}
+					}*/
 				}
 			}
 			//web.setDescription(desc);

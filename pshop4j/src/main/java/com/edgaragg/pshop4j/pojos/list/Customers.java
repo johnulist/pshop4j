@@ -19,7 +19,7 @@ import com.edgaragg.pshop4j.pojos.entities.Customer;
  */
 @PrestaShopResource(resource = Resources.customers)
 @PrestaShopElement(name = "customers")
-public class Customers implements PrestaShopPojoList<Customer> {
+public class Customers extends PrestaShopPojoList<Customer> {
 
 	@PrestaShopElement(name = "customer")
 	@PrestaShopList(type=Customer.class)
@@ -29,22 +29,9 @@ public class Customers implements PrestaShopPojoList<Customer> {
 	 * 
 	 */
 	public Customers() {
+		super();
 		this.customers = new ArrayList<Customer>();
-	}
-	
-	public int size(){
-		return this.customers.size();
-	}
-
-	@Override
-	public Customer get(int index) {
-		return (this.customers.size() < index) ? null : this.customers.get(index);
-	}
-
-	@Override
-	public void add(Customer newObject) {
-		this.customers.add(newObject);
-		
+		this.setList(this.customers);
 	}
 	
 

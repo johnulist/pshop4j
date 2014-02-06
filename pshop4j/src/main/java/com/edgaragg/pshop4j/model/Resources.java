@@ -8,11 +8,13 @@ package com.edgaragg.pshop4j.model;
  *
  */
 public enum Resources {
-	customers,
 	categories,
+	customers,
+	groups,
+	languages,
 	/**
 	 * Describes the resources available with the key
 	 */
-	describe,
-	groups
+	describe
+	
 }

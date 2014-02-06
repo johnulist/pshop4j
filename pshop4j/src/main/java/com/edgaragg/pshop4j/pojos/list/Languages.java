@@ -10,28 +10,24 @@ import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
-import com.edgaragg.pshop4j.pojos.entities.Group;
+import com.edgaragg.pshop4j.pojos.entities.Language;
 
 /**
  * @author Edgar Gonzalez
  *
  */
-@PrestaShopResource(resource = Resources.groups)
-@PrestaShopElement(name = "groups")
-public class Groups extends PrestaShopPojoList<Group> {
-	@PrestaShopElement(name = "group")
-	@PrestaShopList(type=Group.class)
-	private List<Group> groups;
-	
+@PrestaShopResource(resource = Resources.languages)
+@PrestaShopElement(name = "languages")
+public class Languages extends PrestaShopPojoList<Language> {
+
+	@PrestaShopElement(name = "language")
+	@PrestaShopList(type=Language.class)
+	private List<Language> languages = new ArrayList<Language>();
 	/**
 	 * 
 	 */
-	public Groups() {
+	public Languages() {
 		super();
-		this.groups = new ArrayList<Group>();
-		this.setList(this.groups);
+		this.setList(this.languages);
 	}
-
-	
-
 }
