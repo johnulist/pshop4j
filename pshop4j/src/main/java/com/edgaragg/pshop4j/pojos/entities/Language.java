@@ -28,11 +28,11 @@ public class Language implements PrestaShopPojoEntity {
 	@PrestaShopText(element = "id")
 	private long id;
 	
-	@IsGenericName
+	@IsGenericName(required = true, maxSize = 32)
 	@PrestaShopText(element = "name")
 	private String name;
 	
-	@IsLanguageCode(type = LanguageCodeType.ISO)
+	@IsLanguageCode(type = LanguageCodeType.ISO, required = true, maxSize=2)
 	@PrestaShopText(element = "iso_code")
 	private String isoCode;
 	
@@ -48,11 +48,11 @@ public class Language implements PrestaShopPojoEntity {
 	@PrestaShopText(element = "is_rtl")
 	private short isRTL;
 	
-	@IsPhpDateFormat
+	@IsPhpDateFormat(required = true, maxSize = 32)
 	@PrestaShopText(element = "date_format_lite")
 	private String dateFormatLite;
 	
-	@IsPhpDateFormat
+	@IsPhpDateFormat(required = true, maxSize = 32)
 	@PrestaShopText(element = "date_format_full")
 	private String dateFormatFull;
 	

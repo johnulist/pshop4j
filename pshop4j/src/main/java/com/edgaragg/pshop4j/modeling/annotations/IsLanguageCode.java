@@ -16,4 +16,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface IsLanguageCode {
 	LanguageCodeType type();
+	boolean required() default false;
+	int maxSize() default 5;
 }

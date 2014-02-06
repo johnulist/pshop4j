@@ -15,5 +15,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface IsGenericName {
-
+	boolean required() default false;
+	int maxSize() default 32;
 }
