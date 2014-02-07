@@ -8,10 +8,13 @@ How to use it?
 
 Simply create a PrestaShopWebService object, just like that:
 
-  String storeURL = "YOUR STORE URL";  // url to the store root (for example http://www.myPShop4JStore.com)
-  String accessKey = "YOUR AUTHENTICATION KEY";
-  PrestaShopWebservice webservice = new PrestaShopWebservice(storeURL, accessKey);
-  
+```java
+    String storeURL = "YOUR STORE URL";  // url to the store root (for example http://www.myPShop4JStore.com)
+    String accessKey = "YOUR AUTHENTICATION KEY";
+    PrestaShopWebservice webservice = new PrestaShopWebservice(storeURL, accessKey);
+´´´
+
+
 
   
 
