@@ -14,7 +14,7 @@ Simply create a PrestaShopWebService object, just like that:
 public class PrestaShopTest{ 
     private String storeURL = "YOUR STORE URL";  // url to the store root (for example http://www.myPShop4JStore.com)
     private String accessKey = "YOUR AUTHENTICATION KEY";
-    PrestaShopWebservice webservice;
+    private PrestaShopWebservice webservice;
     
     public PrestaShopTest(){
         webservice = new PrestaShopWebservice(storeURL, accessKey);
@@ -33,7 +33,7 @@ To use that, simply create a GetRequest object:
 public class PrestaShopTest{ 
     private String storeURL = "YOUR STORE URL";  // url to the store root (for example http://www.myPShop4JStore.com)
     private String accessKey = "YOUR AUTHENTICATION KEY";
-    PrestaShopWebservice webservice;
+    private PrestaShopWebservice webservice;
     
     public PrestaShopTest(){
         webservice = new PrestaShopWebservice(storeURL, accessKey);
