@@ -22,7 +22,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
@@ -37,7 +36,6 @@ import com.edgaragg.pshop4j.pojos.list.Groups;
  */
 @PrestaShopResource(Resources.customers)
 @PrestaShopElement("customers")
-//@PrestaShopIgnore(elements = "associations")
 @PrestaShopAssociationMapping({
 	@PrestaShopElementMapping(element = "groups", type = Groups.class)
 })

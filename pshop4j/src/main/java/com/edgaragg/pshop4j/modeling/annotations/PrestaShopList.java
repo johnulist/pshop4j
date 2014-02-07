@@ -8,8 +8,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.edgaragg.pshop4j.pojos.entities.LanguageElement;
-
 /**
  * @author Edgar Gonzalez
  * Indicates that the field is a list of the Class type
