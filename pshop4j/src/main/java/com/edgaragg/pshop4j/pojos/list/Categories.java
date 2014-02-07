@@ -28,7 +28,11 @@ public class Categories extends PrestaShopPojoList<Category> {
 	 */
 	public Categories() {
 		super();
+	}
+	
+	@Override
+	protected List<Category> createInnerList() {
 		this.categories = new ArrayList<Category>();
-		this.setList(this.categories);
+		return this.categories;
 	}
 }

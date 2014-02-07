@@ -12,6 +12,7 @@ public enum Resources {
 	customers,
 	groups,
 	languages,
+	products,
 	/**
 	 * Describes the resources available with the key
 	 */

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.edgaragg.pshop4j.modeling.annotations;
 
 import java.lang.annotation.ElementType;
@@ -14,7 +11,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface IsPhpDateFormat {
-	boolean required() default false;
+public @interface IsReference {
+	String regex() default "^[^<>;={}]*$";
 	int maxSize() default 32;
 }

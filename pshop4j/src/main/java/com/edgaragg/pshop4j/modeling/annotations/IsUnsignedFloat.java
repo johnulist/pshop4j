@@ -14,7 +14,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface IsPhpDateFormat {
-	boolean required() default false;
-	int maxSize() default 32;
+public @interface IsUnsignedFloat {
+
 }

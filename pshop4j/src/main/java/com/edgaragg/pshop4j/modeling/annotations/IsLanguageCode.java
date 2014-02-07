@@ -8,6 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.edgaragg.pshop4j.modeling.enums.LanguageCodeType;
+
 /**
  * @author Edgar Gonzalez
  *

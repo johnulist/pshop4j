@@ -8,12 +8,12 @@ import com.edgaragg.pshop4j.modeling.annotations.IsBool;
 import com.edgaragg.pshop4j.modeling.annotations.IsGenericName;
 import com.edgaragg.pshop4j.modeling.annotations.IsLanguageCode;
 import com.edgaragg.pshop4j.modeling.annotations.IsPhpDateFormat;
-import com.edgaragg.pshop4j.modeling.annotations.LanguageCodeType;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
+import com.edgaragg.pshop4j.modeling.enums.LanguageCodeType;
 
 /**
  * @author Edgar Gonzalez

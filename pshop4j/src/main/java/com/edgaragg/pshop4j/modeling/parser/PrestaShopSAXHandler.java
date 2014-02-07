@@ -33,14 +33,6 @@ import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
  *
  */
 public class PrestaShopSAXHandler extends DefaultHandler {
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private static final SimpleDateFormat BIRTHDAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final List<String> ALLOWED_CLASSES = Arrays.asList("string", "bigdecimal", "date");
-	private static final String PRESTASHOP = "prestashop";
-	private Class<?> clazz;
-	private String text;
-	private Vector<SAXObjectDescription> heap;
-
 	
 	/**
 	 * @param <T>
@@ -53,9 +45,48 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		this.heap = new Vector<SAXObjectDescription>();
 	}
 	
+	/**
+	 * 
+	 * @param clazz
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getObject(Class<T> clazz){
 		return (T) this.heap.get(0).getPojo();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#startDocument()
+	 */
+	@Override
+	public void startDocument() throws SAXException {
+		super.startDocument();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
+	@Override
+	public void startElement(String uri, String localName,
+			String qName, Attributes attributes) throws SAXException {
+		super.startElement(uri, localName, qName, attributes);
+		if(PRESTASHOP.equals(qName)) return;
+		//System.out.println("-> start " + qName);
+		SAXObjectDescription desc = getLastObjectDescription(); 
+		if(desc.isIgnoring()){
+			return;
+		}
+		if(desc.checkForIgnorableElement(qName)){
+			desc.setIgnore(qName);
+			return;
+		}
+		// if the heap is empty, we are in the first element of the docuemnt
+		if(this.heap.isEmpty()){
+			createFirstElement(qName, attributes);
+		}else{
+			createPojoFromElement(qName, attributes);
+		}
+		
 	}
 
 	
@@ -95,19 +126,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				
 		if(desc.isIgnoring()) return;
 		// first of all, we assign the text attribute if exists
-		if(text.trim().length() > 0){
-			PrestaShopPojo textElement = getLastObjectDescription().getPojo();
-			Field field = this.getFieldElementFor(textElement.getClass(), qName);
-			if(field != null){
-				field.setAccessible(true);
-				try {
-					field.set(textElement, this.cast(text.trim(), field.getType()));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
-				}
-				field.setAccessible(false);
-			}
-		}
+		this.assignTextValue(qName);
 		
 		if(this.heap.size() > 1){
 			PrestaShopPojo lastElement = getLastObjectDescription().getPojo();
@@ -124,13 +143,13 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				return;
 			}
 			
-			if(field == null || field.getType().isPrimitive() || ALLOWED_CLASSES.contains(field.getType().getSimpleName().toLowerCase())){
+			if(field == null || field.getType().isPrimitive() || field.getType().isEnum() || ALLOWED_CLASSES.contains(field.getType().getSimpleName().toLowerCase())){
 				return;
 			}
 			
-			System.out.printf("End element %s (%s -> %s)\n", qName, lastElement.getClass().getSimpleName(), owner.getClass().getSimpleName());
+			//System.out.printf("End element %s (%s -> %s)\n", qName, lastElement.getClass().getSimpleName(), owner.getClass().getSimpleName());
 			// checking if the field is a list
-			if(field.getType().isAssignableFrom(List.class)){	
+			if(field.getType().isAssignableFrom(List.class)){
 				field.setAccessible(true);
 				try {
 					@SuppressWarnings("unchecked")
@@ -154,48 +173,48 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#startDocument()
-	 */
-	@Override
-	public void startDocument() throws SAXException {
-		super.startDocument();
-	}
+	
 	
 	/**
 	 * 
+	 * @param o
+	 * @param clazz
+	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	protected <T> T cast(Object o, Class<T> clazz){
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected <T> T cast(String o, Class<T> clazz){
 		Object instance = null;
 		if(clazz.getSimpleName().equalsIgnoreCase("string")){
-			instance = o.toString();
+			instance = o == null ? "" : o;
 		}else
 		if(clazz.getSimpleName().equalsIgnoreCase("bigdecimal")){
-			instance = new BigDecimal(o.toString());
+			instance = new BigDecimal(o == null ? "0" : o);
 		}else
 		if(clazz.getSimpleName().equalsIgnoreCase("boolean")){
-			 instance = Boolean.parseBoolean(o.toString());
+			 instance = o == null ? false : Boolean.parseBoolean(o);
 		}else
 		if(clazz.getSimpleName().equalsIgnoreCase("long")){
-			instance = Long.parseLong(o.toString());
+			instance = o == null ? 0 : Long.parseLong(o);
 		}else
 		if(clazz.getSimpleName().equalsIgnoreCase("short")){
-			instance = Short.parseShort(o.toString());
+			instance = o == null ? 0 : Short.parseShort(o);
 		}else
 		if(clazz.getSimpleName().equalsIgnoreCase("int")){
-			instance = Integer.parseInt(o.toString());
+			instance = o == null ? 0 : Integer.parseInt(o);
 		}else
 		if(clazz.getSimpleName().equalsIgnoreCase("date")){
-			String trimmedData = o.toString().trim();
+			if(o == null) return null;
+			String trimmedData = o.trim();
 			if(trimmedData.equals("")) return null;
 			try {
-				instance = (trimmedData.length() == 10 ? BIRTHDAY_FORMAT : DATE_FORMAT).parse(o.toString()); 
+				instance = (trimmedData.length() == 10 ? BIRTHDAY_FORMAT : DATE_FORMAT).parse(o); 
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+		}else			
+		if(clazz.isEnum()){
+			instance = Enum.valueOf((Class<Enum>)clazz, o);
 		}
-			
 		
 		return (T) instance;
 	}
@@ -220,19 +239,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		return null;
 	}
 	
-	
-//	protected <T extends PrestaShopPojo> Field getFieldListFor(Class<T> searchClazz, Class<T> targetClass){
-//		Field[] fields = searchClazz.getDeclaredFields();
-//		for(Field field : fields){
-//			PrestaShopList fieldList = field.getAnnotation(PrestaShopList.class);
-//				
-//			if(fieldList != null && ((fieldList.type() != null && fieldList.type().equals(targetClass)) || 
-//					(fieldList.types().length > 0 && Arrays.binarySearch(fieldList.types(), targetClass) >= 0))) {
-//				return field;
-//			}
-//		}
-//		return null;
-//	}
+
 	
 	/**
 	 * 
@@ -247,7 +254,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			PrestaShopAttribute fieldAttribute = field.getAnnotation(PrestaShopAttribute.class);
 			if(fieldAttribute != null){
 				String attrValue = attributes.getValue("", fieldAttribute.value());
-				if(attrValue == null) continue;
+				//if(attrValue == null) continue;
 				try {
 					field.setAccessible(true);
 					field.set(currentObj, cast(attrValue, field.getType()));
@@ -259,30 +266,22 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	
+	/**
+	 * @param qName
 	 */
-	@Override
-	public void startElement(String uri, String localName,
-			String qName, Attributes attributes) throws SAXException {
-		super.startElement(uri, localName, qName, attributes);
-		if(PRESTASHOP.equals(qName)) return;
-		System.out.println("-> start " + qName);
-		SAXObjectDescription desc = getLastObjectDescription(); 
-		if(desc.isIgnoring()){
-			return;
+	private void assignTextValue(String qName) {
+		PrestaShopPojo textElement = getLastObjectDescription().getPojo();
+		Field field = this.getFieldElementFor(textElement.getClass(), qName);
+		if(field != null){
+			field.setAccessible(true);
+			try {
+				field.set(textElement, this.cast((text.trim().length() > 0) ? text.trim() : null, field.getType()));
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			field.setAccessible(false);
 		}
-		if(desc.checkForIgnorableElement(qName)){
-			desc.setIgnore(qName);
-			return;
-		}
-		// if the heap is empty, we are in the first element of the docuemnt
-		if(this.heap.isEmpty()){
-			createFirstElement(qName, attributes);
-		}else{
-			createPojoFromElement(qName, attributes);
-		}
-		
 	}
 
 	/**
@@ -321,15 +320,13 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 						}
 					}
 				}
-			}else{
-				System.out.println("null for " + qName);
 			}
 			return;
 		}
 		// checking if the field is not a primitive or an allowed class
 		// if it is a primitive or an allowed class, we do nothing because the content is on the element text
 		// we don't seek in attributes in this case
-		if(!elementField.getType().isPrimitive() && !ALLOWED_CLASSES.contains(elementField.getType().getSimpleName().toLowerCase())){
+		if(!elementField.getType().isPrimitive() && !elementField.getType().isEnum() && !ALLOWED_CLASSES.contains(elementField.getType().getSimpleName().toLowerCase())){
 			try {
 				// get the element type
 				Class<?> newClass = elementField.getType();
@@ -387,11 +384,17 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	 * @param pojo
 	 */
 	private void addToHeap(PrestaShopPojo pojo){
-		SAXObjectDescription desc = new SAXObjectDescription(pojo);
+		//SAXObjectDescription desc = new SAXObjectDescription(pojo);
 		this.heap.add(new SAXObjectDescription(pojo));
-		if(desc.isAssociationList()){
-			System.out.println("ADDING ASSOCIATION LIST");
-		}
 	}
 
+	
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final SimpleDateFormat BIRTHDAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	private static final List<String> ALLOWED_CLASSES = Arrays.asList("string", "bigdecimal", "date");
+	private static final String PRESTASHOP = "prestashop";
+	private Class<?> clazz;
+	private String text;
+	private Vector<SAXObjectDescription> heap;
+	
 }

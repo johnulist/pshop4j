@@ -7,7 +7,6 @@ package com.edgaragg.pshop4j.modeling.annotations;
  * @author Edgar Gonzalez
  *
  */
-public enum LanguageCodeType {
-	ISO,
-	NORMAL
+public @interface IsPrice {
+	boolean required() default false;
 }

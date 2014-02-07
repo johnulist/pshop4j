@@ -31,7 +31,7 @@ public class PrestaShopWebservice {
 	 * @param url
 	 * @param key
 	 */
-	public PrestaShopWebservice(String url, final String key) {
+	public PrestaShopWebservice(final String url, final String key) {
 		this.setUrl(url);
 		this.setKey(key);
 		Authenticator.setDefault (new Authenticator() {

@@ -22,12 +22,16 @@ public class Languages extends PrestaShopPojoList<Language> {
 
 	@PrestaShopElement("language")
 	@PrestaShopList(Language.class)
-	private List<Language> languages = new ArrayList<Language>();
+	private List<Language> languages;
 	/**
 	 * 
 	 */
 	public Languages() {
 		super();
-		this.setList(this.languages);
+	}
+	@Override
+	protected List<Language> createInnerList() {
+		this.languages = new ArrayList<Language>();
+		return this.languages;
 	}
 }

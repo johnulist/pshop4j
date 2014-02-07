@@ -20,6 +20,10 @@ public abstract class PrestaShopPojoList<T extends PrestaShopPojo> implements Pr
 	 */
 	public PrestaShopPojoList() {
 		super();
+		this.pojos = this.createInnerList();
+		if(this.pojos == null){
+			System.out.println("CONSTRUCTOR WTF????");
+		}
 	}
 	
 	public T get(int index){
@@ -31,10 +35,13 @@ public abstract class PrestaShopPojoList<T extends PrestaShopPojo> implements Pr
 	}
 	
 	public int size(){
+		if(this.pojos == null){
+			System.out.println("WTF????");
+			return 0;
+		}
 		return this.pojos.size();
 	}
 	
-	protected void setList(List<T> pojos){
-		this.pojos = pojos;
-	}
+	
+	protected abstract List<T> createInnerList();
 }

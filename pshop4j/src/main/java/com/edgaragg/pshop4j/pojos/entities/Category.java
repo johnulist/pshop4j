@@ -9,6 +9,9 @@ import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.IsBool;
+import com.edgaragg.pshop4j.modeling.annotations.IsCatalogName;
+import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
+import com.edgaragg.pshop4j.modeling.annotations.IsLinkRewrite;
 import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
@@ -23,7 +26,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
  */
 @PrestaShopResource(Resources.categories)
 @PrestaShopElement("category")
-@PrestaShopIgnore(elements = "associations,link_rewrite,description,meta_title,meta_description,meta_keywords")
+@PrestaShopIgnore(elements = "associations")
 public class Category implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute("id")
@@ -62,14 +65,17 @@ public class Category implements PrestaShopPojoEntity {
 	@PrestaShopText("date_upd")
 	private Date dateUpd;
 	
+	@IsCatalogName
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement("name")
 	private List<LanguageElement> name;
 
+	@IsLinkRewrite
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement("link_rewrite")
 	private List<LanguageElement> linkRewrite;
 
+	@IsCleanHtml
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement("description")
 	private List<LanguageElement> description;

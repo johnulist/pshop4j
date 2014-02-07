@@ -30,8 +30,12 @@ public class Customers extends PrestaShopPojoList<Customer> {
 	 */
 	public Customers() {
 		super();
+	}
+
+	@Override
+	protected List<Customer> createInnerList() {
 		this.customers = new ArrayList<Customer>();
-		this.setList(this.customers);
+		return this.customers;
 	}
 	
 
