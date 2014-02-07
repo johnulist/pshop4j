@@ -3,7 +3,9 @@
  */
 package com.edgaragg.pshop4j.pojos.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.IsBool;
@@ -11,57 +13,90 @@ import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 
 /**
  * @author Edgar Gonzalez
- *
+ * TODO: add products before add associations
  */
-@PrestaShopResource(resource = Resources.categories)
-@PrestaShopElement(name = "category")
-@PrestaShopIgnore(elements = "associations")
+@PrestaShopResource(Resources.categories)
+@PrestaShopElement("category")
+@PrestaShopIgnore(elements = "associations,link_rewrite,description,meta_title,meta_description,meta_keywords")
 public class Category implements PrestaShopPojoEntity {
 
-	@PrestaShopAttribute(name = "id")
-	@PrestaShopText(element = "id")
+	@PrestaShopAttribute("id")
+	@PrestaShopText("id")
 	private long id;
 	
 	@IsUnsignedInt
-	@PrestaShopText(element = "id_parent")
+	@PrestaShopText("id_parent")
 	private long idParent;
 	
-	@PrestaShopText(element = "level_depth")
+	@PrestaShopText("level_depth")
 	private int levelDepth;
 	
-	// nb_products_recursive
+	
+	@PrestaShopText("nb_products_recursive")
+	private int nbProductsRecursive;
+	
 	@IsBool
-	@PrestaShopText(element = "active")
+	@PrestaShopText("active")
 	private short active;
 	
 	@IsUnsignedInt
-	@PrestaShopText(element = "id_shop_default")
+	@PrestaShopText("id_shop_default")
 	private long idShopDefault;
 	
 	@IsBool
-	@PrestaShopText(element = "is_root_category")
+	@PrestaShopText("is_root_category")
 	private short isRootCategory;
 	
-	@PrestaShopText(element = "position")
+	@PrestaShopText("position")
 	private long position;
 	
-	@PrestaShopText(element = "date_add")
+	@PrestaShopText("date_add")
 	private Date dateAdd;
 	
-	@PrestaShopText(element = "date_upd")
+	@PrestaShopText("date_upd")
 	private Date dateUpd;
 	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement("name")
+	private List<LanguageElement> name;
+
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement("link_rewrite")
+	private List<LanguageElement> linkRewrite;
+
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement("description")
+	private List<LanguageElement> description;
+	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement("meta_title")
+	private List<LanguageElement> metaTitle;
+	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement("meta_description")
+	private List<LanguageElement> metaDescription;
+	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement("meta_keywords")
+	private List<LanguageElement> metaKeywords;
+
 	
 	/**
 	 * 
 	 */
 	public Category() {
-		
+		this.name = new ArrayList<LanguageElement>();
+		this.linkRewrite = new ArrayList<LanguageElement>();
+		this.description = new ArrayList<LanguageElement>();
+		this.metaDescription = new ArrayList<LanguageElement>();
+		this.metaKeywords = new ArrayList<LanguageElement>();
+		this.metaTitle = new ArrayList<LanguageElement>();
 	}
 
 	/* (non-Javadoc)
@@ -191,7 +226,105 @@ public class Category implements PrestaShopPojoEntity {
 	public void setDateUpd(Date dateUpd) {
 		this.dateUpd = dateUpd;
 	}
+
+	/**
+	 * @return the nbProductsRecursive
+	 */
+	public int getNbProductsRecursive() {
+		return nbProductsRecursive;
+	}
+
+	/**
+	 * @param nbProductsRecursive the nbProductsRecursive to set
+	 */
+	public void setNbProductsRecursive(int nbProductsRecursive) {
+		this.nbProductsRecursive = nbProductsRecursive;
+	}
 	
+
+	/**
+	 * @return the name
+	 */
+	public List<LanguageElement> getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(List<LanguageElement> name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the linkRewrite
+	 */
+	public List<LanguageElement> getLinkRewrite() {
+		return linkRewrite;
+	}
+
+	/**
+	 * @param linkRewrite the linkRewrite to set
+	 */
+	public void setLinkRewrite(List<LanguageElement> linkRewrite) {
+		this.linkRewrite = linkRewrite;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public List<LanguageElement> getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(List<LanguageElement> description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the metaTitle
+	 */
+	public List<LanguageElement> getMetaTitle() {
+		return metaTitle;
+	}
+
+	/**
+	 * @param metaTitle the metaTitle to set
+	 */
+	public void setMetaTitle(List<LanguageElement> metaTitle) {
+		this.metaTitle = metaTitle;
+	}
+
+	/**
+	 * @return the metaDescription
+	 */
+	public List<LanguageElement> getMetaDescription() {
+		return metaDescription;
+	}
+
+	/**
+	 * @param metaDescription the metaDescription to set
+	 */
+	public void setMetaDescription(List<LanguageElement> metaDescription) {
+		this.metaDescription = metaDescription;
+	}
+
+	/**
+	 * @return the metaKeywords
+	 */
+	public List<LanguageElement> getMetaKeywords() {
+		return metaKeywords;
+	}
+
+	/**
+	 * @param metaKeywords the metaKeywords to set
+	 */
+	public void setMetaKeywords(List<LanguageElement> metaKeywords) {
+		this.metaKeywords = metaKeywords;
+	}
 	
 
 }

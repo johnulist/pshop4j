@@ -15,6 +15,11 @@ public enum Resources {
 	/**
 	 * Describes the resources available with the key
 	 */
-	describe
+	describe,
+	/**
+	 * Describes a language element<br/>
+	 * It is NOT a real PrestaShop resource
+	 */
+	languageElement
 	
 }

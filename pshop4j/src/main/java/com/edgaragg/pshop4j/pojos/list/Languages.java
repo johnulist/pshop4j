@@ -16,12 +16,12 @@ import com.edgaragg.pshop4j.pojos.entities.Language;
  * @author Edgar Gonzalez
  *
  */
-@PrestaShopResource(resource = Resources.languages)
-@PrestaShopElement(name = "languages")
+@PrestaShopResource(Resources.languages)
+@PrestaShopElement("languages")
 public class Languages extends PrestaShopPojoList<Language> {
 
-	@PrestaShopElement(name = "language")
-	@PrestaShopList(type=Language.class)
+	@PrestaShopElement("language")
+	@PrestaShopList(Language.class)
 	private List<Language> languages = new ArrayList<Language>();
 	/**
 	 * 

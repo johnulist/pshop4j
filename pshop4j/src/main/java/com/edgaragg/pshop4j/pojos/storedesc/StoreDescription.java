@@ -15,16 +15,16 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
  * @author Edgar González
  *
  */
-@PrestaShopResource(resource = Resources.describe)
-@PrestaShopElement(name = "api")
+@PrestaShopResource( Resources.describe)
+@PrestaShopElement("api")
 public class StoreDescription implements PrestaShopPojo{
-	@PrestaShopAttribute(name="shop_name")
+	@PrestaShopAttribute("shop_name")
 	private String shopName;
 	
-	@PrestaShopElement(name="customers")
+	@PrestaShopElement("customers")
 	private StoreDescriptionItem customers;
 	
-	@PrestaShopElement(name="categories")
+	@PrestaShopElement("categories")
 	private StoreDescriptionItem categories;
 	
 	/**

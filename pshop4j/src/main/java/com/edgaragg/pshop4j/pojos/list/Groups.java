@@ -16,11 +16,11 @@ import com.edgaragg.pshop4j.pojos.entities.Group;
  * @author Edgar Gonzalez
  *
  */
-@PrestaShopResource(resource = Resources.groups)
-@PrestaShopElement(name = "groups")
+@PrestaShopResource(Resources.groups)
+@PrestaShopElement("groups")
 public class Groups extends PrestaShopPojoList<Group> {
-	@PrestaShopElement(name = "group")
-	@PrestaShopList(type=Group.class)
+	@PrestaShopElement("group")
+	@PrestaShopList(Group.class)
 	private List<Group> groups;
 	
 	/**

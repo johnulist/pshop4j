@@ -14,6 +14,6 @@ import com.edgaragg.pshop4j.model.Resources;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrestaShopResource {
-	Resources resource();
+	Resources value();
 }
 

@@ -19,41 +19,41 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
  * @author Edgar Gonzalez
  *
  */
-@PrestaShopResource(resource = Resources.languages)
-@PrestaShopElement(name = "language")
+@PrestaShopResource(Resources.languages)
+@PrestaShopElement("language")
 public class Language implements PrestaShopPojoEntity {
 
 	@PrestaShopVirtual()
-	@PrestaShopAttribute(name = "id")
-	@PrestaShopText(element = "id")
+	@PrestaShopAttribute("id")
+	@PrestaShopText("id")
 	private long id;
 	
 	@IsGenericName(required = true, maxSize = 32)
-	@PrestaShopText(element = "name")
+	@PrestaShopText("name")
 	private String name;
 	
 	@IsLanguageCode(type = LanguageCodeType.ISO, required = true, maxSize=2)
-	@PrestaShopText(element = "iso_code")
+	@PrestaShopText("iso_code")
 	private String isoCode;
 	
 	@IsLanguageCode(type = LanguageCodeType.NORMAL)
-	@PrestaShopText(element = "language_code")
+	@PrestaShopText("language_code")
 	private String languageCode;
 	
 	@IsBool()
-	@PrestaShopText(element = "active")
+	@PrestaShopText("active")
 	private short active;
 	
 	@IsBool()
-	@PrestaShopText(element = "is_rtl")
+	@PrestaShopText("is_rtl")
 	private short isRTL;
 	
 	@IsPhpDateFormat(required = true, maxSize = 32)
-	@PrestaShopText(element = "date_format_lite")
+	@PrestaShopText("date_format_lite")
 	private String dateFormatLite;
 	
 	@IsPhpDateFormat(required = true, maxSize = 32)
-	@PrestaShopText(element = "date_format_full")
+	@PrestaShopText("date_format_full")
 	private String dateFormatFull;
 	
 	

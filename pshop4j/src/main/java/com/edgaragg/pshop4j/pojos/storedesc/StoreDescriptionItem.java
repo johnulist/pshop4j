@@ -15,25 +15,25 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
  * @author Edgar Gonzalez
  *
  */
-@PrestaShopElement(name = "customers")
+@PrestaShopElement("customers")
 public class StoreDescriptionItem {
 
-	@PrestaShopAttribute(name="xlink:href")
+	@PrestaShopAttribute("xlink:href")
 	private String endPoint;
-	@PrestaShopAttribute(name="get")
+	@PrestaShopAttribute("get")
 	private boolean get;
-	@PrestaShopAttribute(name="put")
+	@PrestaShopAttribute("put")
 	private boolean put;
-	@PrestaShopAttribute(name="post")
+	@PrestaShopAttribute("post")
 	private boolean post;
-	@PrestaShopAttribute(name="delete")
+	@PrestaShopAttribute("delete")
 	private boolean delete;
-	@PrestaShopAttribute(name="head")
+	@PrestaShopAttribute("head")
 	private boolean head;
-	@PrestaShopText(element="description")
+	@PrestaShopText("description")
 	private String description;
-	@PrestaShopElement(name = "schema")
-	@PrestaShopList(type=Schema.class)
+	@PrestaShopElement("schema")
+	@PrestaShopList(Schema.class)
 	private List<Schema> schemas;
 	
 	/**

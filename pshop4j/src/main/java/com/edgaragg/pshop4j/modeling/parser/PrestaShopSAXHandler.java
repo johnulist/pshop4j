@@ -117,8 +117,6 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			// look into the owner object the field for the last element
 			Field field = this.getFieldElementFor(owner.getClass(), qName);
 		
-			System.out.printf("End element %s (%s -> %s)\n", qName, lastElement.getClass().getSimpleName(), owner.getClass().getSimpleName());
-			
 			if(ownerDesc.isAssociationList()){
 				Associations associations = (Associations)ownerDesc.getPojo();
 				associations.addAssociation((PrestaShopPojoList<?>)lastElement);
@@ -130,12 +128,13 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				return;
 			}
 			
+			System.out.printf("End element %s (%s -> %s)\n", qName, lastElement.getClass().getSimpleName(), owner.getClass().getSimpleName());
 			// checking if the field is a list
 			if(field.getType().isAssignableFrom(List.class)){	
 				field.setAccessible(true);
 				try {
 					@SuppressWarnings("unchecked")
-					List<Object> innerList =  (List<Object>) field.get(owner);
+					List<PrestaShopPojo> innerList =  (List<PrestaShopPojo>) field.get(owner);
 					innerList.add(lastElement);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
@@ -213,8 +212,8 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			PrestaShopElement fieldElement = field.getAnnotation(PrestaShopElement.class);
 			PrestaShopText fieldText = field.getAnnotation(PrestaShopText.class);
 			
-			if((fieldElement != null && fieldElement.name().equals(element)) || 
-					(fieldText != null && fieldText.element().equals(element))){
+			if((fieldElement != null && fieldElement.value().equals(element)) || 
+					(fieldText != null && fieldText.value().equals(element))){
 				return field;
 			}
 		}
@@ -247,7 +246,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		for(Field field : fields){
 			PrestaShopAttribute fieldAttribute = field.getAnnotation(PrestaShopAttribute.class);
 			if(fieldAttribute != null){
-				String attrValue = attributes.getValue("", fieldAttribute.name());
+				String attrValue = attributes.getValue("", fieldAttribute.value());
 				if(attrValue == null) continue;
 				try {
 					field.setAccessible(true);
@@ -339,7 +338,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				if(newClass.isAssignableFrom(List.class) && elementField.isAnnotationPresent(PrestaShopList.class)){
 					// if it is the case, create a new pojo of this type, fill its attributes and add it to the heap
 					// in order to seek for childrens
-					Class<?> listClass = elementField.getAnnotation(PrestaShopList.class).type(); 
+					Class<?> listClass = elementField.getAnnotation(PrestaShopList.class).value(); 
 					PrestaShopPojo currentObject = (PrestaShopPojo)listClass.newInstance();
 					this.fillAttributes(listClass, currentObject, attributes);
 					this.addToHeap(currentObject);
@@ -371,7 +370,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	private void createFirstElement(String qName, Attributes attributes)
 			throws SAXException {
 		PrestaShopElement element = this.clazz.getAnnotation(PrestaShopElement.class);
-		if(!element.name().equals(qName)){
+		if(!element.value().equals(qName)){
 			this.fatalError(new SAXParseException("Class element does not match with XML document", null));
 			return;
 		}

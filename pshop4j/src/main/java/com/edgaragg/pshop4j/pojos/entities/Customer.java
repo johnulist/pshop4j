@@ -34,129 +34,129 @@ import com.edgaragg.pshop4j.pojos.list.Groups;
  * @author Edgar Gonzalez
  * Customer entity
  */
-@PrestaShopResource(resource = Resources.customers)
-@PrestaShopElement(name = "customers")
+@PrestaShopResource(Resources.customers)
+@PrestaShopElement("customers")
 @PrestaShopAssociationMapping({
 	@PrestaShopElementMapping(element = "groups", type = Groups.class)
 })
 public class Customer implements PrestaShopPojo {
 
 	@PrestaShopVirtual()
-	@PrestaShopAttribute(name = "id")
-	@PrestaShopText(element = "id")
+	@PrestaShopAttribute("id")
+	@PrestaShopText("id")
 	private long id;
 	
-	@PrestaShopText(element = "id_default_group")
+	@PrestaShopText("id_default_group")
 	private long idDefaultGroup;
 	
 	@IsUnsignedId
-	@PrestaShopText(element = "id_lang")
+	@PrestaShopText("id_lang")
 	private long idLang;
 	
-	@PrestaShopText(element = "newsletter_date_add")
+	@PrestaShopText("newsletter_date_add")
 	private Date newsletterDateAdd;
 	
-	@PrestaShopText(element = "ip_registration_newsletter")
+	@PrestaShopText("ip_registration_newsletter")
 	private String ipRegistrationNewsletter;
 	
-	@PrestaShopText(element = "last_passwd_gen")
+	@PrestaShopText("last_passwd_gen")
 	private Date lastPasswdGen;
 	
 	@IsMD5
-	@PrestaShopText(element = "secure_key")
+	@PrestaShopText("secure_key")
 	private String secureKey;
 	
 	@IsBool
-	@PrestaShopText(element = "deleted")
+	@PrestaShopText("deleted")
 	private short deleted;
 	
 	@IsPasswd(required = true, maxSize = 32)
-	@PrestaShopText(element = "passwd")
+	@PrestaShopText("passwd")
 	private String passwd;
 	
 	@IsName(required = true, maxSize = 32)
-	@PrestaShopText(element = "lastname")
+	@PrestaShopText("lastname")
 	private String lastName;
 	
 	@IsName(required = true, maxSize = 32)
-	@PrestaShopText(element = "firstname")
+	@PrestaShopText("firstname")
 	private String firstName;
 	
-	@PrestaShopText(element = "email")
+	@PrestaShopText("email")
 	private String email;
 	
 	@IsUnsignedId
-	@PrestaShopText(element = "id_gender")
+	@PrestaShopText("id_gender")
 	private short idGender;
 	
 	@IsBirthDate
-	@PrestaShopText(element = "birthday")
+	@PrestaShopText("birthday")
 	private Date birthday;
 	
-	@PrestaShopText(element = "newsletter")
+	@PrestaShopText("newsletter")
 	private int newsletter;
 	
 	@IsBool
-	@PrestaShopText(element = "optin")
+	@PrestaShopText("optin")
 	private short optin;
 	
 	@IsUrl
-	@PrestaShopText(element = "website")
+	@PrestaShopText("website")
 	private String website;
 	
 	@IsGenericName
-	@PrestaShopText(element = "company")
+	@PrestaShopText("company")
 	private String company;
 	
-	@PrestaShopText(element = "siret")
+	@PrestaShopText("siret")
 	private String siret;
 	
-	@PrestaShopText(element = "ape")
+	@PrestaShopText("ape")
 	private String ape;
 
 	@IsFloat
-	@PrestaShopText(element = "outstanding_allow_amount")
+	@PrestaShopText("outstanding_allow_amount")
 	BigDecimal outstandingAllowAmount;
 	
 	@IsBool
-	@PrestaShopText(element = "show_public_prices")
+	@PrestaShopText("show_public_prices")
 	private short showPublicPrices;
 	
 	@IsUnsignedInt
-	@PrestaShopText(element = "id_risk")
+	@PrestaShopText("id_risk")
 	private short idRisk;
 	
 	@IsUnsignedInt
-	@PrestaShopText(element = "max_payment_days")
+	@PrestaShopText("max_payment_days")
 	private int maxPaymentDays;
 	
 	@IsBool
-	@PrestaShopText(element = "active")
+	@PrestaShopText("active")
 	private short active;
 	
 	@IsCleanHtml(maxSize = 65000)
-	@PrestaShopText(element = "note")
+	@PrestaShopText("note")
 	private String note;
 	
 	@IsBool
-	@PrestaShopText(element = "is_guest")
+	@PrestaShopText("is_guest")
 	private short isGuest;
 	
 	@IsUnsignedId
-	@PrestaShopText(element = "id_shop")
+	@PrestaShopText("id_shop")
 	private long idShop;
 	
 	@IsUnsignedId
-	@PrestaShopText(element = "id_shop_group")
+	@PrestaShopText("id_shop_group")
 	private long idShopGroup;
 	
-	@PrestaShopText(element = "date_add")
+	@PrestaShopText("date_add")
 	private Date dateAdd;
 	
-	@PrestaShopText(element = "date_upd")
+	@PrestaShopText("date_upd")
 	private Date dateUpd;
 	
-	@PrestaShopElement(name = "associations")
+	@PrestaShopElement("associations")
 	private Associations associations;
 	/**
 	 * @return the id

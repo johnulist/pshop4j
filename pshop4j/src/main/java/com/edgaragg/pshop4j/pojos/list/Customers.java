@@ -17,12 +17,12 @@ import com.edgaragg.pshop4j.pojos.entities.Customer;
  * @author Edgar Gonzalez
  *
  */
-@PrestaShopResource(resource = Resources.customers)
-@PrestaShopElement(name = "customers")
+@PrestaShopResource(Resources.customers)
+@PrestaShopElement("customers")
 public class Customers extends PrestaShopPojoList<Customer> {
 
-	@PrestaShopElement(name = "customer")
-	@PrestaShopList(type=Customer.class)
+	@PrestaShopElement("customer")
+	@PrestaShopList(Customer.class)
 	private List<Customer> customers;
 	
 	/**

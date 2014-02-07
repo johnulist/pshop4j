@@ -59,7 +59,7 @@ public class PrestaShopMapper {
 			throw new Exception("Invalid resource");
 		}
 		
-		GetRequest request = new GetRequest().withResource(resource.resource())
+		GetRequest request = new GetRequest().withResource(resource.value())
 				.withFullDisplay(true)
 				.withFilters(filters)
 				.withLimit(limit);
@@ -93,7 +93,7 @@ public class PrestaShopMapper {
 			throw new Exception("Invalid resource");
 		}
 		
-		GetRequest request = new GetRequest().withResource(resource.resource())
+		GetRequest request = new GetRequest().withResource(resource.value())
 				.withFields(fields)
 				.withFilters(filters)
 				.withLimit(limit);
@@ -136,7 +136,7 @@ public class PrestaShopMapper {
 			throw new Exception("Invalid resource");
 		}
 		
-		GetRequest request = new GetRequest().withResource(resource.resource()).withId(key == null ? 0 : key.getId());
+		GetRequest request = new GetRequest().withResource(resource.value()).withId(key == null ? 0 : key.getId());
 		
 		// executes
 		PrestaShopResponse response = this.webservice.executeRequest(request); 

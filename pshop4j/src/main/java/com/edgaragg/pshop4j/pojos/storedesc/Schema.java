@@ -11,9 +11,9 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
  */
 public class Schema {
 
-	@PrestaShopAttribute(name="xlink:href")
+	@PrestaShopAttribute("xlink:href")
 	private String endPoint;
-	@PrestaShopAttribute(name="type")
+	@PrestaShopAttribute("type")
 	private String type;
 	/**
 	 * 

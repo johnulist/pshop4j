@@ -14,13 +14,13 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
  * @author Edgar Gonzalez
  *
  */
-@PrestaShopResource(resource = Resources.groups)
-@PrestaShopElement(name = "group")
+@PrestaShopResource(Resources.groups)
+@PrestaShopElement("group")
 public class Group implements PrestaShopPojoEntity {
 
 	@PrestaShopVirtual()
-	@PrestaShopElement(name = "id")
-	@PrestaShopAttribute(name = "id")
+	@PrestaShopElement("id")
+	@PrestaShopAttribute("id")
 	private long id;
 	/**
 	 * 
