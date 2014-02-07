@@ -54,6 +54,8 @@ public class PrestaShopTest{
 }
 ```
 
+Note: Executing a GetRequest without a resource returns the list of resources that you configured in your Back Office with all permissions granted [see more info](http://doc.prestashop.com/display/PS14/Chapter+2+-+Discovery+-+Testing+access+to+the+web+service+with+the+browser)
+
 
 
 
