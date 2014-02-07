@@ -9,10 +9,17 @@ How to use it?
 Simply create a PrestaShopWebService object, just like that:
 
 ```java
-    String storeURL = "YOUR STORE URL";  // url to the store root (for example http://www.myPShop4JStore.com)
-    String accessKey = "YOUR AUTHENTICATION KEY";
-    PrestaShopWebservice webservice = new PrestaShopWebservice(storeURL, accessKey);
-´´´
+    public class PrestaShopTest{ 
+        private String storeURL = "YOUR STORE URL";  // url to the store root (for example http://www.myPShop4JStore.com)
+        private String accessKey = "YOUR AUTHENTICATION KEY";
+        PrestaShopWebservice webservice;
+        
+        publoic PrestaShopTest(){
+            webservice = new PrestaShopWebservice(storeURL, accessKey);
+        }
+        
+    }
+```
 
 
 
