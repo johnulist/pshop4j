@@ -99,7 +99,7 @@ public class GetRequest extends PrestaShopRequest {
 	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getContentBody()
 	 */
 	@Override
-	public InputStream getContentBody() {
+	protected InputStream getContentBody() {
 		return null;
 	}
 
@@ -108,7 +108,7 @@ public class GetRequest extends PrestaShopRequest {
 	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getQuery()
 	 */
 	@Override
-	public String getQuery() {
+	protected String getQuery() {
 		List<String> queryParams = new ArrayList<String>();
 		
 		// get display
@@ -122,7 +122,7 @@ public class GetRequest extends PrestaShopRequest {
 				}
 				
 				// include id
-				System.out.println("ID:" + this.id);
+				//System.out.println("ID:" + this.id);
 				if(this.id > 0 && !this.getFields().contains("id")){
 					fieldBuilder.append(",id");
 				}

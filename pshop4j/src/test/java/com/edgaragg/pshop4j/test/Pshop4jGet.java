@@ -4,6 +4,7 @@
 package com.edgaragg.pshop4j.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
@@ -19,6 +20,7 @@ import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapper;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperListener;
+import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.entities.Category;
@@ -27,6 +29,7 @@ import com.edgaragg.pshop4j.pojos.entities.Language;
 import com.edgaragg.pshop4j.pojos.entities.Product;
 import com.edgaragg.pshop4j.pojos.list.Categories;
 import com.edgaragg.pshop4j.pojos.list.Customers;
+import com.edgaragg.pshop4j.pojos.list.Groups;
 import com.edgaragg.pshop4j.pojos.list.Languages;
 import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
 import com.edgaragg.pshop4j.pojos.list.Products;
@@ -44,88 +47,9 @@ public class Pshop4jGet {
 	public Pshop4jGet(){
 		web = new PrestaShopWebservice("192.168.1.139/prestashop", "0HMRPJPZM2CE10H1HLZH2HGXGA2F2LWS");
 		mapper = new PrestaShopMapper(web);
-		mapper.setListener(new PrestaShopMapperListener(){
+	}
+	
 
-			@Override
-			public void sendException(Exception ex) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void sendResponseHash(String hash) {
-				System.out.println("Response hash: " + hash);
-			}
-			
-		});
-	}
-	
-	@Test
-	public void testCustomers(){
-		long start = Calendar.getInstance().getTimeInMillis();
-		
-		try {
-			Customers result = mapper.listFullDisplay(Customers.class, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-//			Customers result = mapper.list(Customers.class);
-			assertNotNull(result);
-			assertTrue(result.size() > 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Test Customers - Execution time: %.2f seconds\n", (end - start)/1000.0);
-	}
-	
-	@Test
-	public void testCategories(){
-		long start = Calendar.getInstance().getTimeInMillis();
-		try {
-			Categories result = mapper.listFullDisplay(Categories.class, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-			assertNotNull(result);
-			assertTrue(result.size() > 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Test Categories - Execution time: %.2f seconds\n", (end - start)/1000.0);
-	}
-	
-	
-	@Test
-	public void testProducts(){
-		long start = Calendar.getInstance().getTimeInMillis();
-		
-		try {
-			Products result = mapper.listFullDisplay(Products.class, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-//			Products result = mapper.list(Products.class);
-			assertNotNull(result);
-			assertTrue(result.size() > 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Test Products - Execution time: %.2f seconds\n", (end - start)/1000.0);
-	}
-	
-	
-	@Test
-	public void testLanguages(){
-		long start = Calendar.getInstance().getTimeInMillis();
-		
-		try {
-			Languages result = mapper.listFullDisplay(Languages.class, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-			assertNotNull(result);
-			assertTrue(result.size() > 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Test Languages - Execution time: %.2f seconds\n", (end - start)/1000.0);
-		
-	}
 	
 //	@Test
 //	public void test() {

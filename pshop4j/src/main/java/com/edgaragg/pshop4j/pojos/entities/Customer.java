@@ -25,7 +25,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
-import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Groups;
 
@@ -39,7 +38,7 @@ import com.edgaragg.pshop4j.pojos.list.Groups;
 @PrestaShopAssociationMapping({
 	@PrestaShopElementMapping(element = "groups", type = Groups.class)
 })
-public class Customer implements PrestaShopPojo {
+public class Customer implements PrestaShopPojoEntity {
 
 	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")

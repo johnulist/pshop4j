@@ -3,7 +3,9 @@ pshop4j
 
 PShop4j (Prestashop for java) is a library used as a wrapper to PrestaShop web services.  You will need only a PrestaShop online store with access to back office enabled and an authentication key.
 
-Note: until now, only get requests are supported
+**Note**: until now, only GET and HEADER requests are supported
+
+**Note 2**: PShop4j is still under development, and it is changing constantly.  Use it under your own risk.
 
 How to use it?
 --------------
@@ -54,7 +56,7 @@ public class PrestaShopTest{
 }
 ```
 
-Note: Executing a GetRequest without a resource returns the list of resources that you configured in your Back Office with all permissions granted [see more info](http://doc.prestashop.com/display/PS14/Chapter+2+-+Discovery+-+Testing+access+to+the+web+service+with+the+browser)
+**Note**: Executing a GetRequest without a resource returns the list of resources that you configured in your Back Office with all permissions granted [see more info](http://doc.prestashop.com/display/PS14/Chapter+2+-+Discovery+-+Testing+access+to+the+web+service+with+the+browser)
 
 
 
