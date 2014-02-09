@@ -6,7 +6,6 @@ package com.edgaragg.pshop4j.model;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**

@@ -3,36 +3,12 @@
  */
 package com.edgaragg.pshop4j.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Field;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
-
 import com.edgaragg.pshop4j.PrestaShopWebservice;
 import com.edgaragg.pshop4j.model.Filter;
-import com.edgaragg.pshop4j.model.Limit;
-import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapper;
-import com.edgaragg.pshop4j.modeling.PrestaShopMapperListener;
-import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
-import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
-import com.edgaragg.pshop4j.pojos.associations.Associations;
-import com.edgaragg.pshop4j.pojos.entities.Category;
-import com.edgaragg.pshop4j.pojos.entities.Customer;
-import com.edgaragg.pshop4j.pojos.entities.Language;
-import com.edgaragg.pshop4j.pojos.entities.Product;
-import com.edgaragg.pshop4j.pojos.list.Categories;
-import com.edgaragg.pshop4j.pojos.list.Customers;
-import com.edgaragg.pshop4j.pojos.list.Groups;
-import com.edgaragg.pshop4j.pojos.list.Languages;
-import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
-import com.edgaragg.pshop4j.pojos.list.Products;
 
 /**
  * @author Edgar Gonzalez
@@ -41,12 +17,12 @@ import com.edgaragg.pshop4j.pojos.list.Products;
 public class Pshop4jGet {
 
 	private PrestaShopWebservice web;
-	private PrestaShopMapper mapper;
-	private List<Filter> filters = Collections.emptyList();
+//	private PrestaShopMapper mapper;
+//	private List<Filter> filters = Collections.emptyList();
 	
 	public Pshop4jGet(){
 		web = new PrestaShopWebservice("192.168.1.139/prestashop", "0HMRPJPZM2CE10H1HLZH2HGXGA2F2LWS");
-		mapper = new PrestaShopMapper(web);
+//		mapper = new PrestaShopMapper(web);
 	}
 	
 

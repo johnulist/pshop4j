@@ -46,8 +46,6 @@ public class PrestaShopWebservice {
 		.withInputStream(connection.getInputStream())
 		.withCode(connection.getResponseCode())
 		.withContentLength(connection.getContentLengthLong());
-		
-		
 	}
 
 	/**

@@ -132,7 +132,6 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			PrestaShopPojo lastElement = getLastObjectDescription().getPojo();
 			SAXObjectDescription ownerDesc = this.heap.get(this.heap.size() - 2); 
 			PrestaShopPojo owner = ownerDesc.getPojo();
-
 			// look into the owner object the field for the last element
 			Field field = this.getFieldElementFor(owner.getClass(), qName);
 		

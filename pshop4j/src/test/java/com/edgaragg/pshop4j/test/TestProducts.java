@@ -14,6 +14,7 @@ import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
 import com.edgaragg.pshop4j.pojos.list.Products;
+import com.edgaragg.pshop4j.util.Tools;
 
 public class TestProducts extends PShop4jTest {
 
@@ -24,7 +25,6 @@ public class TestProducts extends PShop4jTest {
 	@Test
 	public void testHead(){
 		long start = Calendar.getInstance().getTimeInMillis();
-		
 		try {
 			PrestaShopMapperResponse<Products> result = this.getMapper().headFullDisplay(Products.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
 			Products resource = result.getResource();

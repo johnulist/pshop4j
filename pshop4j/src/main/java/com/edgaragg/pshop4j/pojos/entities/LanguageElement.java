@@ -10,7 +10,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 
 /**
- * Entity used to define an entity in an specific language<br/>
+ * Entity used to define a multi-language attribute<br/>
  * It is NOT a real PrestaShop Entity
  * @author Edgar Gonzalez
  *

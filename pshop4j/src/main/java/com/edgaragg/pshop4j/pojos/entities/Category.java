@@ -13,20 +13,26 @@ import com.edgaragg.pshop4j.modeling.annotations.IsCatalogName;
 import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
 import com.edgaragg.pshop4j.modeling.annotations.IsLinkRewrite;
 import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.pojos.associations.Associations;
+import com.edgaragg.pshop4j.pojos.list.Categories;
+import com.edgaragg.pshop4j.pojos.list.Products;
 
 /**
  * @author Edgar Gonzalez
- * TODO: add products before add associations
  */
 @PrestaShopResource(Resources.categories)
 @PrestaShopElement("category")
-@PrestaShopIgnore(elements = "associations")
+@PrestaShopAssociationMapping({
+	@PrestaShopElementMapping(element = "categories", type = Categories.class),
+	@PrestaShopElementMapping(element = "products", type = Products.class)
+})
 public class Category implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute("id")
@@ -92,6 +98,8 @@ public class Category implements PrestaShopPojoEntity {
 	@PrestaShopElement("meta_keywords")
 	private List<LanguageElement> metaKeywords;
 
+	@PrestaShopElement("associations")
+	private Associations associations;
 	
 	/**
 	 * 
@@ -331,6 +339,22 @@ public class Category implements PrestaShopPojoEntity {
 	public void setMetaKeywords(List<LanguageElement> metaKeywords) {
 		this.metaKeywords = metaKeywords;
 	}
+
+	/**
+	 * @return the associations
+	 */
+	public Associations getAssociations() {
+		return associations;
+	}
+
+	/**
+	 * @param associations the associations to set
+	 */
+	public void setAssociations(Associations associations) {
+		this.associations = associations;
+	}
+	
+	
 	
 
 }
