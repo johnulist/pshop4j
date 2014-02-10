@@ -17,6 +17,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.PriceDisplayMethod;
 
 
@@ -31,23 +32,22 @@ public class Group implements PrestaShopPojoEntity {
 	@IsUnsignedId
 	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText("id")
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
 	private long id;
 	
-	// isFloat
-	@PrestaShopElement("reduction")
+	@PrestaShopText(value = "reduction", format = PShopFormat.isFloat)
 	private BigDecimal reduction;
 	
-	@PrestaShopElement("price_display_method")
+	@PrestaShopText(value = "price_display_method", format = PShopFormat.isPriceDisplayMethod, required = true)
 	private PriceDisplayMethod priceDisplayMethod;
 	
-	@PrestaShopElement("show_prices")
+	@PrestaShopText(value = "show_prices", format = PShopFormat.isBool)
 	private PShopBoolean show_prices;
 	
-	@PrestaShopElement("date_add")
+	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)
 	private Date dateAdd;
 	
-	@PrestaShopElement("date_upd")
+	@PrestaShopText(value = "date_upd", format = PShopFormat.isDate)
 	private Date dateUpd;
 	
 	@PrestaShopList(LanguageElement.class)

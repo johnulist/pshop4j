@@ -9,14 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsBarcode;
 import com.edgaragg.pshop4j.modeling.annotations.IsCatalogName;
 import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
-import com.edgaragg.pshop4j.modeling.annotations.IsPrice;
 import com.edgaragg.pshop4j.modeling.annotations.IsReference;
-import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedFloat;
-import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedId;
-import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
@@ -26,6 +21,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.annotations.IsLinkRewrite;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.ProductVisibility;
 
 /**
@@ -37,183 +33,161 @@ import com.edgaragg.pshop4j.modeling.enums.ProductVisibility;
 @PrestaShopIgnore(elements = "associations")
 public class Product implements PrestaShopPojoEntity {
 	
-	@IsUnsignedId
 	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText("id")
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
 	private long id;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_manufacturer")
+	@PrestaShopText(value = "id_manufacturer", format = PShopFormat.isUnsignedId)
 	private long idManufacturer;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_category_default")
+	@PrestaShopText(value = "id_category_default", format = PShopFormat.isUnsignedId)
 	private long idCategoryDefault;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_supplier")
+	@PrestaShopText(value = "id_supplier", format = PShopFormat.isUnsignedId)
 	private long idSupplier;
 	
-	@PrestaShopText("new")
+	@PrestaShopText(value = "new", format = PShopFormat.isString)
 	private String _new;
 	
-	@PrestaShopText("cache_default_attribute")
+	@PrestaShopText(value = "cache_default_attribute", format = PShopFormat.isInt)
 	private long cacheDefaultAttribute;
 	
-	@PrestaShopText("id_default_image")
+	@PrestaShopText(value = "id_default_image", format = PShopFormat.isUnsignedId, notFilterable = true)
 	private long idDefaultImage;
 	
-	@PrestaShopText("id_default_combination")
+	@PrestaShopText(value = "id_default_combination", format = PShopFormat.isUnsignedId, notFilterable = true)
 	private long idDefaultCombination;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_tax_rules_group")
+	@PrestaShopText(value = "id_tax_rules_group", format = PShopFormat.isUnsignedId)
 	private long idTaxRulesGroup;
 	
-	@PrestaShopText("position_in_category")
+	@PrestaShopText(value = "position_in_category", format = PShopFormat.isInt, notFilterable = true)
 	private long positionInCategory;
 	
-	@PrestaShopText("manufacturer_name")
+	@PrestaShopText(value = "manufacturer_name", format = PShopFormat.isString, notFilterable = true)
 	private String manufacturerName;
 	
-	@PrestaShopText("quantity")
+	@PrestaShopText(value = "quantity", format = PShopFormat.isUnsignedInt, notFilterable = true)
 	private long quantity;
 	
-	@PrestaShopText("type")
+	@PrestaShopText(value = "type", format = PShopFormat.isString, notFilterable = true)
 	private String type;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_shop_default")
+	@PrestaShopText(value = "id_shop_default", format = PShopFormat.isUnsignedId)
 	private long idShopDefault;
 	
-	@IsReference
-	@PrestaShopText("reference")
+	@PrestaShopText(value = "reference", format = PShopFormat.isReference, maxSize = 32)
 	private String reference;
 	
 	@IsReference
-	@PrestaShopText("supplier_reference")
+	@PrestaShopText(value = "supplier_reference", format = PShopFormat.isReference, maxSize = 32)
 	private String supplierReference;
 	
-	@IsReference(maxSize = 64)
-	@PrestaShopText("location")
+	@PrestaShopText(value = "location", format = PShopFormat.isReference, maxSize = 64)
 	private String location;
 	
-	@IsUnsignedFloat
-	@PrestaShopText("width")
+	@PrestaShopText(value = "width", format = PShopFormat.isUnsignedFloat)
 	private BigDecimal width;
 	
-	@IsUnsignedFloat
-	@PrestaShopText("height")
+	@PrestaShopText(value = "height", format = PShopFormat.isUnsignedFloat)
 	private BigDecimal height;
 	
-	@IsUnsignedFloat
-	@PrestaShopText("depth")
+	@PrestaShopText(value = "depth", format = PShopFormat.isUnsignedFloat)
 	private BigDecimal depth;
 	
-	@IsUnsignedFloat
-	@PrestaShopText("weight")
+	@PrestaShopText(value = "weight", format = PShopFormat.isUnsignedFloat)
 	private BigDecimal weight;
 	
-	@PrestaShopText("quantity_discount")
+	@PrestaShopText(value = "quantity_discount", format = PShopFormat.isBool)
 	private PShopBoolean quantityDiscount;
 	
-	@IsBarcode(regex = "^[0-9]{0,13}$", maxSize = 13)
-	@PrestaShopText("ean13")
+	@PrestaShopText(value = "ean13", format = PShopFormat.isEan13, maxSize = 13)
 	private String ean13;
 	
-	@IsBarcode(regex = "^[0-9]{0,12}$", maxSize = 12)
-	@PrestaShopText("upc")
+	@PrestaShopText(value = "upc", format = PShopFormat.isUpc, maxSize = 12)
 	private String upc;
 	
-	@PrestaShopText("cache_is_pack")
+	@PrestaShopText(value = "cache_is_pack", format = PShopFormat.isBool)
 	private PShopBoolean cacheIsPack;
 	
-	@PrestaShopText("cache_has_attachments")
+	@PrestaShopText(value = "cache_has_attachments", format = PShopFormat.isBool)
 	private PShopBoolean cacheHasAttachments;
 	
-	@PrestaShopText("is_virtual")
+	@PrestaShopText(value = "is_virtual", format = PShopFormat.isBool)
 	private PShopBoolean isVirtual;
 	
-	@PrestaShopText("on_sale")
+	@PrestaShopText(value = "on_sale", format = PShopFormat.isBool)
 	private PShopBoolean onSale;
 	
-	@PrestaShopText("online_only")
+	@PrestaShopText(value = "online_only", format = PShopFormat.isBool)
 	private PShopBoolean onlineOnly;
 	
-	@IsPrice
-	@PrestaShopText("ecotax")
+	@PrestaShopText(value = "ecotax", format = PShopFormat.isPrice)
 	private BigDecimal ecotax;
 		
-	@IsUnsignedInt
-	@PrestaShopText("minimal_quantity")
+	@PrestaShopText(value = "minimal_quantity", format = PShopFormat.isUnsignedInt)
 	private long minimalQuantity;
 	
-	@IsPrice(required = true)
-	@PrestaShopText("price")
+	@PrestaShopText(value = "price", format = PShopFormat.isPrice, required = true)
 	private BigDecimal price;
 	
-	@IsPrice
-	@PrestaShopText("wholesale_price")
+	@PrestaShopText(value = "wholesale_price", format = PShopFormat.isPrice)
 	private BigDecimal wholesalePrice;
 	
-	@PrestaShopText("unity")
+	@PrestaShopText(value = "unity", format = PShopFormat.isString)
 	private String unity;
 	
-	@PrestaShopText("unit_price_ratio")
+	@PrestaShopText(value = "unit_price_ratio", format = PShopFormat.isFloat)
 	private BigDecimal unitPriceRatio;
 	
-	@IsPrice
-	@PrestaShopText("additional_shipping_cost")
+	@PrestaShopText(value = "additional_shipping_cost", format = PShopFormat.isPrice)
 	private BigDecimal additionalShippingCost;
 	
-	@PrestaShopText("customizable")
+	@PrestaShopText(value = "customizable", format = PShopFormat.isUnsignedInt)
 	private PShopBoolean customizable;
 	
-	@IsUnsignedInt
-	@PrestaShopText("text_fields")
+	@PrestaShopText(value = "text_fields", format = PShopFormat.isUnsignedInt)
 	private long textFields;
 	
-	@IsUnsignedInt
-	@PrestaShopText("uploadable_files")
+	@PrestaShopText(value = "uploadable_files", format = PShopFormat.isUnsignedInt)
 	private long uploadableFiles;
 	
-	@PrestaShopText("active")
+	@PrestaShopText(value = "active", format = PShopFormat.isBool)
 	private PShopBoolean active;
 	
-	@PrestaShopText("redirect_type")
+	@PrestaShopText(value = "redirect_type", format = PShopFormat.isString)
 	private String redirect_type;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_product_redirected")
+	@PrestaShopText(value = "id_product_redirected", format = PShopFormat.isUnsignedId)
 	private long idProductRedirected;
 	
-	@PrestaShopText("available_for_order")
+	@PrestaShopText(value = "available_for_order", format = PShopFormat.isBool)
 	private PShopBoolean availableForOrder;
 	
-	// TODO: make availableDate a date
-	@PrestaShopText("available_date")
+	// TODO: make availableDate a date Format is isDateFormat???
+	@PrestaShopText(value = "available_date", format = PShopFormat.isDate)
 	private String availableDate;
 	
-	@PrestaShopText("condition")
+	@PrestaShopText(value = "condition", format = PShopFormat.isGenericName)
 	private String condition;
 	
-	@PrestaShopText("show_price")
+	@PrestaShopText(value = "show_price", format = PShopFormat.isBool)
 	private PShopBoolean showPrice;
 	
-	@PrestaShopText("indexed")
+	@PrestaShopText(value = "indexed", format = PShopFormat.isBool)
 	private PShopBoolean indexed;
 	
-	@PrestaShopText("visibility")
+	@PrestaShopText(value = "visibility", format = PShopFormat.isProductVisibility)
 	private ProductVisibility visibility;
 
-	@PrestaShopText("advanced_stock_management")
+	@PrestaShopText(value = "advanced_stock_management", format = PShopFormat.isBool)
 	private PShopBoolean advancedStockManagement;
 	
-	@PrestaShopText("date_add")
+	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)
 	private Date dateAdd;
 	
-	@PrestaShopText("date_upd")
+	@PrestaShopText(value = "date_upd", format = PShopFormat.isDate)
 	private Date dateUpd;
 	
 	

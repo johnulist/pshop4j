@@ -10,6 +10,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 
 /**
  * @author Edgar Gonzalez
@@ -30,7 +31,7 @@ public class StoreDescriptionItem {
 	private boolean delete;
 	@PrestaShopAttribute("head")
 	private boolean head;
-	@PrestaShopText("description")
+	@PrestaShopText(value = "description", format = PShopFormat.isString)
 	private String description;
 	@PrestaShopElement("schema")
 	@PrestaShopList(Schema.class)

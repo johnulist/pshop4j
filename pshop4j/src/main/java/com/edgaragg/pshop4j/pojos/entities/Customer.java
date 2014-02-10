@@ -7,16 +7,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsBirthDate;
-import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
-import com.edgaragg.pshop4j.modeling.annotations.IsFloat;
-import com.edgaragg.pshop4j.modeling.annotations.IsGenericName;
-import com.edgaragg.pshop4j.modeling.annotations.IsMD5;
-import com.edgaragg.pshop4j.modeling.annotations.IsName;
-import com.edgaragg.pshop4j.modeling.annotations.IsPasswd;
-import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedId;
-import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
-import com.edgaragg.pshop4j.modeling.annotations.IsUrl;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
@@ -25,6 +15,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Groups;
 //index.php?controller=authentication&email=email&passwd=pwd&back=my-account&SubmitLogin=Autentificaci%C3%B3n
@@ -42,112 +33,97 @@ public class Customer implements PrestaShopPojoEntity {
 
 	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText("id")
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
 	private long id;
 	
-	@PrestaShopText("id_default_group")
+	@PrestaShopText(value = "id_default_group", format = PShopFormat.isInt)
 	private long idDefaultGroup;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_lang")
+	@PrestaShopText(value = "id_lang", format = PShopFormat.isUnsignedId)
 	private long idLang;
 	
-	@PrestaShopText("newsletter_date_add")
+	@PrestaShopText(value = "newsletter_date_add", format = PShopFormat.isDate)
 	private Date newsletterDateAdd;
 	
-	@PrestaShopText("ip_registration_newsletter")
+	@PrestaShopText(value = "ip_registration_newsletter", format = PShopFormat.isString)
 	private String ipRegistrationNewsletter;
 	
-	@PrestaShopText("last_passwd_gen")
+	@PrestaShopText(value = "last_passwd_gen", format = PShopFormat.isDate)
 	private Date lastPasswdGen;
 	
-	@IsMD5
-	@PrestaShopText("secure_key")
+	@PrestaShopText(value = "secure_key", format = PShopFormat.isMd5)
 	private String secureKey;
 	
-	@PrestaShopText("deleted")
+	@PrestaShopText(value = "deleted", format = PShopFormat.isBool)
 	private PShopBoolean deleted;
 	
-	@IsPasswd(required = true, maxSize = 32)
-	@PrestaShopText("passwd")
+	@PrestaShopText(value = "passwd", format = PShopFormat.isPasswd, required = true, maxSize = 32)
 	private String passwd;
 	
-	@IsName(required = true, maxSize = 32)
-	@PrestaShopText("lastname")
+	@PrestaShopText(value = "lastname", format = PShopFormat.isName, required = true, maxSize = 32)
 	private String lastName;
 	
-	@IsName(required = true, maxSize = 32)
-	@PrestaShopText("firstname")
+	@PrestaShopText(value = "firstname", format = PShopFormat.isName, required = true, maxSize = 32)
 	private String firstName;
 	
-	@PrestaShopText("email")
+	@PrestaShopText(value = "email", format = PShopFormat.isEmail, required = true, maxSize = 128)
 	private String email;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_gender")
+	@PrestaShopText(value = "id_gender", format = PShopFormat.isUnsignedId)
 	private short idGender;
 	
-	@IsBirthDate
-	@PrestaShopText("birthday")
+	@PrestaShopText(value = "birthday", format = PShopFormat.isBirthDate)
 	private Date birthday;
 	
-	@PrestaShopText("newsletter")
-	private int newsletter;
+	@PrestaShopText(value = "newsletter", format = PShopFormat.isBool)
+	private PShopBoolean newsletter;
 	
-	@PrestaShopText("optin")
+	@PrestaShopText(value = "optin", format = PShopFormat.isBool)
 	private PShopBoolean optin;
 	
-	@IsUrl
-	@PrestaShopText("website")
+	@PrestaShopText(value = "website", format = PShopFormat.isUrl)
 	private String website;
 	
-	@IsGenericName
-	@PrestaShopText("company")
+	@PrestaShopText(value = "company", format = PShopFormat.isGenericName)
 	private String company;
 	
-	@PrestaShopText("siret")
+	@PrestaShopText(value = "siret", format = PShopFormat.isSiret)
 	private String siret;
 	
-	@PrestaShopText("ape")
+	@PrestaShopText(value = "ape", format = PShopFormat.isApe)
 	private String ape;
 
-	@IsFloat
-	@PrestaShopText("outstanding_allow_amount")
-	BigDecimal outstandingAllowAmount;
+	@PrestaShopText(value = "outstanding_allow_amount", format = PShopFormat.isFloat)
+	private BigDecimal outstandingAllowAmount;
 	
-	@PrestaShopText("show_public_prices")
+	@PrestaShopText(value = "show_public_prices", format = PShopFormat.isBool)
 	private PShopBoolean showPublicPrices;
 	
-	@IsUnsignedInt
-	@PrestaShopText("id_risk")
+	@PrestaShopText(value = "id_risk", format = PShopFormat.isUnsignedInt)
 	private short idRisk;
 	
-	@IsUnsignedInt
-	@PrestaShopText("max_payment_days")
+	@PrestaShopText(value = "max_payment_days", format = PShopFormat.isUnsignedInt)
 	private int maxPaymentDays;
 	
-	@PrestaShopText("active")
+	@PrestaShopText(value = "active", format = PShopFormat.isBool)
 	private PShopBoolean active;
 	
-	@IsCleanHtml(maxSize = 65000)
-	@PrestaShopText("note")
+	@PrestaShopText(value = "note", format = PShopFormat.isCleanHtml, maxSize = 65000)
 	private String note;
 	
-	@PrestaShopText("is_guest")
+	@PrestaShopText(value = "is_guest", format = PShopFormat.isBool)
 	private PShopBoolean isGuest;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_shop")
+	@PrestaShopText(value = "id_shop", format = PShopFormat.isUnsignedId)
 	private long idShop;
 	
-	@IsUnsignedId
-	@PrestaShopText("id_shop_group")
+	@PrestaShopText(value = "id_shop_group", format = PShopFormat.isUnsignedId)
 	private long idShopGroup;
 	
-	@PrestaShopText("date_add")
+	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)
 	private Date dateAdd;
 	
-	@PrestaShopText("date_upd")
+	@PrestaShopText(value = "date_upd", format = PShopFormat.isDate)
 	private Date dateUpd;
 	
 	@PrestaShopElement("associations")
@@ -323,13 +299,13 @@ public class Customer implements PrestaShopPojoEntity {
 	/**
 	 * @return the newsletter
 	 */
-	public int getNewsletter() {
+	public PShopBoolean getNewsletter() {
 		return newsletter;
 	}
 	/**
 	 * @param newsletter the newsletter to set
 	 */
-	public void setNewsletter(int newsletter) {
+	public void setNewsletter(PShopBoolean newsletter) {
 		this.newsletter = newsletter;
 	}
 	/**

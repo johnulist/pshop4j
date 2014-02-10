@@ -11,7 +11,6 @@ import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.IsCatalogName;
 import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
 import com.edgaragg.pshop4j.modeling.annotations.IsLinkRewrite;
-import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedInt;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
@@ -20,6 +19,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Categories;
 import com.edgaragg.pshop4j.pojos.list.Products;
@@ -28,7 +28,7 @@ import com.edgaragg.pshop4j.pojos.list.Products;
  * @author Edgar Gonzalez
  */
 @PrestaShopResource(Resources.categories)
-@PrestaShopElement("category")
+@PrestaShopElement(value = "category")
 @PrestaShopAssociationMapping({
 	@PrestaShopElementMapping(element = "categories", type = Categories.class),
 	@PrestaShopElementMapping(element = "products", type = Products.class)
@@ -36,37 +36,34 @@ import com.edgaragg.pshop4j.pojos.list.Products;
 public class Category implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute("id")
-	@PrestaShopText("id")
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
 	private long id;
 	
-	@IsUnsignedInt
-	@PrestaShopText("id_parent")
+	@PrestaShopText(value = "id_parent", format = PShopFormat.isUnsignedInt)
 	private long idParent;
 	
-	@PrestaShopText("level_depth")
+	@PrestaShopText(value = "level_depth", format = PShopFormat.isUnsignedInt)
 	private int levelDepth;
 	
-	
-	@PrestaShopText("nb_products_recursive")
+	@PrestaShopText(value = "nb_products_recursive", format = PShopFormat.isString, notFilterable = true)
 	private int nbProductsRecursive;
 	
-	@PrestaShopText("active")
+	@PrestaShopText(value = "active", format = PShopFormat.isBool, required = true)
 	private PShopBoolean active;
 	
-	@IsUnsignedInt
-	@PrestaShopText("id_shop_default")
+	@PrestaShopText(value = "id_shop_default", format = PShopFormat.isUnsignedId)
 	private long idShopDefault;
 	
-	@PrestaShopText("is_root_category")
+	@PrestaShopText(value = "is_root_category", format = PShopFormat.isBool)
 	private PShopBoolean isRootCategory;
 	
-	@PrestaShopText("position")
+	@PrestaShopText(value = "position", format = PShopFormat.isInt)
 	private long position;
 	
-	@PrestaShopText("date_add")
+	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)
 	private Date dateAdd;
 	
-	@PrestaShopText("date_upd")
+	@PrestaShopText(value = "date_upd", format = PShopFormat.isDate)
 	private Date dateUpd;
 	
 	@IsCatalogName

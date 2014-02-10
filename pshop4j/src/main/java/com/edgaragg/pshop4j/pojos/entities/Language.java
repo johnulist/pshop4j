@@ -4,16 +4,13 @@
 package com.edgaragg.pshop4j.pojos.entities;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsGenericName;
-import com.edgaragg.pshop4j.modeling.annotations.IsLanguageCode;
-import com.edgaragg.pshop4j.modeling.annotations.IsPhpDateFormat;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
-import com.edgaragg.pshop4j.modeling.enums.LanguageCodeType;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 
 /**
  * @author Edgar Gonzalez
@@ -25,37 +22,29 @@ public class Language implements PrestaShopPojoEntity {
 
 	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText("id")
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
 	private long id;
 	
-	@IsGenericName(required = true, maxSize = 32)
-	@PrestaShopText("name")
+	@PrestaShopText(value = "name", format = PShopFormat.isGenericName, required = true, maxSize = 32)
 	private String name;
 	
-	@IsLanguageCode(type = LanguageCodeType.ISO, required = true, maxSize=2)
-	@PrestaShopText("iso_code")
+	@PrestaShopText(value = "iso_code", format = PShopFormat.isNumericIsoCode, required = true, maxSize = 2)
 	private String isoCode;
-	
-	@IsLanguageCode(type = LanguageCodeType.NORMAL)
-	@PrestaShopText("language_code")
+
+	@PrestaShopText(value = "language_code", format = PShopFormat.isLanguageCode, maxSize = 5)
 	private String languageCode;
 	
-	@PrestaShopText("active")
+	@PrestaShopText(value = "active", format = PShopFormat.isBool)
 	private PShopBoolean active;
 	
-	@PrestaShopText("is_rtl")
+	@PrestaShopText(value = "is_rtl", format = PShopFormat.isBool)
 	private PShopBoolean isRTL;
 	
-	@IsPhpDateFormat(required = true, maxSize = 32)
-	@PrestaShopText("date_format_lite")
+	@PrestaShopText(value = "date_format_lite", format = PShopFormat.isPhpDateFormat, required = true, maxSize = 32)
 	private String dateFormatLite;
 	
-	@IsPhpDateFormat(required = true, maxSize = 32)
-	@PrestaShopText("date_format_full")
+	@PrestaShopText(value = "date_format_full", format = PShopFormat.isPhpDateFormat, required = true, maxSize = 32)
 	private String dateFormatFull;
-	
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity#getId()
