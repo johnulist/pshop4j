@@ -23,9 +23,11 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.enums.PShopIntegerEnum;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
+import com.edgaragg.pshop4j.util.Tools;
 
 /**
  * @author Edgar Gonzalez
@@ -212,7 +214,13 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			}
 		}else			
 		if(clazz.isEnum()){
-			instance = Enum.valueOf((Class<Enum>)clazz, o);
+			System.out.println(clazz.getSimpleName());
+			if(PShopIntegerEnum.class.isAssignableFrom(clazz)){
+				instance= Tools.intToPShopIntegerEnum(clazz, Integer.parseInt(o));
+				System.out.println("==================> " + instance.toString());
+			}else{
+				instance = Enum.valueOf((Class<Enum>)clazz, o);
+			}
 		}
 		
 		return (T) instance;
@@ -272,6 +280,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	private void assignTextValue(String qName) {
 		PrestaShopPojo textElement = getLastObjectDescription().getPojo();
 		Field field = this.getFieldElementFor(textElement.getClass(), qName);
+		
 		if(field != null){
 			field.setAccessible(true);
 			try {

@@ -5,6 +5,12 @@ package com.edgaragg.pshop4j.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.modeling.enums.PShopIntegerEnum;
+import com.edgaragg.pshop4j.modeling.enums.PriceDisplayMethod;
 
 /**
  * @author Edgar Gonzalez
@@ -12,6 +18,18 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Tools {
 
+	/**
+	 * Map for PShop enum values.  The key is the class name and the value is an array with the enum values
+	 */
+	private static Map<String, PShopIntegerEnum[]> pshopEnumsValues;
+	
+	static{
+		pshopEnumsValues = new HashMap<String, PShopIntegerEnum[]>();
+		pshopEnumsValues.put("PShopBoolean", PShopBoolean.values());
+		pshopEnumsValues.put("PriceDisplayMethod", PriceDisplayMethod.values());
+	}
+	
+	
 	public static String encrypt(String textToEncrypt){
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -25,6 +43,15 @@ public class Tools {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	
+	
+	public static <T> PShopIntegerEnum intToPShopIntegerEnum(Class<T> clazz, int value){
+		if(!clazz.isEnum() || !PShopIntegerEnum.class.isAssignableFrom(clazz)) 
+			return null;
+		String key = clazz.getSimpleName();		
+		return pshopEnumsValues.get(key)[value];
+		
 	}
 
 }

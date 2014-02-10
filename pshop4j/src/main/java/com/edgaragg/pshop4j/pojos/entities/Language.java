@@ -4,7 +4,6 @@
 package com.edgaragg.pshop4j.pojos.entities;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsBool;
 import com.edgaragg.pshop4j.modeling.annotations.IsGenericName;
 import com.edgaragg.pshop4j.modeling.annotations.IsLanguageCode;
 import com.edgaragg.pshop4j.modeling.annotations.IsPhpDateFormat;
@@ -14,6 +13,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.LanguageCodeType;
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 
 /**
  * @author Edgar Gonzalez
@@ -40,13 +40,11 @@ public class Language implements PrestaShopPojoEntity {
 	@PrestaShopText("language_code")
 	private String languageCode;
 	
-	@IsBool()
 	@PrestaShopText("active")
-	private short active;
+	private PShopBoolean active;
 	
-	@IsBool()
 	@PrestaShopText("is_rtl")
-	private short isRTL;
+	private PShopBoolean isRTL;
 	
 	@IsPhpDateFormat(required = true, maxSize = 32)
 	@PrestaShopText("date_format_lite")
@@ -120,28 +118,28 @@ public class Language implements PrestaShopPojoEntity {
 	/**
 	 * @return the active
 	 */
-	public short getActive() {
+	public PShopBoolean getActive() {
 		return active;
 	}
 
 	/**
 	 * @param active the active to set
 	 */
-	public void setActive(short active) {
+	public void setActive(PShopBoolean active) {
 		this.active = active;
 	}
 
 	/**
 	 * @return the isRTL
 	 */
-	public short getIsRTL() {
+	public PShopBoolean getIsRTL() {
 		return isRTL;
 	}
 
 	/**
 	 * @param isRTL the isRTL to set
 	 */
-	public void setIsRTL(short isRTL) {
+	public void setIsRTL(PShopBoolean isRTL) {
 		this.isRTL = isRTL;
 	}
 

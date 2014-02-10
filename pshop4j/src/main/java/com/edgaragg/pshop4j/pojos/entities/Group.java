@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsBool;
 import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedId;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
@@ -17,6 +16,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PriceDisplayMethod;
 
 
@@ -38,13 +38,11 @@ public class Group implements PrestaShopPojoEntity {
 	@PrestaShopElement("reduction")
 	private BigDecimal reduction;
 	
-	//isPriceDisplayMethod
-	@PrestaShopElement("reduction")
+	@PrestaShopElement("price_display_method")
 	private PriceDisplayMethod priceDisplayMethod;
 	
-	@IsBool
 	@PrestaShopElement("show_prices")
-	private short show_prices;
+	private PShopBoolean show_prices;
 	
 	@PrestaShopElement("date_add")
 	private Date dateAdd;
@@ -105,14 +103,14 @@ public class Group implements PrestaShopPojoEntity {
 	/**
 	 * @return the show_prices
 	 */
-	public short getShow_prices() {
+	public PShopBoolean getShow_prices() {
 		return show_prices;
 	}
 
 	/**
 	 * @param show_prices the show_prices to set
 	 */
-	public void setShow_prices(short show_prices) {
+	public void setShow_prices(PShopBoolean show_prices) {
 		this.show_prices = show_prices;
 	}
 

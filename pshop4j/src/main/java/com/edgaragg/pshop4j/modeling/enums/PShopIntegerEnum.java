@@ -8,5 +8,5 @@ package com.edgaragg.pshop4j.modeling.enums;
  *
  */
 public interface PShopIntegerEnum {
-
+	
 }

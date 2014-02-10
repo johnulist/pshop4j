@@ -8,7 +8,6 @@ import java.util.Date;
 
 import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.IsBirthDate;
-import com.edgaragg.pshop4j.modeling.annotations.IsBool;
 import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
 import com.edgaragg.pshop4j.modeling.annotations.IsFloat;
 import com.edgaragg.pshop4j.modeling.annotations.IsGenericName;
@@ -25,9 +24,10 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Groups;
-
+//index.php?controller=authentication&email=email&passwd=pwd&back=my-account&SubmitLogin=Autentificaci%C3%B3n
 
 /**
  * @author Edgar Gonzalez
@@ -65,9 +65,8 @@ public class Customer implements PrestaShopPojoEntity {
 	@PrestaShopText("secure_key")
 	private String secureKey;
 	
-	@IsBool
 	@PrestaShopText("deleted")
-	private short deleted;
+	private PShopBoolean deleted;
 	
 	@IsPasswd(required = true, maxSize = 32)
 	@PrestaShopText("passwd")
@@ -95,9 +94,8 @@ public class Customer implements PrestaShopPojoEntity {
 	@PrestaShopText("newsletter")
 	private int newsletter;
 	
-	@IsBool
 	@PrestaShopText("optin")
-	private short optin;
+	private PShopBoolean optin;
 	
 	@IsUrl
 	@PrestaShopText("website")
@@ -117,9 +115,8 @@ public class Customer implements PrestaShopPojoEntity {
 	@PrestaShopText("outstanding_allow_amount")
 	BigDecimal outstandingAllowAmount;
 	
-	@IsBool
 	@PrestaShopText("show_public_prices")
-	private short showPublicPrices;
+	private PShopBoolean showPublicPrices;
 	
 	@IsUnsignedInt
 	@PrestaShopText("id_risk")
@@ -129,17 +126,15 @@ public class Customer implements PrestaShopPojoEntity {
 	@PrestaShopText("max_payment_days")
 	private int maxPaymentDays;
 	
-	@IsBool
 	@PrestaShopText("active")
-	private short active;
+	private PShopBoolean active;
 	
 	@IsCleanHtml(maxSize = 65000)
 	@PrestaShopText("note")
 	private String note;
 	
-	@IsBool
 	@PrestaShopText("is_guest")
-	private short isGuest;
+	private PShopBoolean isGuest;
 	
 	@IsUnsignedId
 	@PrestaShopText("id_shop")
@@ -244,13 +239,13 @@ public class Customer implements PrestaShopPojoEntity {
 	/**
 	 * @return the deleted
 	 */
-	public short getDeleted() {
+	public PShopBoolean getDeleted() {
 		return deleted;
 	}
 	/**
 	 * @param deleted the deleted to set
 	 */
-	public void setDeleted(short deleted) {
+	public void setDeleted(PShopBoolean deleted) {
 		this.deleted = deleted;
 	}
 	/**
@@ -340,13 +335,13 @@ public class Customer implements PrestaShopPojoEntity {
 	/**
 	 * @return the optin
 	 */
-	public short getOptin() {
+	public PShopBoolean getOptin() {
 		return optin;
 	}
 	/**
 	 * @param optin the optin to set
 	 */
-	public void setOptin(short optin) {
+	public void setOptin(PShopBoolean optin) {
 		this.optin = optin;
 	}
 	/**
@@ -412,13 +407,13 @@ public class Customer implements PrestaShopPojoEntity {
 	/**
 	 * @return the showPublicPrices
 	 */
-	public short getShowPublicPrices() {
+	public PShopBoolean getShowPublicPrices() {
 		return showPublicPrices;
 	}
 	/**
 	 * @param showPublicPrices the showPublicPrices to set
 	 */
-	public void setShowPublicPrices(short showPublicPrices) {
+	public void setShowPublicPrices(PShopBoolean showPublicPrices) {
 		this.showPublicPrices = showPublicPrices;
 	}
 	/**
@@ -448,13 +443,13 @@ public class Customer implements PrestaShopPojoEntity {
 	/**
 	 * @return the active
 	 */
-	public short getActive() {
+	public PShopBoolean getActive() {
 		return active;
 	}
 	/**
 	 * @param active the active to set
 	 */
-	public void setActive(short active) {
+	public void setActive(PShopBoolean active) {
 		this.active = active;
 	}
 	/**
@@ -472,13 +467,13 @@ public class Customer implements PrestaShopPojoEntity {
 	/**
 	 * @return the isGuest
 	 */
-	public short getIsGuest() {
+	public PShopBoolean getIsGuest() {
 		return isGuest;
 	}
 	/**
 	 * @param isGuest the isGuest to set
 	 */
-	public void setIsGuest(short isGuest) {
+	public void setIsGuest(PShopBoolean isGuest) {
 		this.isGuest = isGuest;
 	}
 	/**

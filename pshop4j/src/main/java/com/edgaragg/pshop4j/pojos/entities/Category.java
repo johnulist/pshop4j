@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsBool;
 import com.edgaragg.pshop4j.modeling.annotations.IsCatalogName;
 import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
 import com.edgaragg.pshop4j.modeling.annotations.IsLinkRewrite;
@@ -20,6 +19,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Categories;
 import com.edgaragg.pshop4j.pojos.list.Products;
@@ -50,17 +50,15 @@ public class Category implements PrestaShopPojoEntity {
 	@PrestaShopText("nb_products_recursive")
 	private int nbProductsRecursive;
 	
-	@IsBool
 	@PrestaShopText("active")
-	private short active;
+	private PShopBoolean active;
 	
 	@IsUnsignedInt
 	@PrestaShopText("id_shop_default")
 	private long idShopDefault;
 	
-	@IsBool
 	@PrestaShopText("is_root_category")
-	private short isRootCategory;
+	private PShopBoolean isRootCategory;
 	
 	@PrestaShopText("position")
 	private long position;
@@ -160,14 +158,14 @@ public class Category implements PrestaShopPojoEntity {
 	/**
 	 * @return the active
 	 */
-	public short getActive() {
+	public PShopBoolean getActive() {
 		return active;
 	}
 
 	/**
 	 * @param active the active to set
 	 */
-	public void setActive(short active) {
+	public void setActive(PShopBoolean active) {
 		this.active = active;
 	}
 
@@ -188,14 +186,14 @@ public class Category implements PrestaShopPojoEntity {
 	/**
 	 * @return the isRootCategory
 	 */
-	public short getIsRootCategory() {
+	public PShopBoolean getIsRootCategory() {
 		return isRootCategory;
 	}
 
 	/**
 	 * @param isRootCategory the isRootCategory to set
 	 */
-	public void setIsRootCategory(short isRootCategory) {
+	public void setIsRootCategory(PShopBoolean isRootCategory) {
 		this.isRootCategory = isRootCategory;
 	}
 
