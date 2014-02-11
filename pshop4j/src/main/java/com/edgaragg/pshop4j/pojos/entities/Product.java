@@ -225,62 +225,6 @@ public class Product implements PrestaShopPojoEntity {
 	private List<LanguageElement> availableLater;
 	
 	
-	/*
-<associations>
-<categories node_type="category">
-<category>
-<id required="true"/>
-</category>
-</categories>
-<images node_type="image">
-<image>
-<id/>
-</image>
-</images>
-<combinations node_type="combinations">
-<combinations>
-<id required="true"/>
-</combinations>
-</combinations>
-<product_option_values node_type="product_options_values">
-<product_options_values>
-<id required="true"/>
-</product_options_values>
-</product_option_values>
-<product_features node_type="product_feature">
-<product_feature>
-<id required="true"/>
-<custom/>
-<id_feature_value xlink:href="http://192.168.1.139/prestashop/api/product_feature_values/" required="true"/>
-</product_feature>
-</product_features>
-<tags node_type="tag">
-<tag>
-<id required="true"/>
-</tag>
-</tags>
-<stock_availables node_type="stock_available">
-<stock_available>
-<id required="true"/>
-<id_product_attribute required="true"/>
-</stock_available>
-</stock_availables>
-<accessories node_type="product">
-<product>
-<id xlink:href="http://192.168.1.139/prestashop/api/product/" required="true"/>
-</product>
-</accessories>
-<product_bundle node_type="products">
-<products>
-<id required="true"/>
-<quantity/>
-</products>
-</product_bundle>
-</associations>
-</product>
-	 */
-	
-	
 	/**
 	 * 
 	 */

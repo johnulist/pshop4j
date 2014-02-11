@@ -4,7 +4,7 @@
 package com.edgaragg.pshop4j.model;
 
 /**
- * @author egonzalez
+ * @author Edgar Gonzalez
  *
  */
 public class SingleValueFilter extends Filter{

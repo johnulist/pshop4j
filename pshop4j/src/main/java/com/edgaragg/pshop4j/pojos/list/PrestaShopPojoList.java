@@ -41,7 +41,6 @@ public abstract class PrestaShopPojoList<T extends PrestaShopPojo> implements Pr
 		}
 		return this.pojos.size();
 	}
-	
-	
+		
 	protected abstract List<T> createInnerList();
 }

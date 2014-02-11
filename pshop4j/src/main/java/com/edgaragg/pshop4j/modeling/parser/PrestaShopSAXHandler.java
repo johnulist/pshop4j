@@ -22,7 +22,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.enums.PShopIntegerEnum;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
@@ -135,7 +134,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			SAXObjectDescription ownerDesc = this.heap.get(this.heap.size() - 2); 
 			PrestaShopPojo owner = ownerDesc.getPojo();
 			// look into the owner object the field for the last element
-			Field field = this.getFieldElementFor(owner.getClass(), qName);
+			Field field = Tools.getFieldForElement(owner.getClass(), qName);
 		
 			if(ownerDesc.isAssociationList()){
 				Associations associations = (Associations)ownerDesc.getPojo();
@@ -226,25 +225,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		return (T) instance;
 	}
 
-	/**
-	 * 
-	 * @param searchClazz
-	 * @param element
-	 * @return
-	 */
-	protected Field getFieldElementFor(Class<?> searchClazz, String element){
-		Field[] fields = searchClazz.getDeclaredFields();
-		for(Field field : fields){
-			PrestaShopElement fieldElement = field.getAnnotation(PrestaShopElement.class);
-			PrestaShopText fieldText = field.getAnnotation(PrestaShopText.class);
-			
-			if((fieldElement != null && fieldElement.value().equals(element)) || 
-					(fieldText != null && fieldText.value().equals(element))){
-				return field;
-			}
-		}
-		return null;
-	}
+	
 	
 
 	
@@ -279,7 +260,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	 */
 	private void assignTextValue(String qName) {
 		PrestaShopPojo textElement = getLastObjectDescription().getPojo();
-		Field field = this.getFieldElementFor(textElement.getClass(), qName);
+		Field field = Tools.getFieldForElement(textElement.getClass(), qName);
 		
 		if(field != null){
 			field.setAccessible(true);
@@ -302,7 +283,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		// and iterate
 		SAXObjectDescription desc = this.getLastObjectDescription();
 		Class<?> currentClass = desc.getPojo().getClass();
-		Field elementField = this.getFieldElementFor(currentClass, qName);
+		Field elementField = Tools.getFieldForElement(currentClass, qName);
 		if(elementField == null){
 			if(desc.isAssociationList()){
 				// we don't have the element defined in our class, but we have this info
