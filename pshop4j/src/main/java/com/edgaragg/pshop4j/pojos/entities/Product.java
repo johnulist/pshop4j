@@ -9,9 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsCatalogName;
-import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
-import com.edgaragg.pshop4j.modeling.annotations.IsReference;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
@@ -19,7 +16,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
-import com.edgaragg.pshop4j.modeling.annotations.IsLinkRewrite;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.ProductVisibility;
@@ -80,7 +76,6 @@ public class Product implements PrestaShopPojoEntity {
 	@PrestaShopText(value = "reference", format = PShopFormat.isReference, maxSize = 32)
 	private String reference;
 	
-	@IsReference
 	@PrestaShopText(value = "supplier_reference", format = PShopFormat.isReference, maxSize = 32)
 	private String supplierReference;
 	
@@ -192,45 +187,41 @@ public class Product implements PrestaShopPojoEntity {
 	
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("meta_description")
+	@PrestaShopElement(value = "meta_description", format = PShopFormat.isGenericName)
 	private List<LanguageElement> metaDescription;
 
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("meta_keywords")
+	@PrestaShopElement(value = "meta_keywords", format = PShopFormat.isGenericName)
 	private List<LanguageElement> metaKeywords;
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("meta_title")
+	@PrestaShopElement(value = "meta_title", format = PShopFormat.isGenericName)
 	private List<LanguageElement> metaTitle;
 	
-	@IsLinkRewrite
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("link_rewrite")
+	@PrestaShopElement(value = "link_rewrite", format = PShopFormat.isLinkRewrite)
 	private List<LanguageElement> linkRewrite;
 	
-	@IsCatalogName
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("name")
+	@PrestaShopElement(value = "name", format = PShopFormat.isCatalogName)
 	private List<LanguageElement> name;
 
-	@IsCleanHtml
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("description")
+	@PrestaShopElement(value = "description", format = PShopFormat.isCleanHtml)
 	private List<LanguageElement> description;
 
-	@IsCleanHtml
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("description_short")
+	@PrestaShopElement(value = "description_short", format = PShopFormat.isCleanHtml)
 	private List<LanguageElement> descriptionShort;
 
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("available_now")
+	@PrestaShopElement(value = "available_now", format = PShopFormat.isGenericName)
 	private List<LanguageElement> availableNow;
 	
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("available_later")
+	@PrestaShopElement(value = "available_later", format = PShopFormat.isGenericName)
 	private List<LanguageElement> availableLater;
 	
 	

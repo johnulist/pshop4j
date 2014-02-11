@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsCatalogName;
-import com.edgaragg.pshop4j.modeling.annotations.IsCleanHtml;
-import com.edgaragg.pshop4j.modeling.annotations.IsLinkRewrite;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
@@ -66,31 +63,28 @@ public class Category implements PrestaShopPojoEntity {
 	@PrestaShopText(value = "date_upd", format = PShopFormat.isDate)
 	private Date dateUpd;
 	
-	@IsCatalogName
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("name")
+	@PrestaShopElement(value = "name", format = PShopFormat.isGenericName)
 	private List<LanguageElement> name;
 
-	@IsLinkRewrite
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("link_rewrite")
+	@PrestaShopElement(value = "link_rewrite", format = PShopFormat.isLinkRewrite)
 	private List<LanguageElement> linkRewrite;
 
-	@IsCleanHtml
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("description")
+	@PrestaShopElement(value = "description", format = PShopFormat.isCleanHtml)
 	private List<LanguageElement> description;
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("meta_title")
+	@PrestaShopElement(value = "meta_title", format = PShopFormat.isGenericName)
 	private List<LanguageElement> metaTitle;
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("meta_description")
+	@PrestaShopElement(value = "meta_description", format = PShopFormat.isGenericName)
 	private List<LanguageElement> metaDescription;
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("meta_keywords")
+	@PrestaShopElement(value = "meta_keywords", format = PShopFormat.isGenericName)
 	private List<LanguageElement> metaKeywords;
 
 	@PrestaShopElement("associations")

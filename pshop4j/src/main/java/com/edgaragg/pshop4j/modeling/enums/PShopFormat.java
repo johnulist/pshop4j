@@ -61,10 +61,12 @@ public enum PShopFormat {
 	isEan13("^[0-9]{0,13}$"),
 	isPrice,
 	isProductVisibility("^both|catalog|search|none$"),
-	isUpc("^[0-9]{0,12}$");/*,
+	isUpc("^[0-9]{0,12}$"),
 	// PShop4J custom formats
 	isList,
-	isEntity,
+	isUndefined;
+	/*
+	 * isEntity
 	isStoreDescription;*/
 	
 	

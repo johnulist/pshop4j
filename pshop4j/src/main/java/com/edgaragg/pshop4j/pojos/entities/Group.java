@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
-import com.edgaragg.pshop4j.modeling.annotations.IsUnsignedId;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
@@ -29,7 +28,6 @@ import com.edgaragg.pshop4j.modeling.enums.PriceDisplayMethod;
 @PrestaShopElement("group")
 public class Group implements PrestaShopPojoEntity {
 
-	@IsUnsignedId
 	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
 	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
@@ -51,7 +49,7 @@ public class Group implements PrestaShopPojoEntity {
 	private Date dateUpd;
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement("name")
+	@PrestaShopElement(value = "name", format = PShopFormat.isGenericName)
 	private List<LanguageElement> name;
 	
 	

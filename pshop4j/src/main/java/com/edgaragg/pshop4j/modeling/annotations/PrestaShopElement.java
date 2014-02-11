@@ -8,6 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
+
 /**
  * @author Edgar Gonzalez
  * Matches any element in the XML with any object field
@@ -16,4 +18,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrestaShopElement {
 	String value();
+	PShopFormat format() default PShopFormat.isUndefined;
 }

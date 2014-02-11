@@ -185,43 +185,43 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected <T> T cast(String o, Class<T> clazz){
 		Object instance = null;
-		if(clazz.getSimpleName().equalsIgnoreCase("string")){
-			instance = o == null ? "" : o;
-		}else
-		if(clazz.getSimpleName().equalsIgnoreCase("bigdecimal")){
-			instance = new BigDecimal(o == null ? "0" : o);
-		}else
-		if(clazz.getSimpleName().equalsIgnoreCase("boolean")){
-			 instance = o == null ? false : Boolean.parseBoolean(o);
-		}else
-		if(clazz.getSimpleName().equalsIgnoreCase("long")){
-			instance = o == null ? 0 : Long.parseLong(o);
-		}else
-		if(clazz.getSimpleName().equalsIgnoreCase("short")){
-			instance = o == null ? 0 : Short.parseShort(o);
-		}else
-		if(clazz.getSimpleName().equalsIgnoreCase("int")){
-			instance = o == null ? 0 : Integer.parseInt(o);
-		}else
-		if(clazz.getSimpleName().equalsIgnoreCase("date")){
+		switch(clazz.getSimpleName().toLowerCase()){
+		case "string":
+			return (T) (o == null ? "" : o);
+		case "bigdecimal":
+			return (T) new BigDecimal(o == null ? "0" : o);
+		case "boolean":
+			return (T) new Boolean(o == null ? "false" : o);
+		case "long":
+			return (T) new Long(o == null ? "0" : o);
+		case "short":
+			return (T) new Short(o == null ? "0" : o);
+		case "int":
+			return (T) new Integer(o == null ? "0" : o);
+		case "date":{
 			if(o == null) return null;
 			String trimmedData = o.trim();
 			if(trimmedData.equals("")) return null;
 			try {
-				instance = (trimmedData.length() == 10 ? BIRTHDAY_FORMAT : DATE_FORMAT).parse(o); 
+				return (T) (trimmedData.length() == 10 ? BIRTHDAY_FORMAT : DATE_FORMAT).parse(o); 
 			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}else			
-		if(clazz.isEnum()){
-			System.out.println(clazz.getSimpleName());
-			if(PShopIntegerEnum.class.isAssignableFrom(clazz)){
-				instance= Tools.intToPShopIntegerEnum(clazz, Integer.parseInt(o));
-				System.out.println("==================> " + instance.toString());
-			}else{
-				instance = Enum.valueOf((Class<Enum>)clazz, o);
+				return null;
 			}
 		}
+		default:
+			if(clazz.isEnum()){
+				if(PShopIntegerEnum.class.isAssignableFrom(clazz)){
+					return (T) Tools.intToPShopIntegerEnum(clazz, Integer.parseInt(o));
+				}else{
+					return (T) Enum.valueOf((Class<Enum>)clazz, o);
+				}
+			}		
+		}
+		
+		
+
+		
+		
 		
 		return (T) instance;
 	}
