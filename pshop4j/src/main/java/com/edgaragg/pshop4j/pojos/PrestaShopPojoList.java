@@ -1,12 +1,10 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.pojos.list;
+package com.edgaragg.pshop4j.pojos;
 
 import java.util.Collections;
 import java.util.List;
-
-import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 
 /**
  * @author Edgar Gonzalez

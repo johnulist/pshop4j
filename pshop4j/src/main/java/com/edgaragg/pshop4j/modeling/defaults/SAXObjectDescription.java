@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.modeling.parser;
+package com.edgaragg.pshop4j.modeling.defaults;
 
 import java.util.ArrayList;
 import java.util.List;

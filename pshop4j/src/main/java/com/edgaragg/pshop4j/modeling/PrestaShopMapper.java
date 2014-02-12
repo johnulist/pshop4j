@@ -18,13 +18,14 @@ import com.edgaragg.pshop4j.model.PrestaShopResponse;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.defaults.PrestaShopSAXParser;
+import com.edgaragg.pshop4j.modeling.defaults.PrestaShopValidator;
 import com.edgaragg.pshop4j.modeling.exceptions.FieldNotFoundException;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidResourceException;
 import com.edgaragg.pshop4j.modeling.exceptions.NotFilterableException;
-import com.edgaragg.pshop4j.modeling.parser.PrestaShopSAXParser;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
-import com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity;
-import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
 import com.edgaragg.pshop4j.util.Tools;
 
 /**
@@ -56,12 +57,7 @@ public class PrestaShopMapper {
 	 */
 	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
 	PrestaShopMapperResponse<T>	listFullDisplay(Class<T> clazz, List<Filter> filters, Sort sort, Limit limit){
-		try {
-			this.checkFilters(clazz, filters);
-		} catch (NotFilterableException | FieldNotFoundException e) {
-			return new PrestaShopMapperResponse<T>()
-					.withException(e);
-		}
+		
 		PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 		if(resource == null){
 			return new PrestaShopMapperResponse<T>()
@@ -89,12 +85,6 @@ public class PrestaShopMapper {
 	 */
 	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
 	PrestaShopMapperResponse<T>	list(Class<T> clazz, List<String> fields, List<Filter> filters, Sort sort, Limit limit){
-		try {
-			this.checkFilters(clazz, filters);
-		} catch (NotFilterableException | FieldNotFoundException e) {
-			return new PrestaShopMapperResponse<T>()
-					.withException(e);
-		}
 		PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 		if(resource == null){
 			return new PrestaShopMapperResponse<T>()
@@ -131,9 +121,7 @@ public class PrestaShopMapper {
 	 */
 	public <T extends PrestaShopPojoEntity> PrestaShopMapperResponse<T> 
 	load(Class<T> clazz, PrestaShopPojoEntity key) {
-		if(this.parser == null){
-			parser = new PrestaShopSAXParser();
-		}
+		this.checkDefaults();
 		
 		PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 		if(resource == null){
@@ -170,12 +158,6 @@ public class PrestaShopMapper {
 	 */
 	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
 	PrestaShopMapperResponse<T>	headFullDisplay(Class<T> clazz, List<Filter> filters, Sort sort, Limit limit){
-		try {
-			this.checkFilters(clazz, filters);
-		} catch (NotFilterableException | FieldNotFoundException e) {
-			return new PrestaShopMapperResponse<T>()
-					.withException(e);
-		}
 		PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 		
 		if(resource == null){
@@ -204,12 +186,6 @@ public class PrestaShopMapper {
 	 */
 	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
 	PrestaShopMapperResponse<T>	head(Class<T> clazz, List<String> fields, List<Filter> filters, Sort sort, Limit limit) {
-		try {
-			this.checkFilters(clazz, filters);
-		} catch (NotFilterableException | FieldNotFoundException e) {
-			return new PrestaShopMapperResponse<T>()
-					.withException(e);
-		}
 		PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 		if(resource == null){
 			return new PrestaShopMapperResponse<T>()
@@ -246,9 +222,7 @@ public class PrestaShopMapper {
 	 */
 	public <T extends PrestaShopPojoEntity> PrestaShopMapperResponse<T> 
 	head(Class<T> clazz, PrestaShopPojoEntity key) {
-		if(this.parser == null){
-			parser = new PrestaShopSAXParser();
-		}
+		this.checkDefaults();
 		
 		PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 		if(resource == null){
@@ -284,6 +258,16 @@ public class PrestaShopMapper {
 		this.parser = parser;
 		return this;
 	}
+	
+	/**
+	 * 
+	 * @param parser
+	 * @return
+	 */
+	public PrestaShopMapper withPojoValidator(PrestaShopPojoValidator validator){
+		this.validator = validator;
+		return this;
+	}
 
 	/**
 	 * 
@@ -293,10 +277,13 @@ public class PrestaShopMapper {
 	 */
 	private <T extends PrestaShopPojo>
 	PrestaShopMapperResponse<T> executeGetRequest(Class<T> clazz, GetRequest request){
-		if(this.parser == null){
-			parser = new PrestaShopSAXParser();
+		checkDefaults();
+		try {
+			this.validator.checkFilters(clazz, request.getFilters());
+		} catch (NotFilterableException | FieldNotFoundException e) {
+			return new PrestaShopMapperResponse<T>()
+					.withException(e);
 		}
-		
 		// executes
 		PrestaShopResponse response;
 		try {
@@ -316,6 +303,19 @@ public class PrestaShopMapper {
 				.withHeaders(response.getHeaders());
 		
 	}
+
+
+	/**
+	 * 
+	 */
+	private void checkDefaults() {
+		if(this.parser == null){
+			this.parser = new PrestaShopSAXParser();
+		}
+		if(this.validator == null){
+			this.validator = new PrestaShopValidator();
+		}
+	}
 	
 	/**
 	 * 
@@ -331,53 +331,10 @@ public class PrestaShopMapper {
 		}
 		return "";
 	}
-	
-	
-	@SuppressWarnings("unchecked")
-	private <T extends PrestaShopPojo> void checkFilters(Class<T> clazz, List<Filter> filters) throws NotFilterableException, FieldNotFoundException {
-		Class<T> innerClass = clazz;
-		// clazz is a pojo list, we need to know the internal type of this list
-		// to do that, we apply simple english rules
-		//TODO: improve this, see http://www.yorku.ca/jmason/EnglishNoun.java 
-		if(PrestaShopPojoList.class.isAssignableFrom(clazz)){
-			String listClassName = clazz.getSimpleName();
-			String entityClassName = "";
-		
-			if(listClassName.endsWith("sses") || listClassName.endsWith("shes") || listClassName.endsWith("ches")
-					|| listClassName.endsWith("xes")){
-				entityClassName = listClassName.substring(0, listClassName.length() - 2);
-			}else if(listClassName.endsWith("ies")){
-				entityClassName = listClassName.substring(0, listClassName.length() - 3).concat("y");
-			}else if(listClassName.endsWith("ves")){
-				entityClassName = listClassName.substring(0, listClassName.length() - 3).concat("f");
-			}else if(listClassName.endsWith("ses")){
-				entityClassName = listClassName.substring(0, listClassName.length() - 3).concat("sis");
-			}else{
-				entityClassName = listClassName.substring(0, listClassName.length() - 1);	
-			}
-			
-			try {
-				innerClass = (Class<T>) Class.forName("com.edgaragg.pshop4j.pojos.entities." + entityClassName);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-		for(Filter filter : filters){
-			Field field = Tools.getFieldForElement(innerClass, filter.getField());
-			if(field == null) throw new FieldNotFoundException(innerClass, filter.getField());
-			if(field.isAnnotationPresent(PrestaShopText.class)){
-				PrestaShopText text = field.getAnnotation(PrestaShopText.class);
-				if(text.notFilterable()){
-					throw new NotFilterableException(filter);
-				}
-			}
-		}
-		
-	}
-	
+
+
 	private PrestaShopWebservice webservice; 
 	private PrestaShopXMLParser parser;
+	private PrestaShopPojoValidator validator;
 	
 }

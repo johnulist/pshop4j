@@ -17,6 +17,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Categories;
 import com.edgaragg.pshop4j.pojos.list.Products;

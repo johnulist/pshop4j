@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.modeling.parser;
+package com.edgaragg.pshop4j.modeling.defaults;
 
 
 import java.lang.reflect.Field;
@@ -24,8 +24,8 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.enums.PShopIntegerEnum;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
-import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
 import com.edgaragg.pshop4j.util.Tools;
 
 /**

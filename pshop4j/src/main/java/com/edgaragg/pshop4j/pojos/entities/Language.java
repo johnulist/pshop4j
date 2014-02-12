@@ -11,6 +11,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 
 /**
  * @author Edgar Gonzalez

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.modeling.generator;
+package com.edgaragg.pshop4j.modeling.defaults;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 import com.edgaragg.pshop4j.modeling.PrestaShopXMLGenerator;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
-import com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 
 /**
  * @author Edgar Gonzalez

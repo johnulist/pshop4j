@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
-import com.edgaragg.pshop4j.pojos.list.PrestaShopPojoList;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
 
 /**
  * @author Edgar Gonzalez

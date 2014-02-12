@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.modeling.generator;
+package com.edgaragg.pshop4j.modeling.defaults;
 
 import java.io.IOException;
 import java.io.InputStream;

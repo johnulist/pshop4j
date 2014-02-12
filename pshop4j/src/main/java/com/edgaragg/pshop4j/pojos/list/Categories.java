@@ -10,6 +10,7 @@ import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
 import com.edgaragg.pshop4j.pojos.entities.Category;
 
 /**

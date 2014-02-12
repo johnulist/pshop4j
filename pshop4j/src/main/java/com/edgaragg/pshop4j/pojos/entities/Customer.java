@@ -16,6 +16,7 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Groups;
 //index.php?controller=authentication&email=email&passwd=pwd&back=my-account&SubmitLogin=Autentificaci%C3%B3n

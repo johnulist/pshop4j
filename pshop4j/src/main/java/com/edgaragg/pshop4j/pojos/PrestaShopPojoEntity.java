@@ -1,9 +1,8 @@
 /**
  * 
  */
-package com.edgaragg.pshop4j.pojos.entities;
+package com.edgaragg.pshop4j.pojos;
 
-import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 
 /**
  * @author Edgar Gonzalez
