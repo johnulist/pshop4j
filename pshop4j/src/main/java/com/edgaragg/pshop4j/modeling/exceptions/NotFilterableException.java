@@ -18,6 +18,7 @@ public class NotFilterableException extends Exception {
 
 	/**
 	 * 
+	 * @param invalidFilter
 	 */
 	public NotFilterableException(Filter invalidFilter) {
 		super(String.format("Prestashop can not filter using the attribute %s", invalidFilter.getField()));

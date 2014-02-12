@@ -3,12 +3,9 @@
  */
 package com.edgaragg.pshop4j.modeling;
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
@@ -336,6 +333,7 @@ public class PrestaShopMapper {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	private <T extends PrestaShopPojo> void checkFilters(Class<T> clazz, List<Filter> filters) throws NotFilterableException, FieldNotFoundException {
 		Class<T> innerClass = clazz;
 		// clazz is a pojo list, we need to know the internal type of this list
