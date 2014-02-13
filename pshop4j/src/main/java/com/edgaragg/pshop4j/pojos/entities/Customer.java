@@ -13,7 +13,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElementMapping;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
@@ -32,9 +31,8 @@ import com.edgaragg.pshop4j.pojos.list.Groups;
 })
 public class Customer implements PrestaShopPojoEntity {
 
-	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
 	private long id;
 	
 	@PrestaShopText(value = "id_default_group", format = PShopFormat.isInt)

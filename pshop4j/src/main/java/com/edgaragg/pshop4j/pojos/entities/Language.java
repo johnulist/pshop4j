@@ -8,7 +8,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
@@ -21,9 +20,8 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 @PrestaShopElement("language")
 public class Language implements PrestaShopPojoEntity {
 
-	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
 	private long id;
 	
 	@PrestaShopText(value = "name", format = PShopFormat.isGenericName, required = true, maxSize = 32)
@@ -59,7 +57,7 @@ public class Language implements PrestaShopPojoEntity {
 	 * @see com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity#setId(long)
 	 */
 	@Override
-	public void setId(long id) throws Exception {
+	public void setId(long id) {
 		this.id = id;
 	}
 

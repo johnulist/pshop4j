@@ -3,9 +3,10 @@
  */
 package com.edgaragg.pshop4j.modeling;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,16 +18,16 @@ import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.PrestaShopResponse;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.defaults.PrestaShopDefaultXMLGenerator;
 import com.edgaragg.pshop4j.modeling.defaults.PrestaShopSAXParser;
 import com.edgaragg.pshop4j.modeling.defaults.PrestaShopValidator;
 import com.edgaragg.pshop4j.modeling.exceptions.FieldNotFoundException;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidResourceException;
+import com.edgaragg.pshop4j.modeling.exceptions.InvalidValueException;
 import com.edgaragg.pshop4j.modeling.exceptions.NotFilterableException;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
-import com.edgaragg.pshop4j.util.Tools;
 
 /**
  * @author Edgar Gonzalez
@@ -247,6 +248,25 @@ public class PrestaShopMapper {
 		return this.load((Class<T>)keyObject.getClass(), keyObject);
 	}
 	
+	public <T extends PrestaShopPojoEntity> void post(T entity){
+		String xml = "";
+		this.checkDefaults();
+		InputStream stream;
+		try {
+			stream = this.generator.generate(entity);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			String line;
+			
+			while((line = reader.readLine())!= null){
+				xml = xml.concat(line);
+			}
+		
+			System.out.println(xml);
+		} catch (IOException | InvalidValueException e1) {
+			e1.printStackTrace();
+		}
+	
+	}
 		
 	
 	/**
@@ -259,9 +279,15 @@ public class PrestaShopMapper {
 		return this;
 	}
 	
+	public PrestaShopMapper withXMLGenerator(PrestaShopXMLGenerator generator){
+		this.generator = generator;
+		return this;
+	}
+	
+	
 	/**
 	 * 
-	 * @param parser
+	 * @param validator
 	 * @return
 	 */
 	public PrestaShopMapper withPojoValidator(PrestaShopPojoValidator validator){
@@ -315,6 +341,9 @@ public class PrestaShopMapper {
 		if(this.validator == null){
 			this.validator = new PrestaShopValidator();
 		}
+		if(this.generator == null){
+			this.generator = new PrestaShopDefaultXMLGenerator();
+		}
 	}
 	
 	/**
@@ -335,6 +364,7 @@ public class PrestaShopMapper {
 
 	private PrestaShopWebservice webservice; 
 	private PrestaShopXMLParser parser;
+	private PrestaShopXMLGenerator generator;
 	private PrestaShopPojoValidator validator;
 	
 }

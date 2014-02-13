@@ -34,7 +34,7 @@ import com.edgaragg.pshop4j.pojos.list.Products;
 public class Category implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
 	private long id;
 	
 	@PrestaShopText(value = "id_parent", format = PShopFormat.isUnsignedInt)
@@ -115,7 +115,7 @@ public class Category implements PrestaShopPojoEntity {
 	 * @see com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity#setId(long)
 	 */
 	@Override
-	public void setId(long id) throws Exception {
+	public void setId(long id) {
 		this.id = id;
 	}
 

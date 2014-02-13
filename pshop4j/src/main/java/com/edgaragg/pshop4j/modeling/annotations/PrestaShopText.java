@@ -21,5 +21,6 @@ public @interface PrestaShopText {
 	PShopFormat format();
 	boolean notFilterable() default false;
 	boolean required() default false;
+	boolean isVirtual() default false;
 	int maxSize() default Integer.MAX_VALUE;
 }

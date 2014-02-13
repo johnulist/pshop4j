@@ -15,7 +15,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopIgnore;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.ProductVisibility;
@@ -30,9 +29,8 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 @PrestaShopIgnore(elements = "associations")
 public class Product implements PrestaShopPojoEntity {
 	
-	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
 	private long id;
 	
 	@PrestaShopText(value = "id_manufacturer", format = PShopFormat.isUnsignedId)
@@ -257,7 +255,7 @@ public class Product implements PrestaShopPojoEntity {
 	 * @see com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity#setId(long)
 	 */
 	@Override
-	public void setId(long id) throws Exception {
+	public void setId(long id) {
 		this.id = id;
 	}
 

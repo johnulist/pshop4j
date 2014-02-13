@@ -3,6 +3,8 @@
  */
 package com.edgaragg.pshop4j.modeling.enums;
 
+import java.util.regex.Pattern;
+
 /**
  * @author Edgar Gonzalez
  *
@@ -15,7 +17,7 @@ public enum PShopFormat {
 	isInt,
 	isUnsignedInt,
 	isNullOrUnsignedId,
-	isSerializedArray("a:[0-9]+:{.*;}$"),
+	isSerializedArray("a:[0-9]+:\\{.*;\\}$"),
 	isString,
 	isUnsignedId,
 	isDate,
@@ -68,21 +70,22 @@ public enum PShopFormat {
 	/*
 	 * isEntity
 	isStoreDescription;*/
-	
-	
-	
-	
-	private String regex;
+		
+	private Pattern pattern;
 	
 	PShopFormat(){
-		this.regex = "";
+		this.pattern = null;
 	}
 	
 	PShopFormat(String regex){
-		this.regex = regex;
+		try{
+			this.pattern = Pattern.compile(regex);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 	
-	public String getRegex(){
-		return this.regex;
+	public Pattern getPattern(){
+		return this.pattern;
 	}
 }

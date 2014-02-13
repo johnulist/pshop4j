@@ -14,7 +14,6 @@ import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
-import com.edgaragg.pshop4j.modeling.annotations.PrestaShopVirtual;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.PriceDisplayMethod;
@@ -29,9 +28,8 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 @PrestaShopElement("group")
 public class Group implements PrestaShopPojoEntity {
 
-	@PrestaShopVirtual()
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
 	private long id;
 	
 	@PrestaShopText(value = "reduction", format = PShopFormat.isFloat)
@@ -67,7 +65,7 @@ public class Group implements PrestaShopPojoEntity {
 	}
 
 	@Override
-	public void setId(long id) throws Exception {
+	public void setId(long id) {
 		this.id = id;
 	}
 

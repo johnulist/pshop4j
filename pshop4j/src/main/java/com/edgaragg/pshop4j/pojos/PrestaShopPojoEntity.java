@@ -10,5 +10,5 @@ package com.edgaragg.pshop4j.pojos;
  */
 public interface PrestaShopPojoEntity extends PrestaShopPojo {
 	public long getId();
-	public void setId(long id) throws Exception;	
+	public void setId(long id);	
 }

@@ -37,7 +37,7 @@ public class LanguageElement implements PrestaShopPojoEntity {
 	 * @see com.edgaragg.pshop4j.pojos.entities.PrestaShopPojoEntity#setId(long)
 	 */
 	@Override
-	public void setId(long id) throws Exception {
+	public void setId(long id) {
 		this.id = id;
 	}
 

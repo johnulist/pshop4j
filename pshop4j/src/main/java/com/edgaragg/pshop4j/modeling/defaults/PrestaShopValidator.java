@@ -5,11 +5,15 @@ package com.edgaragg.pshop4j.modeling.defaults;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.edgaragg.pshop4j.model.Filter;
 import com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.exceptions.FieldNotFoundException;
+import com.edgaragg.pshop4j.modeling.exceptions.InvalidValueException;
 import com.edgaragg.pshop4j.modeling.exceptions.NotFilterableException;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
@@ -25,9 +29,12 @@ public class PrestaShopValidator implements PrestaShopPojoValidator {
 	 * 
 	 */
 	public PrestaShopValidator() {
-		// TODO Auto-generated constructor stub
 	}
+	
 
+	/* (non-Javadoc)
+	 * @see com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator#checkFilters(java.lang.Class, java.util.List)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends PrestaShopPojo> void checkFilters(Class<T> clazz,
@@ -74,5 +81,44 @@ public class PrestaShopValidator implements PrestaShopPojoValidator {
 		}
 		
 	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator#validate(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public void validate(Object obscure, Object fieldValue) throws InvalidValueException {
+		Field field = (Field)obscure;
+		String value = fieldValue == null ? "" : fieldValue.toString();
+		PrestaShopText annotation = field.getAnnotation(PrestaShopText.class);
+		if(annotation.required() && value.trim().length() == 0){
+			throw new InvalidValueException(field.getName(), InvalidValueException.REASON_REQUIRED);
+		};
+		if(value != null && value.toString().length() > annotation.maxSize()){
+			throw new InvalidValueException(field.getName(), InvalidValueException.REASON_MAX_SIZE);
+		}
+		
+		// checking regex
+		PShopFormat format = annotation.format();
+		Pattern pattern = format.getPattern();
+		if(value != null && pattern != null){
+			Matcher matcher = pattern.matcher(value);
+			if(!matcher.matches()){
+				throw new InvalidValueException(field.getName(), InvalidValueException.REASON_REGEX);
+			}
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator#includeInResult(java.lang.Object)
+	 */
+	@Override
+	public boolean includeInResult(Object obscure) {
+		return true;
+	}
+	
+	
 
 }

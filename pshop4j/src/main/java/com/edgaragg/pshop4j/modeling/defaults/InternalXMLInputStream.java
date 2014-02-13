@@ -3,31 +3,28 @@
  */
 package com.edgaragg.pshop4j.modeling.defaults;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 /**
  * @author Edgar Gonzalez
  *
  */
-class InternalXMLInputStream extends InputStream {
+final class InternalXMLInputStream extends InputStream {
 
-	private ByteBuffer buffer;
+	private ByteArrayInputStream stream;
 	
 	/**
 	 * 
 	 */
-	public InternalXMLInputStream(ByteBuffer buffer) {
-		this.buffer = buffer;
+	public InternalXMLInputStream(byte[] stream) {
+		this.stream = new ByteArrayInputStream(stream);
 	}
 
 	@Override
 	public int read() throws IOException {
-		if (!this.buffer.hasRemaining()) {
-            return -1;
-        }
-        return this.buffer.get() & 0xFF;
+        return this.stream.read();
 	}
 
 	/* (non-Javadoc)
@@ -35,13 +32,16 @@ class InternalXMLInputStream extends InputStream {
 	 */
 	@Override
 	public int read(byte[] b, int off, int len) throws IOException {
-		if (!this.buffer.hasRemaining()) {
-            return -1;
-        }
+        return this.stream.read(b, off, len);
+	}
 
-        len = Math.min(len, buffer.remaining());
-        this.buffer.get(b, off, len);
-        return len;
+	
+	/* (non-Javadoc)
+	 * @see java.io.InputStream#read(byte[])
+	 */
+	@Override
+	public int read(byte[] b) throws IOException {
+        return this.stream.read(b);
 	}
 
 	/* (non-Javadoc)
@@ -49,7 +49,7 @@ class InternalXMLInputStream extends InputStream {
 	 */
 	@Override
 	public int available() throws IOException {
-		return this.buffer.remaining();
+		return this.stream.available();
 	}
 	
 }

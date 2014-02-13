@@ -16,6 +16,8 @@ import org.junit.Test;
 import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.pojos.entities.Category;
 import com.edgaragg.pshop4j.pojos.list.Categories;
 
 /**
@@ -116,6 +118,28 @@ public class TestCategories extends PShop4jTest {
 		
 		long end = Calendar.getInstance().getTimeInMillis();
 		System.out.printf("Categories - testHashEquality - Execution time: %.2f seconds\n", (end - start)/1000.0);
+	}
+	
+	@Test
+	public void testPost(){
+		long start = Calendar.getInstance().getTimeInMillis();
+		Category category = new Category();
+		category.setId(100);
+		category.setActive(PShopBoolean.TRUE);
+		
+		this.getMapper().post(category);
+		/*try {
+			PrestaShopMapperResponse<Categories> result = this.getMapper().headFullDisplay(Categories.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			Categories resource = result.getResource();
+			assertNull(resource);
+			assertNull(result.getException());
+			assertTrue(result.getHash().length() > 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		long end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Categories - testPost - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 }
