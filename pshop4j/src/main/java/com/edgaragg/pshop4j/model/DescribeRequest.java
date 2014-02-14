@@ -3,8 +3,6 @@
  */
 package com.edgaragg.pshop4j.model;
 
-import java.io.InputStream;
-
 /**
  * @author Edgar Gonzalez
  *
@@ -25,10 +23,22 @@ public class DescribeRequest extends PrestaShopRequest {
 	}
 
 	@Override
-	public InputStream getContentBody() {
+	public String getContentBody() {
 		return null;
 	}
-	
+
+	@Override
+	protected String getIdentifier() {
+		return "";
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getContentType()
+	 */
+	@Override
+	protected String getContentType() {
+		return "";
+	}
 	
 
 }

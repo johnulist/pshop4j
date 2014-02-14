@@ -37,25 +37,25 @@ public class Category implements PrestaShopPojoEntity {
 	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
 	private long id;
 	
-	@PrestaShopText(value = "id_parent", format = PShopFormat.isUnsignedInt)
+	@PrestaShopText(value = "id_parent", format = PShopFormat.isUnsignedInt, nullOnZero = true)
 	private long idParent;
 	
-	@PrestaShopText(value = "level_depth", format = PShopFormat.isUnsignedInt)
+	@PrestaShopText(value = "level_depth", format = PShopFormat.isUnsignedInt, nullOnZero = true, isVirtual = true)
 	private int levelDepth;
 	
-	@PrestaShopText(value = "nb_products_recursive", format = PShopFormat.isString, notFilterable = true)
+	@PrestaShopText(value = "nb_products_recursive", format = PShopFormat.isString, notFilterable = true, nullOnZero = true, isVirtual = true)
 	private int nbProductsRecursive;
 	
 	@PrestaShopText(value = "active", format = PShopFormat.isBool, required = true)
 	private PShopBoolean active;
 	
-	@PrestaShopText(value = "id_shop_default", format = PShopFormat.isUnsignedId)
+	@PrestaShopText(value = "id_shop_default", format = PShopFormat.isUnsignedId, nullOnZero = true)
 	private long idShopDefault;
 	
 	@PrestaShopText(value = "is_root_category", format = PShopFormat.isBool)
 	private PShopBoolean isRootCategory;
 	
-	@PrestaShopText(value = "position", format = PShopFormat.isInt)
+	@PrestaShopText(value = "position", format = PShopFormat.isInt, nullOnZero = true)
 	private long position;
 	
 	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)

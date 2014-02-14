@@ -16,6 +16,8 @@ import org.junit.Test;
 import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.pojos.entities.Language;
 import com.edgaragg.pshop4j.pojos.list.Languages;
 
 /**
@@ -115,5 +117,41 @@ public class TestLanguages extends PShop4jTest {
 		
 		long end = Calendar.getInstance().getTimeInMillis();
 		System.out.printf("Languages - testHashEquality - Execution time: %.2f seconds\n", (end - start)/1000.0);
+	}
+	
+	@Test
+	public void testPost(){
+		long start = Calendar.getInstance().getTimeInMillis();
+		Language lang = new Language();
+		//lang.setId(100);
+		lang.setActive(PShopBoolean.TRUE);
+		lang.setName("test lang");
+		lang.setIsoCode("JJ");
+		lang.setLanguageCode("LN-ES");
+		lang.setDateFormatLite("dd-mm-aa");
+		lang.setDateFormatFull("dd-mm-aa");
+		this.getMapper().post(lang);
+				
+		long end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Languages - testPost - Execution time: %.2f seconds\n", (end - start)/1000.0);
+	}
+	
+	@Test
+	public void testPut(){
+//		long start = Calendar.getInstance().getTimeInMillis();
+//		Language lang = new Language();
+//		//lang.setId(100);
+//		//lang.setId(1000);
+//		lang.setActive(PShopBoolean.TRUE);
+//		lang.setName("test lang");
+//		lang.setIsoCode("JJ");
+//		lang.setLanguageCode("LN-ES");
+//		lang.setDateFormatLite("dd-mm-aa");
+//		lang.setDateFormatFull("dd-mm-aa");
+//		this.getMapper().put(lang);
+//		
+//		
+//		long end = Calendar.getInstance().getTimeInMillis();
+//		System.out.printf("Languages - testPut - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 }

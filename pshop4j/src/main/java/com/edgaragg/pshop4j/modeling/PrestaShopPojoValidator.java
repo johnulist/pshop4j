@@ -26,17 +26,17 @@ public interface PrestaShopPojoValidator {
 	<T extends PrestaShopPojo> void checkFilters(Class<T> clazz, List<Filter> filters) throws NotFilterableException, FieldNotFoundException;
 	/**
 	 * Validate an object against some specification
-	 * @param obscure specification for the field to validate
+	 * @param opaque specification for the field to validate
 	 * @param fieldValue value of the field
 	 * @return true if the field is validated against its specification, false otherwise
 	 * @throws InvalidValueException 
 	 */
-	void validate(Object obscure, Object fieldValue) throws InvalidValueException;
+	void validate(Object opaque, Object fieldValue) throws InvalidValueException;
 	
 	/**
-	 * Check in the specficaction of the field if it will be included in the result
-	 * @param obscure contains the specificationfor the field
+	 * Check in the specification of the field if it will be included in the result
+	 * @param opaque contains the specification for the field
 	 * @return true if the field should be included in the result, false otherwise
 	 */
-	boolean includeInResult(Object obscure);
+	boolean includeInResult(Object opaque);
 }

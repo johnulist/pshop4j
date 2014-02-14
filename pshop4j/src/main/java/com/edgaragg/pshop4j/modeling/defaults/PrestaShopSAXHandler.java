@@ -216,12 +216,6 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				}
 			}		
 		}
-		
-		
-
-		
-		
-		
 		return (T) instance;
 	}
 

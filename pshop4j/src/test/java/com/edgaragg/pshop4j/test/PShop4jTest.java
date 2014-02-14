@@ -15,7 +15,7 @@ public class PShop4jTest {
 	
 	
 	public PShop4jTest() {
-		web = new PrestaShopWebservice("192.168.1.141/prestashop", "KGUPO13EY2P3YMHZ9IQASIRWCMUUTJ1E");
+		web = new PrestaShopWebservice("192.168.1.141/prestashop/", "KGUPO13EY2P3YMHZ9IQASIRWCMUUTJ1E");
 		mapper = new PrestaShopMapper(web);
 	}
 

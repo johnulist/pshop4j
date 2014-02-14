@@ -21,13 +21,13 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 public class Language implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, nullOnZero = true)
 	private long id;
 	
 	@PrestaShopText(value = "name", format = PShopFormat.isGenericName, required = true, maxSize = 32)
 	private String name;
 	
-	@PrestaShopText(value = "iso_code", format = PShopFormat.isNumericIsoCode, required = true, maxSize = 2)
+	@PrestaShopText(value = "iso_code", format = PShopFormat.isLanguageIsoCode, required = true, maxSize = 2)
 	private String isoCode;
 
 	@PrestaShopText(value = "language_code", format = PShopFormat.isLanguageCode, maxSize = 5)

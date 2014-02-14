@@ -22,5 +22,12 @@ public @interface PrestaShopText {
 	boolean notFilterable() default false;
 	boolean required() default false;
 	boolean isVirtual() default false;
+	/**
+	 * When making a POST or PUT request, sent an empty tag (null value) if
+	 * the value of the field is 0<br/>
+	 * nullOnZero = true is not compatible with required = true
+	 * @return
+	 */
+	boolean nullOnZero() default false;
 	int maxSize() default Integer.MAX_VALUE;
 }

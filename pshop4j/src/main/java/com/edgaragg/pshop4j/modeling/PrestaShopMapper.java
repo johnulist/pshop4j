@@ -15,7 +15,9 @@ import com.edgaragg.pshop4j.model.Filter;
 import com.edgaragg.pshop4j.model.GetRequest;
 import com.edgaragg.pshop4j.model.HeadRequest;
 import com.edgaragg.pshop4j.model.Limit;
+import com.edgaragg.pshop4j.model.PostRequest;
 import com.edgaragg.pshop4j.model.PrestaShopResponse;
+import com.edgaragg.pshop4j.model.PutRequest;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopResource;
 import com.edgaragg.pshop4j.modeling.defaults.PrestaShopDefaultXMLGenerator;
@@ -248,25 +250,55 @@ public class PrestaShopMapper {
 		return this.load((Class<T>)keyObject.getClass(), keyObject);
 	}
 	
-	public <T extends PrestaShopPojoEntity> void post(T entity){
-		String xml = "";
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public <T extends PrestaShopPojoEntity> PrestaShopMapperResponse<T> post(T entity){
 		this.checkDefaults();
-		InputStream stream;
+		@SuppressWarnings("unchecked")
+		Class<T> clazz = (Class<T>) entity.getClass();
 		try {
-			stream = this.generator.generate(entity);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			String line;
-			
-			while((line = reader.readLine())!= null){
-				xml = xml.concat(line);
+			PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
+			if(resource == null){
+				return new PrestaShopMapperResponse<T>()
+						.withException(new InvalidResourceException(clazz));
 			}
-		
-			System.out.println(xml);
+			InputStream stream = this.generator.generate(entity);
+			PostRequest request = new PostRequest().withEntityStream(stream).withResource(resource.value());
+			PrestaShopResponse response = this.webservice.executeRequest(request);
+			System.out.println(response.getCode());
 		} catch (IOException | InvalidValueException e1) {
 			e1.printStackTrace();
 		}
+		return null;
+	}
+	
+	public <T extends PrestaShopPojoEntity> PrestaShopMapperResponse<T> put(T entity){
+		this.checkDefaults();
+		@SuppressWarnings("unchecked")
+		Class<T> clazz = (Class<T>) entity.getClass();
+		try {
+			
+			PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
+			if(resource == null){
+				return new PrestaShopMapperResponse<T>()
+						.withException(new InvalidResourceException(clazz));
+			}
+			InputStream stream = this.generator.generate(entity);
+			PutRequest request = new PutRequest().withEntityStream(stream).withId(entity.getId()).withResource(resource.value());
+			PrestaShopResponse response = this.webservice.executeRequest(request);
+			System.out.println(response.getCode());
+		} catch (IOException | InvalidValueException e1) {
+			e1.printStackTrace();
+			return new PrestaShopMapperResponse<T>()
+					.withException(e1);
+		}
+		return null;
 	
 	}
+	
 		
 	
 	/**

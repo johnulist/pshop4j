@@ -3,7 +3,10 @@
  */
 package com.edgaragg.pshop4j;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
@@ -38,14 +41,34 @@ public class PrestaShopWebservice {
 		});
 	}
 	
-	
-	public PrestaShopResponse executeRequest(PrestaShopRequest request) throws ConnectException, IOException{		
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws ConnectException
+	 * @throws IOException
+	 */
+	public PrestaShopResponse executeRequest(PrestaShopRequest request) throws ConnectException, IOException{
 		HttpURLConnection connection = request.getConnection(this.url);
-		return new PrestaShopResponse()
-		.withHeaders(connection.getHeaderFields())
-		.withInputStream(connection.getInputStream())
-		.withCode(connection.getResponseCode())
-		.withContentLength(connection.getContentLengthLong());
+		try{
+			return new PrestaShopResponse()
+			.withHeaders(connection.getHeaderFields())
+			.withInputStream(connection.getInputStream())
+			.withCode(connection.getResponseCode())
+			.withContentLength(connection.getContentLengthLong());	
+		}catch(IOException ex){
+			InputStream stream = connection.getErrorStream();
+			if(stream != null){
+				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+				String line;
+				while((line = reader.readLine()) != null){
+					System.out.println(line);
+				}
+			}
+			
+			
+			throw ex;
+		}
 	}
 
 	/**

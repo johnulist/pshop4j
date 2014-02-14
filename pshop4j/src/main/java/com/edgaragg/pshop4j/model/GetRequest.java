@@ -3,7 +3,6 @@
  */
 package com.edgaragg.pshop4j.model;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -95,65 +94,6 @@ public class GetRequest extends PrestaShopRequest {
 	
 	
 	
-	/* (non-Javadoc)
-	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getContentBody()
-	 */
-	@Override
-	protected InputStream getContentBody() {
-		return null;
-	}
-
-	
-	/* (non-Javadoc)
-	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getQuery()
-	 */
-	@Override
-	protected String getQuery() {
-		List<String> queryParams = new ArrayList<String>();
-		
-		// get display
-		if(this.isFullDisplay()){
-			queryParams.add("display=full");
-		}else{
-			if(this.getFields() != null && this.getFields().size() > 0){
-				StringBuilder fieldBuilder = new StringBuilder();
-				for(String field : this.getFields()){
-					fieldBuilder.append(",").append(field);
-				}
-				
-				// include id
-				//System.out.println("ID:" + this.id);
-				if(this.id > 0 && !this.getFields().contains("id")){
-					fieldBuilder.append(",id");
-				}
-				queryParams.add(String.format("display=[%s]", fieldBuilder.substring(1)));
-			}
-		}
-		
-		// get 
-		if(this.limit != null && !this.limit.equals(Limit.EMPTY_LIMIT)){
-			queryParams.add(this.limit.getFilterString());
-		}
-		
-		if(this.sort != null && !this.sort.equals(Sort.EMPTY_SORT)){
-			queryParams.add(this.sort.getFilterString());
-		}
-		
-		if(this.filters!= null && !this.filters.isEmpty()){
-			for(Filter filter : this.filters){
-				queryParams.add(filter.getFilterString());
-			}
-		}
-		
-		if(queryParams.size() == 0) return "";
-		
-		StringBuilder query = new StringBuilder();
-		
-		for(String param : queryParams){
-			query.append("&").append(param);
-		}
-		return "?" + query.substring(1);
-	}
 	
 
 	/**
@@ -240,6 +180,81 @@ public class GetRequest extends PrestaShopRequest {
 		this.limit = limit;
 	}
 
+	@Override
+	protected String getIdentifier() {
+		return "";
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getContentBody()
+	 */
+	@Override
+	protected String getContentBody() {
+		return null;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getQuery()
+	 */
+	@Override
+	protected String getQuery() {
+		List<String> queryParams = new ArrayList<String>();
 		
+		// get display
+		if(this.isFullDisplay()){
+			queryParams.add("display=full");
+		}else{
+			if(this.getFields() != null && this.getFields().size() > 0){
+				StringBuilder fieldBuilder = new StringBuilder();
+				for(String field : this.getFields()){
+					fieldBuilder.append(",").append(field);
+				}
+				
+				// include id
+				//System.out.println("ID:" + this.id);
+				if(this.id > 0 && !this.getFields().contains("id")){
+					fieldBuilder.append(",id");
+				}
+				queryParams.add(String.format("display=[%s]", fieldBuilder.substring(1)));
+			}
+		}
+		
+		// get 
+		if(this.limit != null && !this.limit.equals(Limit.EMPTY_LIMIT)){
+			queryParams.add(this.limit.getFilterString());
+		}
+		
+		if(this.sort != null && !this.sort.equals(Sort.EMPTY_SORT)){
+			queryParams.add(this.sort.getFilterString());
+		}
+		
+		if(this.filters!= null && !this.filters.isEmpty()){
+			for(Filter filter : this.filters){
+				queryParams.add(filter.getFilterString());
+			}
+		}
+		
+		if(queryParams.size() == 0) return "";
+		
+		StringBuilder query = new StringBuilder();
+		
+		for(String param : queryParams){
+			query.append("&").append(param);
+		}
+		return "?" + query.substring(1);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edgaragg.pshop4j.model.PrestaShopRequest#getContentType()
+	 */
+	@Override
+	protected String getContentType() {
+		return "";
+	}
+		
+	
+	
 
 }

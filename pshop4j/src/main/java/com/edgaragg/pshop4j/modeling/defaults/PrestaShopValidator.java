@@ -88,10 +88,14 @@ public class PrestaShopValidator implements PrestaShopPojoValidator {
 	 * @see com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator#validate(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public void validate(Object obscure, Object fieldValue) throws InvalidValueException {
-		Field field = (Field)obscure;
+	public void validate(Object opaque, Object fieldValue) throws InvalidValueException {
+		Field field = (Field)opaque;
 		String value = fieldValue == null ? "" : fieldValue.toString();
 		PrestaShopText annotation = field.getAnnotation(PrestaShopText.class);
+		if(annotation.required() && annotation.nullOnZero()){
+			throw new InvalidValueException(field.getName(), InvalidValueException.REASON_NON_COMPATIBLE_OPTIONS);
+		}
+		
 		if(annotation.required() && value.trim().length() == 0){
 			throw new InvalidValueException(field.getName(), InvalidValueException.REASON_REQUIRED);
 		};
@@ -115,7 +119,7 @@ public class PrestaShopValidator implements PrestaShopPojoValidator {
 	 * @see com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator#includeInResult(java.lang.Object)
 	 */
 	@Override
-	public boolean includeInResult(Object obscure) {
+	public boolean includeInResult(Object opaque) {
 		return true;
 	}
 	

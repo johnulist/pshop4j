@@ -13,6 +13,7 @@ public class InvalidValueException extends Exception {
 	public static final String REASON_REQUIRED = "Field is required";
 	public static final String REASON_MAX_SIZE = "Field length is larger than its max size";
 	public static final String REASON_REGEX = "Field doesn't match its regular expression";
+	public static final String REASON_NON_COMPATIBLE_OPTIONS = "Field options not compatible. (required and nullOnZero are both true)";
 	
 	/**
 	 * 
