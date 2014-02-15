@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator;
-import com.edgaragg.pshop4j.modeling.PrestaShopXMLGenerator;
+import com.edgaragg.pshop4j.modeling.PrestaShopGenerator;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidValueException;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
@@ -16,7 +16,7 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
  * @author Edgar Gonzalez
  *
  */
-public class PrestaShopDefaultXMLGenerator implements PrestaShopXMLGenerator,
+public class PrestaShopDefaultXMLGenerator implements PrestaShopGenerator,
 		PrestaShopPojo {
 	
 	private PrestaShopPojoValidator validator;

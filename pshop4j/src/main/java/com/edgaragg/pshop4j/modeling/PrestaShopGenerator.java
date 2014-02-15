@@ -13,6 +13,6 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
  * @author Edgar Gonzalez
  *
  */
-public interface PrestaShopXMLGenerator {
+public interface PrestaShopGenerator {
 	InputStream generate(PrestaShopPojoEntity entity) throws IOException, InvalidValueException;
 }

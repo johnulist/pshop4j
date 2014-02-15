@@ -3,10 +3,8 @@
  */
 package com.edgaragg.pshop4j.modeling;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
@@ -306,12 +304,12 @@ public class PrestaShopMapper {
 	 * @param parser
 	 * @return
 	 */
-	public PrestaShopMapper withXMLParser(PrestaShopXMLParser parser){
+	public PrestaShopMapper withXMLParser(PrestaShopParser parser){
 		this.parser = parser;
 		return this;
 	}
 	
-	public PrestaShopMapper withXMLGenerator(PrestaShopXMLGenerator generator){
+	public PrestaShopMapper withXMLGenerator(PrestaShopGenerator generator){
 		this.generator = generator;
 		return this;
 	}
@@ -395,8 +393,8 @@ public class PrestaShopMapper {
 
 
 	private PrestaShopWebservice webservice; 
-	private PrestaShopXMLParser parser;
-	private PrestaShopXMLGenerator generator;
+	private PrestaShopParser parser;
+	private PrestaShopGenerator generator;
 	private PrestaShopPojoValidator validator;
 	
 }

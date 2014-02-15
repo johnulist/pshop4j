@@ -13,14 +13,14 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
-import com.edgaragg.pshop4j.modeling.PrestaShopXMLParser;
+import com.edgaragg.pshop4j.modeling.PrestaShopParser;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 
 /**
  * @author Edgar Gonzalez
  *
  */
-public class PrestaShopSAXParser implements PrestaShopXMLParser {
+public class PrestaShopSAXParser implements PrestaShopParser {
 
 	
 	private SAXParserFactory factory;
