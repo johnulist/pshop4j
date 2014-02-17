@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.edgaragg.pshop4j.PrestaShopWebservice;
+import com.edgaragg.pshop4j.model.DeleteRequest;
 import com.edgaragg.pshop4j.model.Filter;
 import com.edgaragg.pshop4j.model.GetRequest;
 import com.edgaragg.pshop4j.model.HeadRequest;
@@ -278,6 +279,11 @@ public class PrestaShopMapper {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	public <T extends PrestaShopPojoEntity> PrestaShopMapperResponse<T> put(T entity){
 		this.checkDefaults();
 		@SuppressWarnings("unchecked")
@@ -301,6 +307,38 @@ public class PrestaShopMapper {
 		return null;
 	
 	}
+	
+	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public <T extends PrestaShopPojoEntity> PrestaShopMapperResponse<T> delete(T entity){
+		this.checkDefaults();
+		@SuppressWarnings("unchecked")
+		Class<T> clazz = (Class<T>) entity.getClass();
+		try {
+			
+			PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
+			if(resource == null){
+				return new PrestaShopMapperResponse<T>()
+						.withException(new InvalidResourceException(clazz));
+			}
+
+			DeleteRequest request = new DeleteRequest().withId(entity.getId()).withResource(resource.value());
+			PrestaShopResponse response = this.webservice.executeRequest(request);
+			return new PrestaShopMapperResponse<T>()
+					.withHeaders(response.getHeaders())
+					.withHash(this.getResponseHash(response));
+		} catch (IOException | PrestaShopServerException e1) {
+			e1.printStackTrace();
+			return new PrestaShopMapperResponse<T>()
+					.withException(e1);
+		}	
+	}
+	
+	
 	
 		
 	

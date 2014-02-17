@@ -120,7 +120,7 @@ public class TestLanguages extends PShop4jTest {
 	}
 	
 	@Test
-	public void testPost(){
+	public void testPostAndDelete(){
 		long start = Calendar.getInstance().getTimeInMillis();
 		Language lang = new Language();
 		//lang.setId(100);
@@ -139,10 +139,16 @@ public class TestLanguages extends PShop4jTest {
 		assertTrue(resource.getId() > 0);
 		long id = resource.getId();
 		System.out.printf("RESOURCE ID: %d\n", id);
-		
-		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Languages - testPost - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Languages - testPostAndDelete (POST) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		start = Calendar.getInstance().getTimeInMillis();
+		
+		result = this.getMapper().delete(resource);
+		
+		
+		end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Languages - testPostAndDelete (DELETE) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		
 	}
 	
 	@Test

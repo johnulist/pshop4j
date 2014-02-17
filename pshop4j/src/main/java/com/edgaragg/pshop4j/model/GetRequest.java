@@ -191,7 +191,7 @@ public class GetRequest extends PrestaShopRequest {
 	 */
 	@Override
 	protected String getContentBody() {
-		return null;
+		return "";
 	}
 
 	
