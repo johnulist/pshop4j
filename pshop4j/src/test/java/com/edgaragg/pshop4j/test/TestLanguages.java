@@ -120,7 +120,7 @@ public class TestLanguages extends PShop4jTest {
 	}
 	
 	@Test
-	public void testPostAndDelete(){
+	public void testPostPutAndDelete(){
 		long start = Calendar.getInstance().getTimeInMillis();
 		Language lang = new Language();
 		//lang.setId(100);
@@ -140,33 +140,29 @@ public class TestLanguages extends PShop4jTest {
 		long id = resource.getId();
 		System.out.printf("RESOURCE ID: %d\n", id);
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Languages - testPostAndDelete (POST) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Languages - testPostPutAndDelete (POST) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		// PUT
 		start = Calendar.getInstance().getTimeInMillis();
-		
-		result = this.getMapper().delete(resource);
-		
+		lang = resource;
+		String name = "changing name";
+		lang.setName(name);
+		result = this.getMapper().put(resource);
+		assertNotNull(result);
+		assertNotNull(result.getResource());
+		assertNull(result.getException());
+		resource = result.getResource();
+		assertTrue(resource.getName().equals(name));
 		
 		end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Languages - testPostAndDelete (DELETE) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Languages - testPostPutAndDelete (PUT) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		
+		
+		// DELETE
+		start = Calendar.getInstance().getTimeInMillis();
+		result = this.getMapper().delete(resource);
+		end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Languages - testPostPutAndDelete (DELETE) - Execution time: %.2f seconds\n", (end - start)/1000.0);
 		
 	}
 	
-	@Test
-	public void testPut(){
-//		long start = Calendar.getInstance().getTimeInMillis();
-//		Language lang = new Language();
-//		//lang.setId(100);
-//		//lang.setId(1000);
-//		lang.setActive(PShopBoolean.TRUE);
-//		lang.setName("test lang");
-//		lang.setIsoCode("JJ");
-//		lang.setLanguageCode("LN-ES");
-//		lang.setDateFormatLite("dd-mm-aa");
-//		lang.setDateFormatFull("dd-mm-aa");
-//		this.getMapper().put(lang);
-//		
-//		
-//		long end = Calendar.getInstance().getTimeInMillis();
-//		System.out.printf("Languages - testPut - Execution time: %.2f seconds\n", (end - start)/1000.0);
-	}
 }

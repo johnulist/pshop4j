@@ -237,7 +237,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			PrestaShopAttribute fieldAttribute = field.getAnnotation(PrestaShopAttribute.class);
 			if(fieldAttribute != null){
 				String attrValue = attributes.getValue("", fieldAttribute.value());
-				if(attrValue == null || attrValue.length() == 0) continue;
+				if(attrValue == null) continue;
 				try {
 					field.setAccessible(true);
 					field.set(currentObj, cast(attrValue, field.getType()));
@@ -278,6 +278,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		// and iterate
 		SAXObjectDescription desc = this.getLastObjectDescription();
 		Class<?> currentClass = desc.getPojo().getClass();
+		
 		Field elementField = Tools.getFieldForElement(currentClass, qName);
 		if(elementField == null){
 			if(desc.isAssociationList()){
@@ -314,7 +315,6 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			try {
 				// get the element type
 				Class<?> newClass = elementField.getType();
-				
 				// check if the type is a list and it has the associated type
 				if(newClass.isAssignableFrom(List.class) && elementField.isAnnotationPresent(PrestaShopList.class)){
 					// if it is the case, create a new pojo of this type, fill its attributes and add it to the heap
@@ -326,7 +326,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 				}else{
 					// It is a entity object (not a list), now, we fill its attributes and add into the heap
 					PrestaShopPojo currentObject = (PrestaShopPojo)newClass.newInstance();
-					this.fillAttributes(newClass, currentObject, attributes);	
+					this.fillAttributes(newClass, currentObject, attributes);
 					this.addToHeap(currentObject);
 				}
 			} catch (InstantiationException | IllegalAccessException e) {

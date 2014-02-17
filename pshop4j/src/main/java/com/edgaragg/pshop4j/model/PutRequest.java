@@ -57,6 +57,7 @@ public class PutRequest extends PrestaShopRequest {
 	 */
 	@Override
 	protected String getContentBody() {
+		System.out.println(this.entityStream);
 		return this.entityStream;
 	}
 

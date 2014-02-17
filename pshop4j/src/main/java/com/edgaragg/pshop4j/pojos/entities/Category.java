@@ -3,9 +3,7 @@
  */
 package com.edgaragg.pshop4j.pojos.entities;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAssociationMapping;
@@ -20,6 +18,7 @@ import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.list.Categories;
+import com.edgaragg.pshop4j.pojos.list.LanguageElements;
 import com.edgaragg.pshop4j.pojos.list.Products;
 
 /**
@@ -66,27 +65,27 @@ public class Category implements PrestaShopPojoEntity {
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "name", format = PShopFormat.isGenericName)
-	private List<LanguageElement> name;
+	private LanguageElements name;
 
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "link_rewrite", format = PShopFormat.isLinkRewrite)
-	private List<LanguageElement> linkRewrite;
+	private LanguageElements linkRewrite;
 
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "description", format = PShopFormat.isCleanHtml)
-	private List<LanguageElement> description;
+	private LanguageElements description;
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "meta_title", format = PShopFormat.isGenericName)
-	private List<LanguageElement> metaTitle;
+	private LanguageElements metaTitle;
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "meta_description", format = PShopFormat.isGenericName)
-	private List<LanguageElement> metaDescription;
+	private LanguageElements metaDescription;
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "meta_keywords", format = PShopFormat.isGenericName)
-	private List<LanguageElement> metaKeywords;
+	private LanguageElements metaKeywords;
 
 	@PrestaShopElement("associations")
 	private Associations associations;
@@ -95,12 +94,7 @@ public class Category implements PrestaShopPojoEntity {
 	 * 
 	 */
 	public Category() {
-		this.name = new ArrayList<LanguageElement>();
-		this.linkRewrite = new ArrayList<LanguageElement>();
-		this.description = new ArrayList<LanguageElement>();
-		this.metaDescription = new ArrayList<LanguageElement>();
-		this.metaKeywords = new ArrayList<LanguageElement>();
-		this.metaTitle = new ArrayList<LanguageElement>();
+	
 	}
 
 	/* (non-Javadoc)
@@ -245,88 +239,88 @@ public class Category implements PrestaShopPojoEntity {
 		this.nbProductsRecursive = nbProductsRecursive;
 	}
 	
-
+	
 	/**
 	 * @return the name
 	 */
-	public List<LanguageElement> getName() {
+	public LanguageElements getName() {
 		return name;
 	}
 
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(List<LanguageElement> name) {
+	public void setName(LanguageElements name) {
 		this.name = name;
 	}
 
 	/**
 	 * @return the linkRewrite
 	 */
-	public List<LanguageElement> getLinkRewrite() {
+	public LanguageElements getLinkRewrite() {
 		return linkRewrite;
 	}
 
 	/**
 	 * @param linkRewrite the linkRewrite to set
 	 */
-	public void setLinkRewrite(List<LanguageElement> linkRewrite) {
+	public void setLinkRewrite(LanguageElements linkRewrite) {
 		this.linkRewrite = linkRewrite;
 	}
 
 	/**
 	 * @return the description
 	 */
-	public List<LanguageElement> getDescription() {
+	public LanguageElements getDescription() {
 		return description;
 	}
 
 	/**
 	 * @param description the description to set
 	 */
-	public void setDescription(List<LanguageElement> description) {
+	public void setDescription(LanguageElements description) {
 		this.description = description;
 	}
 
 	/**
 	 * @return the metaTitle
 	 */
-	public List<LanguageElement> getMetaTitle() {
+	public LanguageElements getMetaTitle() {
 		return metaTitle;
 	}
 
 	/**
 	 * @param metaTitle the metaTitle to set
 	 */
-	public void setMetaTitle(List<LanguageElement> metaTitle) {
+	public void setMetaTitle(LanguageElements metaTitle) {
 		this.metaTitle = metaTitle;
 	}
 
 	/**
 	 * @return the metaDescription
 	 */
-	public List<LanguageElement> getMetaDescription() {
+	public LanguageElements getMetaDescription() {
 		return metaDescription;
 	}
 
 	/**
 	 * @param metaDescription the metaDescription to set
 	 */
-	public void setMetaDescription(List<LanguageElement> metaDescription) {
+	public void setMetaDescription(LanguageElements metaDescription) {
 		this.metaDescription = metaDescription;
 	}
 
 	/**
 	 * @return the metaKeywords
 	 */
-	public List<LanguageElement> getMetaKeywords() {
+	public LanguageElements getMetaKeywords() {
 		return metaKeywords;
 	}
 
 	/**
 	 * @param metaKeywords the metaKeywords to set
 	 */
-	public void setMetaKeywords(List<LanguageElement> metaKeywords) {
+	public void setMetaKeywords(LanguageElements metaKeywords) {
 		this.metaKeywords = metaKeywords;
 	}
 

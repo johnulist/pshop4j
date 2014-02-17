@@ -3,15 +3,15 @@
  */
 package com.edgaragg.pshop4j.pojos;
 
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Edgar Gonzalez
  *
  */
-public abstract class PrestaShopPojoList<T extends PrestaShopPojo> implements PrestaShopPojo {
-	private List<T> pojos = Collections.emptyList();
+public abstract class PrestaShopPojoList<T extends PrestaShopPojo> implements PrestaShopPojo, Iterable<T> {
+	private List<T> pojos;// = Collections.emptyList();
 	
 	/**
 	 * 
@@ -24,6 +24,18 @@ public abstract class PrestaShopPojoList<T extends PrestaShopPojo> implements Pr
 		}
 	}
 	
+	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
+	@Override
+	public Iterator<T> iterator() {
+		return this.pojos.iterator();
+	}
+
+
+
 	public T get(int index){
 		return this.pojos.isEmpty() ? null : this.pojos.get(index);
 	}

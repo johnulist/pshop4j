@@ -4,10 +4,7 @@
 package com.edgaragg.pshop4j.pojos.entities;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
@@ -19,6 +16,7 @@ import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.ProductVisibility;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
+import com.edgaragg.pshop4j.pojos.list.LanguageElements;
 
 /**
  * @author Edgar Gonzalez
@@ -187,41 +185,40 @@ public class Product implements PrestaShopPojoEntity {
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "meta_description", format = PShopFormat.isGenericName)
-	private List<LanguageElement> metaDescription;
+	private LanguageElements metaDescription;
 
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "meta_keywords", format = PShopFormat.isGenericName)
-	private List<LanguageElement> metaKeywords;
+	private LanguageElements metaKeywords;
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "meta_title", format = PShopFormat.isGenericName)
-	private List<LanguageElement> metaTitle;
+	private LanguageElements metaTitle;
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "link_rewrite", format = PShopFormat.isLinkRewrite)
-	private List<LanguageElement> linkRewrite;
+	private LanguageElements linkRewrite;
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "name", format = PShopFormat.isCatalogName)
-	private List<LanguageElement> name;
+	private LanguageElements name;
 
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "description", format = PShopFormat.isCleanHtml)
-	private List<LanguageElement> description;
+	private LanguageElements description;
 
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "description_short", format = PShopFormat.isCleanHtml)
-	private List<LanguageElement> descriptionShort;
+	private LanguageElements descriptionShort;
 
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "available_now", format = PShopFormat.isGenericName)
-	private List<LanguageElement> availableNow;
-	
+	private LanguageElements availableNow;
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "available_later", format = PShopFormat.isGenericName)
-	private List<LanguageElement> availableLater;
+	private LanguageElements availableLater;
 	
 	
 	/**
@@ -229,15 +226,6 @@ public class Product implements PrestaShopPojoEntity {
 	 */
 	public Product() {
 		super();
-		this.name = new ArrayList<LanguageElement>();
-		this.linkRewrite = new ArrayList<LanguageElement>();
-		this.description = new ArrayList<LanguageElement>();
-		this.metaDescription = new ArrayList<LanguageElement>();
-		this.metaKeywords = new ArrayList<LanguageElement>();
-		this.metaTitle = new ArrayList<LanguageElement>();
-		this.descriptionShort = new ArrayList<LanguageElement>();
-		this.availableNow = new ArrayList<LanguageElement>();
-		this.availableLater = new ArrayList<LanguageElement>();
 	}
 	
 	
@@ -1063,7 +1051,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the metaDescription
 	 */
-	public List<LanguageElement> getMetaDescription() {
+	public LanguageElements getMetaDescription() {
 		return metaDescription;
 	}
 
@@ -1071,7 +1059,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param metaDescription the metaDescription to set
 	 */
-	public void setMetaDescription(List<LanguageElement> metaDescription) {
+	public void setMetaDescription(LanguageElements metaDescription) {
 		this.metaDescription = metaDescription;
 	}
 
@@ -1079,7 +1067,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the metaKeywords
 	 */
-	public List<LanguageElement> getMetaKeywords() {
+	public LanguageElements getMetaKeywords() {
 		return metaKeywords;
 	}
 
@@ -1087,7 +1075,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param metaKeywords the metaKeywords to set
 	 */
-	public void setMetaKeywords(List<LanguageElement> metaKeywords) {
+	public void setMetaKeywords(LanguageElements metaKeywords) {
 		this.metaKeywords = metaKeywords;
 	}
 
@@ -1095,7 +1083,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the metaTitle
 	 */
-	public List<LanguageElement> getMetaTitle() {
+	public LanguageElements getMetaTitle() {
 		return metaTitle;
 	}
 
@@ -1103,7 +1091,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param metaTitle the metaTitle to set
 	 */
-	public void setMetaTitle(List<LanguageElement> metaTitle) {
+	public void setMetaTitle(LanguageElements metaTitle) {
 		this.metaTitle = metaTitle;
 	}
 
@@ -1111,7 +1099,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the linkRewrite
 	 */
-	public List<LanguageElement> getLinkRewrite() {
+	public LanguageElements getLinkRewrite() {
 		return linkRewrite;
 	}
 
@@ -1119,7 +1107,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param linkRewrite the linkRewrite to set
 	 */
-	public void setLinkRewrite(List<LanguageElement> linkRewrite) {
+	public void setLinkRewrite(LanguageElements linkRewrite) {
 		this.linkRewrite = linkRewrite;
 	}
 
@@ -1127,7 +1115,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the name
 	 */
-	public List<LanguageElement> getName() {
+	public LanguageElements getName() {
 		return name;
 	}
 
@@ -1135,7 +1123,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(List<LanguageElement> name) {
+	public void setName(LanguageElements name) {
 		this.name = name;
 	}
 
@@ -1143,7 +1131,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the description
 	 */
-	public List<LanguageElement> getDescription() {
+	public LanguageElements getDescription() {
 		return description;
 	}
 
@@ -1151,7 +1139,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param description the description to set
 	 */
-	public void setDescription(List<LanguageElement> description) {
+	public void setDescription(LanguageElements description) {
 		this.description = description;
 	}
 
@@ -1159,7 +1147,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the descriptionShort
 	 */
-	public List<LanguageElement> getDescriptionShort() {
+	public LanguageElements getDescriptionShort() {
 		return descriptionShort;
 	}
 
@@ -1167,7 +1155,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param descriptionShort the descriptionShort to set
 	 */
-	public void setDescriptionShort(List<LanguageElement> descriptionShort) {
+	public void setDescriptionShort(LanguageElements descriptionShort) {
 		this.descriptionShort = descriptionShort;
 	}
 
@@ -1175,7 +1163,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the availableNow
 	 */
-	public List<LanguageElement> getAvailableNow() {
+	public LanguageElements getAvailableNow() {
 		return availableNow;
 	}
 
@@ -1183,7 +1171,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param availableNow the availableNow to set
 	 */
-	public void setAvailableNow(List<LanguageElement> availableNow) {
+	public void setAvailableNow(LanguageElements availableNow) {
 		this.availableNow = availableNow;
 	}
 
@@ -1191,7 +1179,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the availableLater
 	 */
-	public List<LanguageElement> getAvailableLater() {
+	public LanguageElements getAvailableLater() {
 		return availableLater;
 	}
 
@@ -1199,10 +1187,8 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param availableLater the availableLater to set
 	 */
-	public void setAvailableLater(List<LanguageElement> availableLater) {
+	public void setAvailableLater(LanguageElements availableLater) {
 		this.availableLater = availableLater;
 	}
-	
-	
 
 }

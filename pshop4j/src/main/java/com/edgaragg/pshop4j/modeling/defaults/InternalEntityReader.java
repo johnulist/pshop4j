@@ -7,14 +7,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
+import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
 import com.edgaragg.pshop4j.modeling.enums.PShopIntegerEnum;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidValueException;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
+import com.edgaragg.pshop4j.pojos.entities.LanguageElement;
+import com.edgaragg.pshop4j.pojos.list.LanguageElements;
 
 /**
  * @author Edgar Gonzalez
@@ -26,6 +34,7 @@ final class InternalEntityReader {
 	private PrestaShopPojoEntity entity;
 	private List<String> tags;
 	private PrestaShopPojoValidator validator;
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	/**
 	 * 
@@ -56,29 +65,25 @@ final class InternalEntityReader {
 		
 		// copy the id
 		Field[] fields = clazz.getDeclaredFields();
-//		for(Field field : fields){
-//			PrestaShopText textAnnotation = field.getAnnotation(PrestaShopText.class);
-//			if(textAnnotation != null && textAnnotation.value().equals("id")){
-//				
-//				long id = 0;
-//				try {
-//					field.setAccessible(true);
-//					id = Long.parseLong(field.get(this.entity).toString());
-//					field.setAccessible(false);
-//				} catch (IllegalArgumentException
-//						| IllegalAccessException e) {
-//				}finally{
-//					field.setAccessible(false);
-//				}
-//				if (id != 0){
-//					this.openTag("id", String.valueOf(id));
-//				}
-//				break;
-//			}
-//		}
 		
 		// iterate over all non-virtual attributes 
+		iterateFields(fields);
+		// close resource
+		this.closeLastTag();
+		this.close();
+		return this.stream.toByteArray();
+	}
+
+	/**
+	 * @param fields
+	 * @throws IOException
+	 * @throws InvalidValueException
+	 */
+	private void iterateFields(Field[] fields) throws IOException,
+			InvalidValueException {
 		for(Field field : fields){
+			PrestaShopList listAnnotation = field.getAnnotation(PrestaShopList.class);
+			PrestaShopElement elemAnnotation = field.getAnnotation(PrestaShopElement.class);
 			PrestaShopText textAnnotation = field.getAnnotation(PrestaShopText.class);
 			if(textAnnotation != null && !textAnnotation.isVirtual()){
 				try {
@@ -100,12 +105,32 @@ final class InternalEntityReader {
 				}finally{
 					field.setAccessible(false);
 				}
+			}else if(listAnnotation != null && elemAnnotation != null){
+				// It is a list. Get the class and iterate
+				if(LanguageElement.class.isAssignableFrom(listAnnotation.value())){
+					this.openTag(elemAnnotation.value());
+					field.setAccessible(true);
+					try {
+						Map<String, String> id = new HashMap<String, String>();
+						LanguageElements langs = (LanguageElements) field.get(this.entity);
+						for(LanguageElement lang : langs){
+							id.clear();
+							id.put("id", Long.toString(lang.getId()));
+							this.openTagWithAttributes("language", id);
+							this.putText(lang.getContent());
+							this.closeLastTag();
+						}
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}finally{
+						field.setAccessible(false);
+					}
+					
+					this.closeLastTag();	
+				}
+				
 			}
 		}
-		// close resource
-		this.closeLastTag();
-		this.close();
-		return this.stream.toByteArray();
 	}
 	
 	
@@ -146,6 +171,24 @@ final class InternalEntityReader {
 		this.openTag(tag);
 		this.putText(text);
 		this.closeLastTag();
+	}
+	
+	/**
+	 * 
+	 * @param tag
+	 * @param text
+	 * @throws IOException
+	 */
+	private void openTagWithAttributes(String tag, Map<String, String> attrs) throws IOException{
+		if(this.tags.size() == 0){
+			throw new IOException("A malformed XML will be produced");
+		}
+		this.tags.add(tag);
+		this.stream.write(String.format("<%s", tag).getBytes());
+		for(String key : attrs.keySet()){
+			this.stream.write(String.format(" %s=\"%s\" ", key, attrs.get(key)).getBytes());
+		}
+		this.stream.write(String.format(">", tag).getBytes());
 	}
 	
 	/**
@@ -210,7 +253,7 @@ final class InternalEntityReader {
 		case "int":
 			return String.valueOf((int)content);
 		case "date":{
-			return "01/01/1970"; 
+			return DATE_FORMAT.format((Date)content);
 		}
 		default:
 			if(clazz.isEnum()){
@@ -221,7 +264,7 @@ final class InternalEntityReader {
 				}else{
 					return Enum.valueOf(enumClass, content.toString()).name();
 				}
-			}
+			}			
 		}
 				
 		return "";

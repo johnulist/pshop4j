@@ -55,5 +55,15 @@ public class LanguageElement implements PrestaShopPojoEntity {
 		this.content = content;
 	}
 	
+	public LanguageElement withId(long id){
+		this.id = id;
+		return this;
+	}
+	
+	public LanguageElement withContent(String content){
+		this.content = content;
+		return this;
+	}
+	
 
 }

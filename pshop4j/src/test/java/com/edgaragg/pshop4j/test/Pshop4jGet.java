@@ -3,27 +3,20 @@
  */
 package com.edgaragg.pshop4j.test;
 
-import java.util.Collections;
-import java.util.List;
-
-import com.edgaragg.pshop4j.PrestaShopWebservice;
-import com.edgaragg.pshop4j.model.Filter;
-import com.edgaragg.pshop4j.modeling.PrestaShopMapper;
-
 /**
  * @author Edgar Gonzalez
  *
  */
 public class Pshop4jGet {
 
-	private PrestaShopWebservice web;
-//	private PrestaShopMapper mapper;
-//	private List<Filter> filters = Collections.emptyList();
-	
-	public Pshop4jGet(){
-		web = new PrestaShopWebservice("192.168.1.139/prestashop", "0HMRPJPZM2CE10H1HLZH2HGXGA2F2LWS");
-//		mapper = new PrestaShopMapper(web);
-	}
+//	private PrestaShopWebservice web;
+////	private PrestaShopMapper mapper;
+////	private List<Filter> filters = Collections.emptyList();
+//	
+//	public Pshop4jGet(){
+//		web = new PrestaShopWebservice("192.168.1.139/prestashop", "0HMRPJPZM2CE10H1HLZH2HGXGA2F2LWS");
+////		mapper = new PrestaShopMapper(web);
+//	}
 	
 
 	

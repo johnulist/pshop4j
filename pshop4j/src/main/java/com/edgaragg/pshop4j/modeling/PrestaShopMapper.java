@@ -298,14 +298,16 @@ public class PrestaShopMapper {
 			InputStream stream = this.generator.generate(entity);
 			PutRequest request = new PutRequest().withEntityStream(stream).withId(entity.getId()).withResource(resource.value());
 			PrestaShopResponse response = this.webservice.executeRequest(request);
-			System.out.println(response.getCode());
+			
+			return new PrestaShopMapperResponse<T>()
+					.withResource(this.parser.parse(clazz, response.getStream()))
+					.withHash(this.getResponseHash(response))
+					.withHeaders(response.getHeaders());
 		} catch (IOException | InvalidValueException | PrestaShopServerException e1) {
 			e1.printStackTrace();
 			return new PrestaShopMapperResponse<T>()
 					.withException(e1);
-		}
-		return null;
-	
+		}	
 	}
 	
 	
@@ -328,6 +330,7 @@ public class PrestaShopMapper {
 
 			DeleteRequest request = new DeleteRequest().withId(entity.getId()).withResource(resource.value());
 			PrestaShopResponse response = this.webservice.executeRequest(request);
+						
 			return new PrestaShopMapperResponse<T>()
 					.withHeaders(response.getHeaders())
 					.withHash(this.getResponseHash(response));

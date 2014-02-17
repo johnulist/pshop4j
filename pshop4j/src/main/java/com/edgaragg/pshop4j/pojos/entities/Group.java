@@ -4,9 +4,7 @@
 package com.edgaragg.pshop4j.pojos.entities;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.edgaragg.pshop4j.model.Resources;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopAttribute;
@@ -18,6 +16,7 @@ import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
 import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.PriceDisplayMethod;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
+import com.edgaragg.pshop4j.pojos.list.LanguageElements;
 
 
 /**
@@ -29,7 +28,7 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 public class Group implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, nullOnZero = true)
 	private long id;
 	
 	@PrestaShopText(value = "reduction", format = PShopFormat.isFloat)
@@ -39,7 +38,7 @@ public class Group implements PrestaShopPojoEntity {
 	private PriceDisplayMethod priceDisplayMethod;
 	
 	@PrestaShopText(value = "show_prices", format = PShopFormat.isBool)
-	private PShopBoolean show_prices;
+	private PShopBoolean showPrices;
 	
 	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)
 	private Date dateAdd;
@@ -49,14 +48,14 @@ public class Group implements PrestaShopPojoEntity {
 	
 	@PrestaShopList(LanguageElement.class)
 	@PrestaShopElement(value = "name", format = PShopFormat.isGenericName)
-	private List<LanguageElement> name;
+	private LanguageElements name;
 	
 	
 	/**
 	 * 
 	 */
 	public Group() {
-		this.name = new ArrayList<LanguageElement>();
+
 	}
 
 	@Override
@@ -100,15 +99,15 @@ public class Group implements PrestaShopPojoEntity {
 	/**
 	 * @return the show_prices
 	 */
-	public PShopBoolean getShow_prices() {
-		return show_prices;
+	public PShopBoolean getShowPrices() {
+		return showPrices;
 	}
 
 	/**
 	 * @param show_prices the show_prices to set
 	 */
-	public void setShow_prices(PShopBoolean show_prices) {
-		this.show_prices = show_prices;
+	public void setShowPrices(PShopBoolean showPrices) {
+		this.showPrices = showPrices;
 	}
 
 	/**
@@ -142,16 +141,15 @@ public class Group implements PrestaShopPojoEntity {
 	/**
 	 * @return the name
 	 */
-	public List<LanguageElement> getName() {
+	public LanguageElements getName() {
 		return name;
 	}
 
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(List<LanguageElement> name) {
+	public void setName(LanguageElements name) {
 		this.name = name;
 	}
-	
 		
 }

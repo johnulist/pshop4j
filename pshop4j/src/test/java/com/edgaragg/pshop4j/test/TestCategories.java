@@ -16,12 +16,10 @@ import org.junit.Test;
 import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
-import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
-import com.edgaragg.pshop4j.pojos.entities.Category;
 import com.edgaragg.pshop4j.pojos.list.Categories;
 
 /**
- * @author egonzalez
+ * @author Edgar Gonzalez
  *
  */
 public class TestCategories extends PShop4jTest {
