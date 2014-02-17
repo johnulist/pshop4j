@@ -106,7 +106,7 @@ public class PrestaShopValidator implements PrestaShopPojoValidator {
 		// checking regex
 		PShopFormat format = annotation.format();
 		Pattern pattern = format.getPattern();
-		if(value != null && pattern != null){
+		if(value != null && value.length() > 0 && pattern != null){
 			Matcher matcher = pattern.matcher(value);
 			if(!matcher.matches()){
 				throw new InvalidValueException(field.getName(), InvalidValueException.REASON_REGEX);

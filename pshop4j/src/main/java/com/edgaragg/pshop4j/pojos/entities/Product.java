@@ -28,7 +28,7 @@ import com.edgaragg.pshop4j.pojos.list.LanguageElements;
 public class Product implements PrestaShopPojoEntity {
 	
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, nullOnZero = true)
 	private long id;
 	
 	@PrestaShopText(value = "id_manufacturer", format = PShopFormat.isUnsignedId)
@@ -55,13 +55,13 @@ public class Product implements PrestaShopPojoEntity {
 	@PrestaShopText(value = "id_tax_rules_group", format = PShopFormat.isUnsignedId)
 	private long idTaxRulesGroup;
 	
-	@PrestaShopText(value = "position_in_category", format = PShopFormat.isInt, notFilterable = true)
+	@PrestaShopText(value = "position_in_category", format = PShopFormat.isInt, notFilterable = true, isVirtual = true)
 	private long positionInCategory;
 	
-	@PrestaShopText(value = "manufacturer_name", format = PShopFormat.isString, notFilterable = true)
+	@PrestaShopText(value = "manufacturer_name", format = PShopFormat.isString, notFilterable = true, isVirtual = true)
 	private String manufacturerName;
 	
-	@PrestaShopText(value = "quantity", format = PShopFormat.isUnsignedInt, notFilterable = true)
+	@PrestaShopText(value = "quantity", format = PShopFormat.isUnsignedInt, notFilterable = true, isVirtual = true)
 	private long quantity;
 	
 	@PrestaShopText(value = "type", format = PShopFormat.isString, notFilterable = true)
@@ -299,7 +299,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @return the _new
 	 */
-	public String get_new() {
+	public String getNew() {
 		return _new;
 	}
 
@@ -307,7 +307,7 @@ public class Product implements PrestaShopPojoEntity {
 	/**
 	 * @param _new the _new to set
 	 */
-	public void set_new(String _new) {
+	public void setNew(String _new) {
 		this._new = _new;
 	}
 

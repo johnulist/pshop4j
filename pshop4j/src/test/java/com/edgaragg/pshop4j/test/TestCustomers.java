@@ -16,10 +16,12 @@ import org.junit.Test;
 import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
+import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
+import com.edgaragg.pshop4j.pojos.entities.Customer;
 import com.edgaragg.pshop4j.pojos.list.Customers;
 
 /**
- * @author egonzalez
+ * @author Edgar Gonzalez
  *
  */
 public class TestCustomers extends PShop4jTest {
@@ -57,7 +59,6 @@ public class TestCustomers extends PShop4jTest {
 		try {
 			PrestaShopMapperResponse<Customers> result = this.getMapper().listFullDisplay(Customers.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
 			Customers resource = result.getResource();
-//			Products result = mapper.list(Products.class);
 			assertNotNull(resource);
 			assertNull(result.getException());
 			assertTrue(resource.size() > 0);
@@ -117,4 +118,56 @@ public class TestCustomers extends PShop4jTest {
 		long end = Calendar.getInstance().getTimeInMillis();
 		System.out.printf("Customers - testHashEquality - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
+	
+	@Test
+	public void testPostPutAndDelete(){
+		long start = Calendar.getInstance().getTimeInMillis();
+		Customer entity = new Customer();
+		entity.setActive(PShopBoolean.TRUE);
+		entity.setBirthday(Calendar.getInstance().getTime());
+		entity.setCompany("EdgarAGG");
+		entity.setDeleted(PShopBoolean.FALSE);
+		entity.setEmail("test@test.com");
+		entity.setFirstName("Fulanito");
+		entity.setLastName("De Tal");
+		entity.setPasswd("menganito");
+		entity.setSecureKey("6814a0f08c2523b6825989a5dcf9b7b5");
+		entity.setShowPublicPrices(PShopBoolean.TRUE);
+		entity.setIdDefaultGroup(1);
+		
+		PrestaShopMapperResponse<Customer> result = this.getMapper().post(entity);
+		//System.out.println(result.getException().getMessage());
+		assertNotNull(result);
+		assertNotNull(result.getResource());
+		assertNull(result.getException());
+		Customer resource = result.getResource();
+		assertTrue(resource.getId() > 0);
+		long id = resource.getId();
+		System.out.printf("RESOURCE ID: %d\n", id);
+		long end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Customers - testPostPutAndDelete (POST) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		// PUT
+		start = Calendar.getInstance().getTimeInMillis();
+		entity = resource;
+		String name = "changing name";
+		entity.setFirstName(name);
+		entity.setPasswd("otra_cosa");
+		result = this.getMapper().put(entity);
+		assertNotNull(result);
+		assertNotNull(result.getResource());
+		assertNull(result.getException());
+		resource = result.getResource();
+		assertTrue(resource.getFirstName().equals(name));
+		
+		end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Customers - testPostPutAndDelete (PUT) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		
+		// DELETE
+		start = Calendar.getInstance().getTimeInMillis();
+		result = this.getMapper().delete(resource);
+		end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Customers - testPostPutAndDelete (DELETE) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+	}
+	
+	
 }

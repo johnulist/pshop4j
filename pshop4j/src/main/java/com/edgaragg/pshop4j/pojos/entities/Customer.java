@@ -25,14 +25,14 @@ import com.edgaragg.pshop4j.pojos.list.Groups;
  * Customer entity
  */
 @PrestaShopResource(Resources.customers)
-@PrestaShopElement("customers")
+@PrestaShopElement("customer")
 @PrestaShopAssociationMapping({
 	@PrestaShopElementMapping(element = "groups", type = Groups.class)
 })
 public class Customer implements PrestaShopPojoEntity {
 
 	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, isVirtual = true)
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, nullOnZero = true)
 	private long id;
 	
 	@PrestaShopText(value = "id_default_group", format = PShopFormat.isInt)

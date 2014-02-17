@@ -267,7 +267,7 @@ public class PrestaShopMapper {
 			InputStream stream = this.generator.generate(entity);
 			PostRequest request = new PostRequest().withEntityStream(stream).withResource(resource.value());
 			PrestaShopResponse response = this.webservice.executeRequest(request);
-						
+			
 			return new PrestaShopMapperResponse<T>()
 					.withResource(this.parser.parse(clazz, response.getStream()))
 					.withHash(this.getResponseHash(response))
@@ -296,6 +296,7 @@ public class PrestaShopMapper {
 						.withException(new InvalidResourceException(clazz));
 			}
 			InputStream stream = this.generator.generate(entity);
+			
 			PutRequest request = new PutRequest().withEntityStream(stream).withId(entity.getId()).withResource(resource.value());
 			PrestaShopResponse response = this.webservice.executeRequest(request);
 			

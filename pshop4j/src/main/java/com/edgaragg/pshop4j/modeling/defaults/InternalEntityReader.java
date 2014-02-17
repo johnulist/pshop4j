@@ -18,6 +18,7 @@ import com.edgaragg.pshop4j.modeling.PrestaShopPojoValidator;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopElement;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopList;
 import com.edgaragg.pshop4j.modeling.annotations.PrestaShopText;
+import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.PShopIntegerEnum;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidValueException;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
@@ -34,7 +35,8 @@ final class InternalEntityReader {
 	private PrestaShopPojoEntity entity;
 	private List<String> tags;
 	private PrestaShopPojoValidator validator;
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final SimpleDateFormat DATE_FORMAT_FULL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final SimpleDateFormat DATE_FORMAT_LITE = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
 	 * 
@@ -113,12 +115,14 @@ final class InternalEntityReader {
 					try {
 						Map<String, String> id = new HashMap<String, String>();
 						LanguageElements langs = (LanguageElements) field.get(this.entity);
-						for(LanguageElement lang : langs){
-							id.clear();
-							id.put("id", Long.toString(lang.getId()));
-							this.openTagWithAttributes("language", id);
-							this.putText(lang.getContent());
-							this.closeLastTag();
+						if(langs != null){
+							for(LanguageElement lang : langs){
+								id.clear();
+								id.put("id", Long.toString(lang.getId()));
+								this.openTagWithAttributes("language", id);
+								this.putText(lang.getContent());
+								this.closeLastTag();
+							}
 						}
 					} catch (IllegalArgumentException | IllegalAccessException e) {
 						e.printStackTrace();
@@ -253,7 +257,12 @@ final class InternalEntityReader {
 		case "int":
 			return String.valueOf((int)content);
 		case "date":{
-			return DATE_FORMAT.format((Date)content);
+			PrestaShopText txt = field.getAnnotation(PrestaShopText.class);
+			if(txt != null && txt.format().equals(PShopFormat.isBirthDate)){
+				return DATE_FORMAT_LITE.format((Date)content);
+			}else{
+				return DATE_FORMAT_FULL.format((Date)content);
+			}
 		}
 		default:
 			if(clazz.isEnum()){

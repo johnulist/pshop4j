@@ -3,6 +3,10 @@
  */
 package com.edgaragg.pshop4j.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +32,19 @@ public class Tools {
 		pshopEnumsValues = new HashMap<String, PShopIntegerEnum[]>();
 		pshopEnumsValues.put("PShopBoolean", PShopBoolean.values());
 		pshopEnumsValues.put("PriceDisplayMethod", PriceDisplayMethod.values());
+	}
+	
+	public static void showStream(InputStream stream){
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		String line;
+		try {
+			while((line = reader.readLine()) != null){
+				System.out.println(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

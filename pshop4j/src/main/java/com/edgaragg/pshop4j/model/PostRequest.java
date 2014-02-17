@@ -51,7 +51,6 @@ private String entityStream;
 	 */
 	@Override
 	protected String getContentBody() {
-		System.out.println(this.entityStream);
 		return this.entityStream;
 	}
 
