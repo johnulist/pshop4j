@@ -35,7 +35,7 @@ private String entityStream;
 				builder.append(new String(buffer, 0, read));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		this.entityStream = builder.toString();
 		return this;
@@ -51,13 +51,7 @@ private String entityStream;
 	 */
 	@Override
 	protected String getContentBody() {
-		System.out.println(this.entityStream);
 		return this.entityStream;
-		/*try {
-			return URLEncoder.encode(this.entityStream, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}*/
 	}
 
 	/* (non-Javadoc)

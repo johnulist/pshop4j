@@ -130,8 +130,17 @@ public class TestLanguages extends PShop4jTest {
 		lang.setLanguageCode("LN-ES");
 		lang.setDateFormatLite("dd-mm-aa");
 		lang.setDateFormatFull("dd-mm-aa");
-		this.getMapper().post(lang);
-				
+		PrestaShopMapperResponse<Language> result = this.getMapper().post(lang);
+		//System.out.println(result.getException().getMessage());
+		assertNotNull(result);
+		assertNotNull(result.getResource());
+		assertNull(result.getException());
+		Language resource = result.getResource();
+		assertTrue(resource.getId() > 0);
+		long id = resource.getId();
+		System.out.printf("RESOURCE ID: %d\n", id);
+		
+		
 		long end = Calendar.getInstance().getTimeInMillis();
 		System.out.printf("Languages - testPost - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}

@@ -25,6 +25,7 @@ import com.edgaragg.pshop4j.modeling.exceptions.FieldNotFoundException;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidResourceException;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidValueException;
 import com.edgaragg.pshop4j.modeling.exceptions.NotFilterableException;
+import com.edgaragg.pshop4j.modeling.exceptions.PrestaShopServerException;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
@@ -34,7 +35,6 @@ import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
  *
  */
 public class PrestaShopMapper {
-	
 	/**
 	 * 
 	 */
@@ -266,11 +266,16 @@ public class PrestaShopMapper {
 			InputStream stream = this.generator.generate(entity);
 			PostRequest request = new PostRequest().withEntityStream(stream).withResource(resource.value());
 			PrestaShopResponse response = this.webservice.executeRequest(request);
-			System.out.println(response.getCode());
-		} catch (IOException | InvalidValueException e1) {
-			e1.printStackTrace();
+						
+			return new PrestaShopMapperResponse<T>()
+					.withResource(this.parser.parse(clazz, response.getStream()))
+					.withHash(this.getResponseHash(response))
+					.withHeaders(response.getHeaders());
+			
+		} catch (IOException | InvalidValueException | PrestaShopServerException e1) {
+			return new PrestaShopMapperResponse<T>()
+					.withException(e1);
 		}
-		return null;
 	}
 	
 	public <T extends PrestaShopPojoEntity> PrestaShopMapperResponse<T> put(T entity){
@@ -288,7 +293,7 @@ public class PrestaShopMapper {
 			PutRequest request = new PutRequest().withEntityStream(stream).withId(entity.getId()).withResource(resource.value());
 			PrestaShopResponse response = this.webservice.executeRequest(request);
 			System.out.println(response.getCode());
-		} catch (IOException | InvalidValueException e1) {
+		} catch (IOException | InvalidValueException | PrestaShopServerException e1) {
 			e1.printStackTrace();
 			return new PrestaShopMapperResponse<T>()
 					.withException(e1);
@@ -344,7 +349,7 @@ public class PrestaShopMapper {
 		PrestaShopResponse response;
 		try {
 			response = this.webservice.executeRequest(request);
-		} catch (IOException e) {
+		} catch (IOException | PrestaShopServerException e) {
 			e.printStackTrace();
 			return new PrestaShopMapperResponse<T>()
 					.withException(e);

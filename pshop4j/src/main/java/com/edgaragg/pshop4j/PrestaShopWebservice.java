@@ -11,9 +11,12 @@ import java.net.Authenticator;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.edgaragg.pshop4j.model.PrestaShopRequest;
 import com.edgaragg.pshop4j.model.PrestaShopResponse;
+import com.edgaragg.pshop4j.modeling.exceptions.PrestaShopServerException;
 import com.edgaragg.pshop4j.pojos.storedesc.StoreDescription;
 
 /**
@@ -21,6 +24,9 @@ import com.edgaragg.pshop4j.pojos.storedesc.StoreDescription;
  *
  */
 public class PrestaShopWebservice {
+	
+	private static final Pattern ERROR_PATTERN = Pattern.compile("[\\w\\W\\n]*<code><!\\[CDATA\\[(\\d*)\\]\\]></code>[\\w\\W\\n]*<message><!\\[CDATA\\[(.*)\\]\\]></message>[\\w\\W\\n]*");
+	
 	private String url;
 	private String key;
 	private StoreDescription description;
@@ -47,8 +53,9 @@ public class PrestaShopWebservice {
 	 * @return
 	 * @throws ConnectException
 	 * @throws IOException
+	 * @throws PrestaShopServerException 
 	 */
-	public PrestaShopResponse executeRequest(PrestaShopRequest request) throws ConnectException, IOException{
+	public PrestaShopResponse executeRequest(PrestaShopRequest request) throws ConnectException, IOException, PrestaShopServerException{
 		HttpURLConnection connection = request.getConnection(this.url);
 		try{
 			return new PrestaShopResponse()
@@ -58,16 +65,34 @@ public class PrestaShopWebservice {
 			.withContentLength(connection.getContentLengthLong());	
 		}catch(IOException ex){
 			InputStream stream = connection.getErrorStream();
-			if(stream != null){
-				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-				String line;
-				while((line = reader.readLine()) != null){
-					System.out.println(line);
-				}
+			if(stream == null){
+				throw ex;
+			}else{
+				this.createPrestaShopException(stream);
 			}
-			
-			
-			throw ex;
+		}
+		return null;
+	}
+
+	/**
+	 * @param stream
+	 * @throws PrestaShopServerException 
+	 * @throws NumberFormatException 
+	 * @throws IOException
+	 */
+	private void createPrestaShopException(InputStream stream) throws PrestaShopServerException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		StringBuilder builder = new StringBuilder();
+		String line;
+		while((line = reader.readLine()) != null){
+			builder.append(line);
+		}
+		
+		Matcher matcher = ERROR_PATTERN.matcher(builder.toString());
+		if(matcher.matches()){
+			throw new PrestaShopServerException(Integer.parseInt(matcher.group(1)), matcher.group(2));
+		}else{
+			throw new PrestaShopServerException(Integer.MIN_VALUE, "Unknown exception");
 		}
 	}
 

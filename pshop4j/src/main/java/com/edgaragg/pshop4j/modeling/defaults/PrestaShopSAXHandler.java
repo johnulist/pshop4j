@@ -209,6 +209,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 		}
 		default:
 			if(clazz.isEnum()){
+				if(o == null || o.length() == 0) return null;
 				if(PShopIntegerEnum.class.isAssignableFrom(clazz)){
 					return (T) Tools.intToPShopIntegerEnum(clazz, Integer.parseInt(o));
 				}else{
@@ -236,7 +237,7 @@ public class PrestaShopSAXHandler extends DefaultHandler {
 			PrestaShopAttribute fieldAttribute = field.getAnnotation(PrestaShopAttribute.class);
 			if(fieldAttribute != null){
 				String attrValue = attributes.getValue("", fieldAttribute.value());
-				//if(attrValue == null) continue;
+				if(attrValue == null || attrValue.length() == 0) continue;
 				try {
 					field.setAccessible(true);
 					field.set(currentObj, cast(attrValue, field.getType()));
