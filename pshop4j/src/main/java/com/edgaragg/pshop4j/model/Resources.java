@@ -9,6 +9,7 @@ package com.edgaragg.pshop4j.model;
  */
 public enum Resources {
 	addresses,
+	carts,
 	categories,
 	customers,
 	groups,
@@ -22,6 +23,7 @@ public enum Resources {
 	 * Describes a language element<br/>
 	 * It is NOT a real PrestaShop resource
 	 */
-	languageElement
+	languageElement,
+	cart_row
 	
 }

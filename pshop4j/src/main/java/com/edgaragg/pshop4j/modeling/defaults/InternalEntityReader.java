@@ -22,6 +22,8 @@ import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 import com.edgaragg.pshop4j.modeling.enums.PShopIntegerEnum;
 import com.edgaragg.pshop4j.modeling.exceptions.InvalidValueException;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
+import com.edgaragg.pshop4j.pojos.associations.Associations;
 import com.edgaragg.pshop4j.pojos.entities.LanguageElement;
 import com.edgaragg.pshop4j.pojos.list.LanguageElements;
 
@@ -69,7 +71,7 @@ final class InternalEntityReader {
 		Field[] fields = clazz.getDeclaredFields();
 		
 		// iterate over all non-virtual attributes 
-		iterateFields(fields);
+		iterateFields(fields, this.entity);
 		// close resource
 		this.closeLastTag();
 		this.close();
@@ -81,7 +83,8 @@ final class InternalEntityReader {
 	 * @throws IOException
 	 * @throws InvalidValueException
 	 */
-	private void iterateFields(Field[] fields) throws IOException,
+	@SuppressWarnings("unchecked")
+	private void iterateFields(Field[] fields, PrestaShopPojoEntity entity) throws IOException,
 			InvalidValueException {
 		for(Field field : fields){
 			PrestaShopList listAnnotation = field.getAnnotation(PrestaShopList.class);
@@ -90,7 +93,7 @@ final class InternalEntityReader {
 			if(textAnnotation != null && !textAnnotation.isVirtual()){
 				try {
 					field.setAccessible(true);
-					Object contentObj = field.get(this.entity);
+					Object contentObj = field.get(entity);
 					String content = getStringValue(contentObj, field);
 					this.validator.validate(field, content);
 					if(content.toString().length() == 0 || 
@@ -114,7 +117,7 @@ final class InternalEntityReader {
 					field.setAccessible(true);
 					try {
 						Map<String, String> id = new HashMap<String, String>();
-						LanguageElements langs = (LanguageElements) field.get(this.entity);
+						LanguageElements langs = (LanguageElements) field.get(entity);
 						if(langs != null){
 							for(LanguageElement lang : langs){
 								id.clear();
@@ -130,9 +133,35 @@ final class InternalEntityReader {
 						field.setAccessible(false);
 					}
 					
-					this.closeLastTag();	
+					this.closeLastTag();
 				}
 				
+			}else if(elemAnnotation.value().toLowerCase().equals("associations")){
+				try {
+					this.openTag("associations");
+					field.setAccessible(true);
+					Associations associations = (Associations)field.get(entity);
+					for(PrestaShopPojoList<?> list : associations){
+						// get the tag
+						PrestaShopElement listTag = list.getClass().getAnnotation(PrestaShopElement.class);
+						this.openTag(listTag.value());
+						// iterate over all the items in the list
+						for(PrestaShopPojoEntity entityInList : (PrestaShopPojoList<? extends PrestaShopPojoEntity>)list){
+							PrestaShopElement entityTag = entityInList.getClass().getAnnotation(PrestaShopElement.class);
+							this.openTag(entityTag.value());
+							Field[] entityFields = entityInList.getClass().getDeclaredFields();
+							//System.out.println("")
+							this.iterateFields(entityFields, entityInList);
+							this.closeLastTag();
+						}
+						this.closeLastTag();
+					}
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}finally{
+					field.setAccessible(false);
+					this.closeLastTag();
+				}
 			}
 		}
 	}

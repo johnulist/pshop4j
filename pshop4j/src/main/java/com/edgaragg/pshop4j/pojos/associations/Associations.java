@@ -3,54 +3,59 @@
  */
 package com.edgaragg.pshop4j.pojos.associations;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import com.edgaragg.pshop4j.pojos.PrestaShopPojo;
+import com.edgaragg.pshop4j.pojos.PrestaShopPojoEntity;
 import com.edgaragg.pshop4j.pojos.PrestaShopPojoList;
 
 /**
  * @author Edgar Gonzalez
  * 
  */
-public class Associations implements PrestaShopPojo {
+public class Associations implements PrestaShopPojo, Iterable<PrestaShopPojoList<?>> {
 
-	private List<PrestaShopPojoList<?>> pojosInAssociation;
-	
+	private Map<Class<?>, PrestaShopPojoList<?>> pojosInAssociation;
 	
 	/**
 	 * 
 	 */
 	public Associations() {
-		this.setAssociation(new ArrayList<PrestaShopPojoList<?>>());
+		this.pojosInAssociation = new HashMap<Class<?>, PrestaShopPojoList<?>>();
 	}
 	
 	public <T extends PrestaShopPojo> void addAssociation(PrestaShopPojoList<T> pojoList){
-		this.pojosInAssociation.add(pojoList);
+		this.pojosInAssociation.put(pojoList.getClass(), pojoList);
 	}
 	
 	public <T extends PrestaShopPojoList<?>> void addAssociationListFromClass(Class<T> clazz){
 		try {
 			PrestaShopPojoList<?> list = (PrestaShopPojoList<?>)clazz.newInstance();
-			this.pojosInAssociation.add(list);
+			this.pojosInAssociation.put(clazz, list);
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * @return the pojosInAssociation
-	 */
-	public List<PrestaShopPojoList<?>> getAssociation() {
-		return Collections.unmodifiableList(this.pojosInAssociation);
-	}
-
-	/**
-	 * @param pojosInAssociation the pojosInAssociation to set
-	 */
-	private void setAssociation(List<PrestaShopPojoList<?>> pojosInAssociation) {
-		this.pojosInAssociation = pojosInAssociation;
+	
+	@SuppressWarnings("unchecked")
+	public <T extends PrestaShopPojoEntity, P extends PrestaShopPojoList<T>> 
+	void addAssociation(T entity, Class<P> listClass){
+		if(!this.pojosInAssociation.containsKey(listClass)){
+			this.addAssociationListFromClass(listClass);
+		}
+		
+		((P)this.pojosInAssociation.get(listClass)).add(entity);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends PrestaShopPojoList<?>> T get(Class<T> clazz){
+		return (T) (this.pojosInAssociation.containsKey(clazz) ? this.pojosInAssociation.get(clazz) : null);
+	}
+
+	@Override
+	public Iterator<PrestaShopPojoList<?>> iterator() {
+		return this.pojosInAssociation.values().iterator();
+	}
 }
