@@ -8,6 +8,7 @@ package com.edgaragg.pshop4j.model;
  *
  */
 public enum Resources {
+	addresses,
 	categories,
 	customers,
 	groups,
