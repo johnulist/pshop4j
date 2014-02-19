@@ -3,6 +3,7 @@
  */
 package com.edgaragg.pshop4j.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -17,30 +18,24 @@ import com.edgaragg.pshop4j.model.Limit;
 import com.edgaragg.pshop4j.model.Sort;
 import com.edgaragg.pshop4j.modeling.PrestaShopMapperResponse;
 import com.edgaragg.pshop4j.modeling.enums.PShopBoolean;
-import com.edgaragg.pshop4j.pojos.entities.Customer;
-import com.edgaragg.pshop4j.pojos.list.Customers;
+import com.edgaragg.pshop4j.pojos.entities.Contact;
+import com.edgaragg.pshop4j.pojos.entities.LanguageElement;
+import com.edgaragg.pshop4j.pojos.list.Contacts;
+import com.edgaragg.pshop4j.pojos.list.LanguageElements;
+
 
 /**
  * @author Edgar Gonzalez
  *
  */
-public class TestCustomers extends PShop4jTest {
-
-	/**
-	 * 
-	 */
-	public TestCustomers() {
-		
-	}
-
-	
+public class TestContacts extends PShop4jTest {
 	@Test
 	public void testHead(){
 		long start = Calendar.getInstance().getTimeInMillis();
 		
 		try {
-			PrestaShopMapperResponse<Customers> result = this.getMapper().headFullDisplay(Customers.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-			Customers resource = result.getResource();
+			PrestaShopMapperResponse<Contacts> result = this.getMapper().headFullDisplay(Contacts.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			Contacts resource = result.getResource();
 			assertNull(resource);
 			assertNull(result.getException());
 			assertTrue(result.getHash().length() > 0);
@@ -49,7 +44,7 @@ public class TestCustomers extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Customers - testHead - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Contacts - testHead - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	@Test
@@ -57,8 +52,8 @@ public class TestCustomers extends PShop4jTest {
 		long start = Calendar.getInstance().getTimeInMillis();
 		
 		try {
-			PrestaShopMapperResponse<Customers> result = this.getMapper().listFullDisplay(Customers.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-			Customers resource = result.getResource();
+			PrestaShopMapperResponse<Contacts> result = this.getMapper().listFullDisplay(Contacts.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			Contacts resource = result.getResource();
 			assertNotNull(resource);
 			assertNull(result.getException());
 			assertTrue(resource.size() > 0);
@@ -69,7 +64,7 @@ public class TestCustomers extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Customers - testGetFullDisplay - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Contacts - testGetFullDisplay - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	@Test
@@ -78,9 +73,8 @@ public class TestCustomers extends PShop4jTest {
 		
 		try {
 			List<String> fields = Collections.emptyList();
-			PrestaShopMapperResponse<Customers> result = this.getMapper().list(Customers.class, fields, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-			Customers resource = result.getResource();
-//			Products result = mapper.list(Products.class);
+			PrestaShopMapperResponse<Contacts> result = this.getMapper().list(Contacts.class, fields, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			Contacts resource = result.getResource();
 			assertNotNull(resource);
 			assertNull(result.getException());
 			assertTrue(resource.size() > 0);
@@ -91,7 +85,7 @@ public class TestCustomers extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Customers - testGetOnlyID - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Contacts - testGetOnlyID - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	
@@ -100,15 +94,14 @@ public class TestCustomers extends PShop4jTest {
 		long start = Calendar.getInstance().getTimeInMillis();
 		
 		try {
-			PrestaShopMapperResponse<Customers> result = this.getMapper().listFullDisplay(Customers.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
-			Customers resource = result.getResource();
-//			Products result = mapper.list(Products.class);
+			PrestaShopMapperResponse<Contacts> result = this.getMapper().listFullDisplay(Contacts.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			Contacts resource = result.getResource();
 			assertNotNull(resource);
 			assertNull(result.getException());
 			assertTrue(resource.size() > 0);
 			String hashGet = result.getHash();
 			
-			result = this.getMapper().headFullDisplay(Customers.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			result = this.getMapper().headFullDisplay(Contacts.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
 			String hashHead = result.getHash();
 			assertTrue(hashGet.equals(hashHead) && hashGet.length() > 0);
 		} catch (Exception e) {
@@ -116,57 +109,59 @@ public class TestCustomers extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Customers - testHashEquality - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Contacts - testHashEquality - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	@Test
 	public void testPostPutAndDelete(){
 		long start = Calendar.getInstance().getTimeInMillis();
-		Customer entity = new Customer();
-		entity.setActive(PShopBoolean.TRUE);
-		entity.setBirthday(Calendar.getInstance().getTime());
-		entity.setCompany("EdgarAGG");
-		entity.setDeleted(PShopBoolean.FALSE);
+		Contact entity = new Contact();
 		entity.setEmail("test@test.com");
-		entity.setFirstName("Fulanito");
-		entity.setLastName("De Tal");
-		entity.setPasswd("menganito");
-		entity.setSecureKey("6814a0f08c2523b6825989a5dcf9b7b5");
-		entity.setShowPublicPrices(PShopBoolean.TRUE);
-		entity.setIdDefaultGroup(1);
+		entity.setCustomerService(PShopBoolean.FALSE);
+		entity.setName(new LanguageElements());
+		entity.getName().add(new LanguageElement().withId(1).withContent("lang 1"));
+		entity.getName().add(new LanguageElement().withId(2).withContent("lang 2"));
+		entity.getName().add(new LanguageElement().withId(3).withContent("lang 3"));
 		
-		PrestaShopMapperResponse<Customer> result = this.getMapper().post(entity);
+		
+		PrestaShopMapperResponse<Contact> result = this.getMapper().post(entity);
+		if(result.getException() != null)
+			System.out.println(result.getException().getMessage());
 		assertNotNull(result);
 		assertNotNull(result.getResource());
 		assertNull(result.getException());
-		Customer resource = result.getResource();
+		
+		Contact resource = result.getResource();
 		assertTrue(resource.getId() > 0);
+		assertTrue(resource.getName().size() > 0);
+		
 		long id = resource.getId();
 		System.out.printf("RESOURCE ID: %d\n", id);
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Customers - testPostPutAndDelete (POST) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Contacts - testPostPutAndDelete (POST) - Execution time: %.2f seconds\n", (end - start)/1000.0);
 		// PUT
 		start = Calendar.getInstance().getTimeInMillis();
 		entity = resource;
-		String name = "changing name";
-		entity.setFirstName(name);
-		entity.setPasswd("otra_cosa");
+		String newEmail = "newemail@test.com";
+		entity.setEmail(newEmail);
+		entity.getName().get(0).setContent("test");
+		
 		result = this.getMapper().put(entity);
 		assertNotNull(result);
 		assertNotNull(result.getResource());
 		assertNull(result.getException());
 		resource = result.getResource();
-		assertTrue(resource.getFirstName().equals(name));
+		assertTrue(resource.getName().size() > 0);
+		assertEquals(resource.getEmail(), newEmail);
+		assertEquals(resource.getName().get(0).getContent(), "test");
 		
 		end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Customers - testPostPutAndDelete (PUT) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Contacts - testPostPutAndDelete (PUT) - Execution time: %.2f seconds\n", (end - start)/1000.0);
 		
 		// DELETE
 		start = Calendar.getInstance().getTimeInMillis();
 		result = this.getMapper().delete(resource);
 		end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Customers - testPostPutAndDelete (DELETE) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Contacts - testPostPutAndDelete (DELETE) - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
-	
-	
 }

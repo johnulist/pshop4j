@@ -43,7 +43,7 @@ public class TestCarts extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Categories - testHead - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Carts - testHead - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class TestCarts extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Categories - testGetFullDisplay - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Carts - testGetFullDisplay - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class TestCarts extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Categories - testGetOnlyID - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Carts - testGetOnlyID - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	
@@ -111,7 +111,7 @@ public class TestCarts extends PShop4jTest {
 		}
 		
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.printf("Categories - testHashEquality - Execution time: %.2f seconds\n", (end - start)/1000.0);
+		System.out.printf("Carts - testHashEquality - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	@Test

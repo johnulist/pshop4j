@@ -71,7 +71,7 @@ final class InternalEntityReader {
 		Field[] fields = clazz.getDeclaredFields();
 		
 		// iterate over all non-virtual attributes 
-		iterateFields(fields, this.entity);
+		iterateFields(fields, this.entity, true);
 		// close resource
 		this.closeLastTag();
 		this.close();
@@ -84,7 +84,7 @@ final class InternalEntityReader {
 	 * @throws InvalidValueException
 	 */
 	@SuppressWarnings("unchecked")
-	private void iterateFields(Field[] fields, PrestaShopPojoEntity entity) throws IOException,
+	private void iterateFields(Field[] fields, PrestaShopPojoEntity entity, boolean validate) throws IOException,
 			InvalidValueException {
 		for(Field field : fields){
 			PrestaShopList listAnnotation = field.getAnnotation(PrestaShopList.class);
@@ -95,7 +95,8 @@ final class InternalEntityReader {
 					field.setAccessible(true);
 					Object contentObj = field.get(entity);
 					String content = getStringValue(contentObj, field);
-					this.validator.validate(field, content);
+					if(validate) this.validator.validate(field, content);
+					
 					if(content.toString().length() == 0 || 
 							(textAnnotation.nullOnZero() && content.toString().equals("0"))){
 						this.openEmptyTag(textAnnotation.value());
@@ -136,25 +137,30 @@ final class InternalEntityReader {
 					this.closeLastTag();
 				}
 				
-			}else if(elemAnnotation.value().toLowerCase().equals("associations")){
+			}else if(elemAnnotation != null && elemAnnotation.value().toLowerCase().equals("associations")){
 				try {
 					this.openTag("associations");
 					field.setAccessible(true);
 					Associations associations = (Associations)field.get(entity);
-					for(PrestaShopPojoList<?> list : associations){
-						// get the tag
-						PrestaShopElement listTag = list.getClass().getAnnotation(PrestaShopElement.class);
-						this.openTag(listTag.value());
-						// iterate over all the items in the list
-						for(PrestaShopPojoEntity entityInList : (PrestaShopPojoList<? extends PrestaShopPojoEntity>)list){
-							PrestaShopElement entityTag = entityInList.getClass().getAnnotation(PrestaShopElement.class);
-							this.openTag(entityTag.value());
-							Field[] entityFields = entityInList.getClass().getDeclaredFields();
-							//System.out.println("")
-							this.iterateFields(entityFields, entityInList);
-							this.closeLastTag();
+					if(associations != null){
+						for(PrestaShopPojoList<?> list : associations){
+							// get the tag
+							PrestaShopElement listTag = list.getClass().getAnnotation(PrestaShopElement.class);
+							if(list.size() == 0){
+								this.openEmptyTag(listTag.value());
+							}else{
+								this.openTag(listTag.value());
+								// iterate over all the items in the list
+								for(PrestaShopPojoEntity entityInList : (PrestaShopPojoList<? extends PrestaShopPojoEntity>)list){
+									PrestaShopElement entityTag = entityInList.getClass().getAnnotation(PrestaShopElement.class);
+									this.openTag(entityTag.value());
+									Field[] entityFields = entityInList.getClass().getDeclaredFields();
+									this.iterateFields(entityFields, entityInList, false);
+									this.closeLastTag();
+								}
+								this.closeLastTag();
+							}
 						}
-						this.closeLastTag();
 					}
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();

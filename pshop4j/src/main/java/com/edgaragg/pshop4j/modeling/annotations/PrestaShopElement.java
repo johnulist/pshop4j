@@ -19,4 +19,5 @@ import com.edgaragg.pshop4j.modeling.enums.PShopFormat;
 public @interface PrestaShopElement {
 	String value();
 	PShopFormat format() default PShopFormat.isUndefined;
+	boolean required() default false;
 }

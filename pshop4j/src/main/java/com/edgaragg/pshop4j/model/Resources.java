@@ -11,6 +11,7 @@ public enum Resources {
 	addresses,
 	carts,
 	categories,
+	contacts,
 	customers,
 	groups,
 	languages,
