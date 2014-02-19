@@ -19,7 +19,7 @@ public class PrestaShopServerException extends Exception {
 	 * 
 	 */
 	public PrestaShopServerException(int code, String message) {
-		super(message);
+		super(String.format("PrestaShop Server error: %s", message));
 		this.setCode(code);
 	}
 

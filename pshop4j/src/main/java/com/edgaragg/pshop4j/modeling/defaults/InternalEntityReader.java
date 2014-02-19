@@ -124,7 +124,8 @@ final class InternalEntityReader {
 								id.clear();
 								id.put("id", Long.toString(lang.getId()));
 								this.openTagWithAttributes("language", id);
-								this.putText(lang.getContent());
+								String content = lang.getContent();
+								this.putText((content == null || content.length() == 0) ? "" : content);
 								this.closeLastTag();
 							}
 						}
