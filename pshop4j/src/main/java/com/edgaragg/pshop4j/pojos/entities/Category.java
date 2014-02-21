@@ -32,63 +32,22 @@ import com.edgaragg.pshop4j.pojos.list.Products;
 })
 public class Category implements PrestaShopPojoEntity {
 
-	@PrestaShopAttribute("id")
-	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, nullOnZero = true)
-	private long id;
-	
-	@PrestaShopText(value = "id_parent", format = PShopFormat.isUnsignedInt, nullOnZero = true)
-	private long idParent;
-	
-	@PrestaShopText(value = "level_depth", format = PShopFormat.isUnsignedInt, nullOnZero = true, isVirtual = true)
-	private int levelDepth;
-	
-	@PrestaShopText(value = "nb_products_recursive", format = PShopFormat.isString, notFilterable = true, nullOnZero = true, isVirtual = true)
-	private int nbProductsRecursive;
-	
-	@PrestaShopText(value = "active", format = PShopFormat.isBool, required = true)
-	private PShopBoolean active;
-	
-	@PrestaShopText(value = "id_shop_default", format = PShopFormat.isUnsignedId, nullOnZero = true)
-	private long idShopDefault;
-	
-	@PrestaShopText(value = "is_root_category", format = PShopFormat.isBool)
-	private PShopBoolean isRootCategory;
-	
-	@PrestaShopText(value = "position", format = PShopFormat.isInt, nullOnZero = true)
-	private long position;
-	
-	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)
-	private Date dateAdd;
-	
-	@PrestaShopText(value = "date_upd", format = PShopFormat.isDate)
-	private Date dateUpd;
-	
-	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement(value = "name", format = PShopFormat.isGenericName)
-	private LanguageElements name;
-
-	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement(value = "link_rewrite", format = PShopFormat.isLinkRewrite)
-	private LanguageElements linkRewrite;
-
-	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement(value = "description", format = PShopFormat.isCleanHtml)
-	private LanguageElements description;
-	
-	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement(value = "meta_title", format = PShopFormat.isGenericName)
-	private LanguageElements metaTitle;
-	
-	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement(value = "meta_description", format = PShopFormat.isGenericName)
-	private LanguageElements metaDescription;
-	
-	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement(value = "meta_keywords", format = PShopFormat.isGenericName)
-	private LanguageElements metaKeywords;
-
-	@PrestaShopElement("associations")
-	private Associations associations;
+	public static String ID = "id";
+	public static String ID_PARENT = "id_parent";
+	public static String LEVEL_DEPTH = "level_depth";
+	public static String ACTIVE = "active";
+	public static String ID_SHOP_DEFAULT = "id_shop_default";
+	public static String IS_ROOT_CATEGORY = "is_root_category";
+	public static String POSITION = "position";
+	public static String DATE_ADD = "date_add";
+	public static String DATE_UPD = "date_upd";
+	public static String NAME = "name";
+	public static String LINK_REWRITE = "link_rewrite";
+	public static String DESCRIPTION = "description";
+	public static String META_TITLE = "meta_title";
+	public static String META_DESCRIPTION = "meta_description";
+	public static String META_KEYWORDS = "meta_keywords";
+	public static String ASSOCIATIONS = "associations";
 	
 	/**
 	 * 
@@ -338,7 +297,63 @@ public class Category implements PrestaShopPojoEntity {
 		this.associations = associations;
 	}
 	
+	@PrestaShopAttribute("id")
+	@PrestaShopText(value = "id", format = PShopFormat.isUnsignedId, nullOnZero = true)
+	private long id;
 	
+	@PrestaShopText(value = "id_parent", format = PShopFormat.isUnsignedInt, nullOnZero = true)
+	private long idParent;
+	
+	@PrestaShopText(value = "level_depth", format = PShopFormat.isUnsignedInt, nullOnZero = true, isVirtual = true)
+	private int levelDepth;
+	
+	@PrestaShopText(value = "nb_products_recursive", format = PShopFormat.isString, notFilterable = true, nullOnZero = true, isVirtual = true)
+	private int nbProductsRecursive;
+	
+	@PrestaShopText(value = "active", format = PShopFormat.isBool, required = true)
+	private PShopBoolean active;
+	
+	@PrestaShopText(value = "id_shop_default", format = PShopFormat.isUnsignedId, nullOnZero = true)
+	private long idShopDefault;
+	
+	@PrestaShopText(value = "is_root_category", format = PShopFormat.isBool)
+	private PShopBoolean isRootCategory;
+	
+	@PrestaShopText(value = "position", format = PShopFormat.isInt, nullOnZero = true)
+	private long position;
+	
+	@PrestaShopText(value = "date_add", format = PShopFormat.isDate)
+	private Date dateAdd;
+	
+	@PrestaShopText(value = "date_upd", format = PShopFormat.isDate)
+	private Date dateUpd;
+	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement(value = "name", format = PShopFormat.isGenericName)
+	private LanguageElements name;
+
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement(value = "link_rewrite", format = PShopFormat.isLinkRewrite)
+	private LanguageElements linkRewrite;
+
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement(value = "description", format = PShopFormat.isCleanHtml)
+	private LanguageElements description;
+	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement(value = "meta_title", format = PShopFormat.isGenericName)
+	private LanguageElements metaTitle;
+	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement(value = "meta_description", format = PShopFormat.isGenericName)
+	private LanguageElements metaDescription;
+	
+	@PrestaShopList(LanguageElement.class)
+	@PrestaShopElement(value = "meta_keywords", format = PShopFormat.isGenericName)
+	private LanguageElements metaKeywords;
+
+	@PrestaShopElement("associations")
+	private Associations associations;
 	
 
 }

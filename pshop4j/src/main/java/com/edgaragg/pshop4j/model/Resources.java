@@ -11,6 +11,7 @@ public enum Resources {
 	addresses,
 	carriers,
 	carts,
+	cart_rules,
 	categories,
 	contacts,
 	customers,

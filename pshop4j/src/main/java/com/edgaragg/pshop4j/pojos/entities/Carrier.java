@@ -90,7 +90,7 @@ public class Carrier implements PrestaShopPojoEntity {
 	private int position;
 	
 	@PrestaShopList(LanguageElement.class)
-	@PrestaShopElement(value = "delay", format = PShopFormat.isString)
+	@PrestaShopElement(value = "delay", format = PShopFormat.isGenericName, required = true, maxSize = 128)
 	private LanguageElements delay;
 	
 	

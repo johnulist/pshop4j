@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.junit.Test;
 
@@ -158,6 +159,34 @@ public class TestAddresses extends PShop4jTest {
 		result = this.getMapper().delete(resource);
 		end = Calendar.getInstance().getTimeInMillis();
 		System.out.printf("Addresses - testPostPutAndDelete (DELETE) - Execution time: %.2f seconds\n", (end - start)/1000.0);
+	}
+	
+	/************************************************************************************************************************
+	 * ASYNC
+	 ************************************************************************************************************************/
+	
+	
+	@Test
+	public void testAsyncHead(){
+		long start = Calendar.getInstance().getTimeInMillis();
+		
+		try {
+			Future<PrestaShopMapperResponse<Addresses>> future = this.getAsyncMapper().headFullDisplay(Addresses.class, this.getFilters(), Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);
+			while(!future.isDone()){
+				System.out.print(".");
+				Thread.sleep(10);
+			}
+			PrestaShopMapperResponse<Addresses> result = future.get();
+			Addresses resource = result.getResource();
+			assertNull(resource);
+			assertNull(result.getException());
+			assertTrue(result.getHash().length() > 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		long end = Calendar.getInstance().getTimeInMillis();
+		System.out.printf("Addresses - testAsyncHead - Execution time: %.2f seconds\n", (end - start)/1000.0);
 	}
 	
 	

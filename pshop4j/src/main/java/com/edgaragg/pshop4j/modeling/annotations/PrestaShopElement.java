@@ -20,4 +20,5 @@ public @interface PrestaShopElement {
 	String value();
 	PShopFormat format() default PShopFormat.isUndefined;
 	boolean required() default false;
+	int maxSize() default Integer.MAX_VALUE;
 }

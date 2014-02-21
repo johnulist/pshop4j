@@ -69,6 +69,7 @@ public class PrestaShopMapper {
 		GetRequest request = new GetRequest().withResource(resource.value())
 				.withFullDisplay(true)
 				.withFilters(filters)
+				.withSort(sort)
 				.withLimit(limit);
 		return this.executeGetRequest(clazz, request);
 	}
@@ -96,7 +97,8 @@ public class PrestaShopMapper {
 		GetRequest request = new GetRequest().withResource(resource.value())
 				.withFields(fields)
 				.withFilters(filters)
-				.withLimit(limit);
+				.withLimit(limit)
+				.withSort(sort);
 		
 		return this.executeGetRequest(clazz, request);
 	}
@@ -170,6 +172,7 @@ public class PrestaShopMapper {
 		HeadRequest request = (HeadRequest) new HeadRequest().withResource(resource.value())
 				.withFullDisplay(true)
 				.withFilters(filters)
+				.withSort(sort)
 				.withLimit(limit);
 		return this.executeGetRequest(clazz, request);
 	}
@@ -197,6 +200,7 @@ public class PrestaShopMapper {
 		HeadRequest request = (HeadRequest) new HeadRequest().withResource(resource.value())
 				.withFields(fields)
 				.withFilters(filters)
+				.withSort(sort)
 				.withLimit(limit);
 		
 		return this.executeGetRequest(clazz, request);
@@ -341,22 +345,24 @@ public class PrestaShopMapper {
 					.withException(e1);
 		}	
 	}
-	
-	
-	
-		
+			
 	
 	/**
 	 * 
 	 * @param parser
 	 * @return
 	 */
-	public PrestaShopMapper withXMLParser(PrestaShopParser parser){
+	public PrestaShopMapper withParser(PrestaShopParser parser){
 		this.parser = parser;
 		return this;
 	}
 	
-	public PrestaShopMapper withXMLGenerator(PrestaShopGenerator generator){
+	/**
+	 * 
+	 * @param generator
+	 * @return
+	 */
+	public PrestaShopMapper withGenerator(PrestaShopGenerator generator){
 		this.generator = generator;
 		return this;
 	}
