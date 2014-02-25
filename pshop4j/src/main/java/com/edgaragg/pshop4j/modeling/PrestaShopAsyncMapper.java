@@ -55,13 +55,23 @@ public class PrestaShopAsyncMapper {
 	/**
 	 * 
 	 * @param keyObject
+	 * @param response
 	 * @return
-	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<T>> 
-	load(final T keyObject){
-		return this.load((Class<T>)keyObject.getClass(), keyObject);
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	load(final ENTITY keyObject, final PrestaShopAsyncResponse<ENTITY> response){
+		return this.load((Class<ENTITY>)keyObject.getClass(), keyObject, response);
+	}
+	
+	/**
+	 * 
+	 * @param keyObject
+	 * @return
+	 */
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	load(final ENTITY keyObject){
+		return this.load(keyObject, null);
 	}
 	
 	
@@ -69,32 +79,43 @@ public class PrestaShopAsyncMapper {
 	 * 
 	 * @param clazz
 	 * @param key
+	 * @param response
 	 * @return
-	 * @throws Exception
 	 */
-	public <T extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<T>>
-	load(final Class<T> clazz, final PrestaShopPojoEntity key) {
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>>
+	load(final Class<ENTITY> clazz, final PrestaShopPojoEntity key, final PrestaShopAsyncResponse<ENTITY> response) {
 		this.checkDefaults();
 		
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
+		Callable<PrestaShopMapperResponse<ENTITY>> callable = new Callable<PrestaShopMapperResponse<ENTITY>>(){
 			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
+			public PrestaShopMapperResponse<ENTITY> call() throws Exception {
 				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 				if(resource == null){
-					return new PrestaShopMapperResponse<T>()
+					return new PrestaShopMapperResponse<ENTITY>()
 							.withException(new InvalidResourceException(clazz));
 				}
 				
 				GetRequest request = new GetRequest().withResource(resource.value()).withId(key == null ? 0 : key.getId());
-				return executeGetRequest(clazz, request);
+				PrestaShopMapperResponse<ENTITY> mapperResponse = executeGetRequest(clazz, request);
+				if(response != null) response.setPrestaShopResponse(mapperResponse);
+				return mapperResponse;
 			}
 		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
+		FutureTask<PrestaShopMapperResponse<ENTITY>> task = new FutureTask<PrestaShopMapperResponse<ENTITY>>(callable);
 		executor.execute(task);
 		return task;
 	}
 	
-	
+	/**
+	 * 
+	 * @param clazz
+	 * @param key
+	 * @return
+	 */
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>>
+	load(final Class<ENTITY> clazz, final PrestaShopPojoEntity key) {
+		return this.load(clazz, key, null);
+	}
 	/**
 	 * 
 	 * @param clazz
@@ -102,20 +123,24 @@ public class PrestaShopAsyncMapper {
 	 * @param filters
 	 * @param sort
 	 * @param limit
+	 * @param response
 	 * @return
-	 * @throws NotFilterableException 
-	 * @throws FieldNotFoundException 
-	 * @throws Exception
 	 */
-	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
-	Future<PrestaShopMapperResponse<T>>	list(final Class<T> clazz, final List<String> fields, final List<Filter> filters, final Sort sort, final Limit limit){
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>>	list(
+			final Class<LIST> clazz, 
+			final List<String> fields, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit, 
+			final PrestaShopAsyncResponse<LIST> response){
 		
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
+		Callable<PrestaShopMapperResponse<LIST>> callable = new Callable<PrestaShopMapperResponse<LIST>>(){
 			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
+			public PrestaShopMapperResponse<LIST> call() throws Exception {
 				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 				if(resource == null){
-					return new PrestaShopMapperResponse<T>()
+					return new PrestaShopMapperResponse<LIST>()
 							.withException(new InvalidResourceException(clazz));
 				}
 				
@@ -124,98 +149,12 @@ public class PrestaShopAsyncMapper {
 						.withFilters(filters)
 						.withLimit(limit)
 						.withSort(sort);
-				
-				return executeGetRequest(clazz, request);
+				PrestaShopMapperResponse<LIST> mapperResponse = executeGetRequest(clazz, request);
+				if(response != null) response.setPrestaShopResponse(mapperResponse);
+				return mapperResponse;
 			}
 		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
-		executor.execute(task);
-		return task;
-	}
-	
-	/**
-	 * 
-	 * @param clazz
-	 * @return
-	 * @throws Exception
-	 */
-	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
-	Future<PrestaShopMapperResponse<T>> list(final Class<T> clazz) {
-		List<Filter> filters = Collections.emptyList();
-		List<String> fields = Collections.emptyList();
-		return this.list(clazz, fields, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);		
-	}
-	
-	
-	/**
-	 * 
-	 * @param <P>
-	 * @param clazz
-	 * @param filters
-	 * @param sort
-	 * @param limit
-	 * @return
-	 * @throws NotFilterableException 
-	 * @throws FieldNotFoundException 
-	 * @throws Exception
-	 */
-	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
-	Future<PrestaShopMapperResponse<T>> listFullDisplay(final Class<T> clazz, final List<Filter> filters, final Sort sort, final Limit limit){
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
-			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
-				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
-				if(resource == null){
-					return new PrestaShopMapperResponse<T>()
-							.withException(new InvalidResourceException(clazz));
-				}
-				
-				GetRequest request = new GetRequest().withResource(resource.value())
-						.withFullDisplay(true)
-						.withFilters(filters)
-						.withSort(sort)
-						.withLimit(limit);
-				return executeGetRequest(clazz, request);
-			}
-		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
-		executor.execute(task);
-		return task;
-	}
-	
-	
-	/**
-	 * 
-	 * @param clazz
-	 * @param filters
-	 * @param sort
-	 * @param limit
-	 * @return
-	 * @throws NotFilterableException 
-	 * @throws FieldNotFoundException 
-	 */
-	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
-	Future<PrestaShopMapperResponse<T>>	headFullDisplay(final Class<T> clazz, final List<Filter> filters, final Sort sort, final Limit limit){
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
-			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
-				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
-				if(resource == null){
-					return new PrestaShopMapperResponse<T>()
-							.withException(new InvalidResourceException(clazz));
-				}
-				HeadRequest request = (HeadRequest) new HeadRequest().withResource(resource.value())
-						.withFullDisplay(true)
-						.withFilters(filters)
-						.withSort(sort)
-						.withLimit(limit);
-				return executeGetRequest(clazz, request);
-			}
-		};
-		System.out.println("RUNNING");
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
-		System.out.println(task != null);
-		System.out.println(executor != null);
+		FutureTask<PrestaShopMapperResponse<LIST>> task = new FutureTask<PrestaShopMapperResponse<LIST>>(callable);
 		executor.execute(task);
 		return task;
 	}
@@ -229,19 +168,182 @@ public class PrestaShopAsyncMapper {
 	 * @param sort
 	 * @param limit
 	 * @return
-	 * @throws NotFilterableException 
-	 * @throws FieldNotFoundException 
-	 * @throws Exception
 	 */
-	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
-	Future<PrestaShopMapperResponse<T>>	head(final Class<T> clazz, final List<String> fields, final List<Filter> filters, final Sort sort, final Limit limit) {
-		
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>>	list(
+			final Class<LIST> clazz, 
+			final List<String> fields, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit){
+		return this.list(clazz, fields, filters, sort, limit, null);
+	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param response
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>> list(final Class<LIST> clazz, final PrestaShopAsyncResponse<LIST> response) {
+		List<Filter> filters = Collections.emptyList();
+		List<String> fields = Collections.emptyList();
+		return this.list(clazz, fields, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT, response);
+	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>> list(final Class<LIST> clazz) {
+		return this.list(clazz, null);
+	}
+	
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param filters
+	 * @param sort
+	 * @param limit
+	 * @param response
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>> listFullDisplay(
+			final Class<LIST> clazz, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit,
+			final PrestaShopAsyncResponse<LIST> response){
+		Callable<PrestaShopMapperResponse<LIST>> callable = new Callable<PrestaShopMapperResponse<LIST>>(){
 			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
+			public PrestaShopMapperResponse<LIST> call() throws Exception {
 				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 				if(resource == null){
-					return new PrestaShopMapperResponse<T>()
+					return new PrestaShopMapperResponse<LIST>()
+							.withException(new InvalidResourceException(clazz));
+				}
+				
+				GetRequest request = new GetRequest().withResource(resource.value())
+						.withFullDisplay(true)
+						.withFilters(filters)
+						.withSort(sort)
+						.withLimit(limit);
+				PrestaShopMapperResponse<LIST> mapperResponse = executeGetRequest(clazz, request);
+				if(response != null) response.setPrestaShopResponse(mapperResponse);
+				return mapperResponse;
+			}
+		};
+		FutureTask<PrestaShopMapperResponse<LIST>> task = new FutureTask<PrestaShopMapperResponse<LIST>>(callable);
+		executor.execute(task);
+		return task;
+	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param filters
+	 * @param sort
+	 * @param limit
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>> listFullDisplay(
+			final Class<LIST> clazz, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit){
+		return this.listFullDisplay(clazz, filters, sort, limit, null);
+	}
+	
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param filters
+	 * @param sort
+	 * @param limit
+	 * @param response
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>>	headFullDisplay(
+			final Class<LIST> clazz, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit,
+			final PrestaShopAsyncResponse<LIST> response){
+		Callable<PrestaShopMapperResponse<LIST>> callable = new Callable<PrestaShopMapperResponse<LIST>>(){
+			@Override
+			public PrestaShopMapperResponse<LIST> call() throws Exception {
+				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
+				if(resource == null){
+					return new PrestaShopMapperResponse<LIST>()
+							.withException(new InvalidResourceException(clazz));
+				}
+				HeadRequest request = (HeadRequest) new HeadRequest().withResource(resource.value())
+						.withFullDisplay(true)
+						.withFilters(filters)
+						.withSort(sort)
+						.withLimit(limit);
+				PrestaShopMapperResponse<LIST> mapperResponse = executeGetRequest(clazz, request);
+				if(response != null) response.setPrestaShopResponse(mapperResponse);				
+				return mapperResponse;
+			}
+		};
+		
+		FutureTask<PrestaShopMapperResponse<LIST>> task = new FutureTask<PrestaShopMapperResponse<LIST>>(callable);
+		executor.execute(task);
+		return task;
+	}
+	
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param filters
+	 * @param sort
+	 * @param limit
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>>	headFullDisplay(
+			final Class<LIST> clazz, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit){
+		return this.headFullDisplay(clazz, filters, sort, limit, null);	
+	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param fields
+	 * @param filters
+	 * @param sort
+	 * @param limit
+	 * @param response
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>>	head(
+			final Class<LIST> clazz, 
+			final List<String> fields, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit,
+			final PrestaShopAsyncResponse<LIST> response) {
+		
+		Callable<PrestaShopMapperResponse<LIST>> callable = new Callable<PrestaShopMapperResponse<LIST>>(){
+			@Override
+			public PrestaShopMapperResponse<LIST> call() throws Exception {
+				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
+				if(resource == null){
+					return new PrestaShopMapperResponse<LIST>()
 							.withException(new InvalidResourceException(clazz));
 				}
 				
@@ -251,10 +353,12 @@ public class PrestaShopAsyncMapper {
 						.withSort(sort)
 						.withLimit(limit);
 				
-				return executeGetRequest(clazz, request);
+				PrestaShopMapperResponse<LIST> mapperResponse = executeGetRequest(clazz, request);
+				if(response != null) response.setPrestaShopResponse(mapperResponse);				
+				return mapperResponse;
 			}
 		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
+		FutureTask<PrestaShopMapperResponse<LIST>> task = new FutureTask<PrestaShopMapperResponse<LIST>>(callable);
 		executor.execute(task);
 		return task;
 	}
@@ -262,94 +366,148 @@ public class PrestaShopAsyncMapper {
 	/**
 	 * 
 	 * @param clazz
+	 * @param fields
+	 * @param filters
+	 * @param sort
+	 * @param limit
 	 * @return
-	 * @throws Exception
 	 */
-	public <T extends PrestaShopPojoList<P>, P extends PrestaShopPojoEntity> 
-	Future<PrestaShopMapperResponse<T>> head(final Class<T> clazz){
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>>	head(
+			final Class<LIST> clazz, 
+			final List<String> fields, 
+			final List<Filter> filters, 
+			final Sort sort, 
+			final Limit limit){
+		return this.head(clazz, fields, filters, sort, limit, null);
+	}
+			
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param response
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>> head(final Class<LIST> clazz, final PrestaShopAsyncResponse<LIST> response){
 		List<Filter> filters = Collections.emptyList();
 		List<String> fields = Collections.emptyList();
-		return this.head(clazz, fields, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT);		
+		return this.head(clazz, fields, filters, Sort.EMPTY_SORT, Limit.EMPTY_LIMIT, response);		
 	}
 	
+	/**
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public <LIST extends PrestaShopPojoList<ENTITY>, ENTITY extends PrestaShopPojoEntity> 
+	Future<PrestaShopMapperResponse<LIST>> head(final Class<LIST> clazz){
+		return this.head(clazz, null);
+	}
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param key
+	 * @param response
+	 * @return
+	 */
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>>
+	head(final Class<ENTITY> clazz, final PrestaShopPojoEntity key, final PrestaShopAsyncResponse<ENTITY> response) {
+		Callable<PrestaShopMapperResponse<ENTITY>> callable = new Callable<PrestaShopMapperResponse<ENTITY>>(){
+			@Override
+			public PrestaShopMapperResponse<ENTITY> call() throws Exception {
+				checkDefaults();
+				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
+				if(resource == null){
+					return new PrestaShopMapperResponse<ENTITY>()
+							.withException(new InvalidResourceException(clazz));
+				}
+				
+				HeadRequest request = (HeadRequest) new HeadRequest().withResource(resource.value()).withId(key == null ? 0 : key.getId());
+				PrestaShopMapperResponse<ENTITY> mapperResponse = executeGetRequest(clazz, request);
+				if(response != null) response.setPrestaShopResponse(mapperResponse);				
+				return mapperResponse;
+			}
+		};
+		FutureTask<PrestaShopMapperResponse<ENTITY>> task = new FutureTask<PrestaShopMapperResponse<ENTITY>>(callable);
+		executor.execute(task);
+		return task;
+	}
 	
 	/**
 	 * 
 	 * @param clazz
 	 * @param key
 	 * @return
-	 * @throws Exception
 	 */
-	public <T extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<T>>
-	head(final Class<T> clazz, final PrestaShopPojoEntity key) {
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
-			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
-				checkDefaults();
-				PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
-				if(resource == null){
-					return new PrestaShopMapperResponse<T>()
-							.withException(new InvalidResourceException(clazz));
-				}
-				
-				HeadRequest request = (HeadRequest) new HeadRequest().withResource(resource.value()).withId(key == null ? 0 : key.getId());
-				
-				return executeGetRequest(clazz, request);
-			}
-		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
-		executor.execute(task);
-		return task;
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>>
+	head(final Class<ENTITY> clazz, final PrestaShopPojoEntity key){
+		return this.head(clazz, key, null);
 	}
 	
+	/**
+	 * 
+	 * @param keyObject
+	 * @param response
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>>
+	head(final ENTITY keyObject, final PrestaShopAsyncResponse<ENTITY> response){
+		return this.load((Class<ENTITY>)keyObject.getClass(), keyObject, response);
+	}
 	
 	/**
 	 * 
 	 * @param keyObject
 	 * @return
-	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
-	public <T extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<T>>
-	head(final T keyObject) throws Exception{
-		return this.load((Class<T>)keyObject.getClass(), keyObject);
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>>
+	head(final ENTITY keyObject){
+		return this.head(keyObject, null);
 	}
 	
 	
 	/**
 	 * 
 	 * @param entity
+	 * @param response
 	 * @return
 	 */
-	public <T extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<T>> post(final T entity){
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	post(final ENTITY entity, final PrestaShopAsyncResponse<ENTITY> response){
+		Callable<PrestaShopMapperResponse<ENTITY>> callable = new Callable<PrestaShopMapperResponse<ENTITY>>(){
 			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
+			public PrestaShopMapperResponse<ENTITY> call() throws Exception {
 				checkDefaults();
 				@SuppressWarnings("unchecked")
-				Class<T> clazz = (Class<T>) entity.getClass();
+				Class<ENTITY> clazz = (Class<ENTITY>) entity.getClass();
 				try {
 					PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 					if(resource == null){
-						return new PrestaShopMapperResponse<T>()
+						return new PrestaShopMapperResponse<ENTITY>()
 								.withException(new InvalidResourceException(clazz));
 					}
 					InputStream stream = generator.generate(entity);
 					PostRequest request = new PostRequest().withEntityStream(stream).withResource(resource.value());
-					PrestaShopResponse response = webservice.executeRequest(request);
+					PrestaShopResponse innerResponse = webservice.executeRequest(request);
 					
-					return new PrestaShopMapperResponse<T>()
-							.withResource(parser.parse(clazz, response.getStream()))
-							.withHash(getResponseHash(response))
-							.withHeaders(response.getHeaders());
+					PrestaShopMapperResponse<ENTITY> mapperResponse = new PrestaShopMapperResponse<ENTITY>()
+							.withResource(parser.parse(clazz, innerResponse.getStream()))
+							.withHash(getResponseHash(innerResponse))
+							.withHeaders(innerResponse.getHeaders());
+					if(response != null) response.setPrestaShopResponse(mapperResponse);				
+					return mapperResponse;
 					
 				} catch (IOException | InvalidValueException | PrestaShopServerException e1) {
-					return new PrestaShopMapperResponse<T>()
+					return new PrestaShopMapperResponse<ENTITY>()
 							.withException(e1);
 				}
 			}
 		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
+		FutureTask<PrestaShopMapperResponse<ENTITY>> task = new FutureTask<PrestaShopMapperResponse<ENTITY>>(callable);
 		executor.execute(task);
 		return task;
 	}
@@ -359,81 +517,112 @@ public class PrestaShopAsyncMapper {
 	 * @param entity
 	 * @return
 	 */
-	public <T extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<T>> put(final T entity){
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	post(final ENTITY entity){
+		return this.post(entity, null);
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param response
+	 * @return
+	 */
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	put(final ENTITY entity, final PrestaShopAsyncResponse<ENTITY> response){
+		Callable<PrestaShopMapperResponse<ENTITY>> callable = new Callable<PrestaShopMapperResponse<ENTITY>>(){
 			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
+			public PrestaShopMapperResponse<ENTITY> call() throws Exception {
 				checkDefaults();
 				@SuppressWarnings("unchecked")
-				Class<T> clazz = (Class<T>) entity.getClass();
+				Class<ENTITY> clazz = (Class<ENTITY>) entity.getClass();
 				try {
 					
 					PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 					if(resource == null){
-						return new PrestaShopMapperResponse<T>()
+						return new PrestaShopMapperResponse<ENTITY>()
 								.withException(new InvalidResourceException(clazz));
 					}
 					InputStream stream = generator.generate(entity);
 					
 					PutRequest request = new PutRequest().withEntityStream(stream).withId(entity.getId()).withResource(resource.value());
-					PrestaShopResponse response = webservice.executeRequest(request);
+					PrestaShopResponse innerResponse = webservice.executeRequest(request);
 					
-					return new PrestaShopMapperResponse<T>()
-							.withResource(parser.parse(clazz, response.getStream()))
-							.withHash(getResponseHash(response))
-							.withHeaders(response.getHeaders());
+					PrestaShopMapperResponse<ENTITY> mapperResponse = new PrestaShopMapperResponse<ENTITY>()
+							.withResource(parser.parse(clazz, innerResponse.getStream()))
+							.withHash(getResponseHash(innerResponse))
+							.withHeaders(innerResponse.getHeaders());
+					if(response != null) response.setPrestaShopResponse(mapperResponse);				
+					return mapperResponse;
 				} catch (IOException | InvalidValueException | PrestaShopServerException e1) {
 					e1.printStackTrace();
-					return new PrestaShopMapperResponse<T>()
+					return new PrestaShopMapperResponse<ENTITY>()
 							.withException(e1);
 				}	
 			}
 		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
+		FutureTask<PrestaShopMapperResponse<ENTITY>> task = new FutureTask<PrestaShopMapperResponse<ENTITY>>(callable);
 		executor.execute(task);
 		return task;
 	}
-	
 	
 	/**
 	 * 
 	 * @param entity
 	 * @return
 	 */
-	public <T extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<T>> delete(final T entity){
-		Callable<PrestaShopMapperResponse<T>> callable = new Callable<PrestaShopMapperResponse<T>>(){
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	put(final ENTITY entity){
+		return this.put(entity, null);
+	}
+	
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param response
+	 * @return
+	 */
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	delete(final ENTITY entity, final PrestaShopAsyncResponse<ENTITY> response){
+		Callable<PrestaShopMapperResponse<ENTITY>> callable = new Callable<PrestaShopMapperResponse<ENTITY>>(){
 			@Override
-			public PrestaShopMapperResponse<T> call() throws Exception {
+			public PrestaShopMapperResponse<ENTITY> call() throws Exception {
 				checkDefaults();
 				@SuppressWarnings("unchecked")
-				Class<T> clazz = (Class<T>) entity.getClass();
+				Class<ENTITY> clazz = (Class<ENTITY>) entity.getClass();
 				try {
 					
 					PrestaShopResource resource = clazz.getAnnotation(PrestaShopResource.class);
 					if(resource == null){
-						return new PrestaShopMapperResponse<T>()
+						return new PrestaShopMapperResponse<ENTITY>()
 								.withException(new InvalidResourceException(clazz));
 					}
 
 					DeleteRequest request = new DeleteRequest().withId(entity.getId()).withResource(resource.value());
-					PrestaShopResponse response = webservice.executeRequest(request);
-								
-					return new PrestaShopMapperResponse<T>()
-							.withHeaders(response.getHeaders())
-							.withHash(getResponseHash(response));
+					PrestaShopResponse innerResponse = webservice.executeRequest(request);
+
+					PrestaShopMapperResponse<ENTITY> mapperResponse = new PrestaShopMapperResponse<ENTITY>()
+							.withHeaders(innerResponse.getHeaders())
+							.withHash(getResponseHash(innerResponse));
+					if(response != null) response.setPrestaShopResponse(mapperResponse);				
+					return mapperResponse;
 				} catch (IOException | PrestaShopServerException e1) {
 					e1.printStackTrace();
-					return new PrestaShopMapperResponse<T>()
+					return new PrestaShopMapperResponse<ENTITY>()
 							.withException(e1);
 				}	
 			}
 		};
-		FutureTask<PrestaShopMapperResponse<T>> task = new FutureTask<PrestaShopMapperResponse<T>>(callable);
+		FutureTask<PrestaShopMapperResponse<ENTITY>> task = new FutureTask<PrestaShopMapperResponse<ENTITY>>(callable);
 		executor.execute(task);
 		return task;
 	}
 	
-	
+	public <ENTITY extends PrestaShopPojoEntity> Future<PrestaShopMapperResponse<ENTITY>> 
+	delete(final ENTITY entity){
+		return this.delete(entity, null);
+	}
 	
 	
 	/**
@@ -480,15 +669,15 @@ public class PrestaShopAsyncMapper {
 	 * @param request
 	 * @return
 	 */
-	private <T extends PrestaShopPojo>
-	PrestaShopMapperResponse<T> executeGetRequest(Class<T> clazz, GetRequest request){
+	private <POJO extends PrestaShopPojo>
+	PrestaShopMapperResponse<POJO> executeGetRequest(Class<POJO> clazz, GetRequest request){
 		synchronized(this){
 			checkDefaults();
 		}
 		try {
 			this.validator.checkFilters(clazz, request.getFilters());
 		} catch (NotFilterableException | FieldNotFoundException e) {
-			return new PrestaShopMapperResponse<T>()
+			return new PrestaShopMapperResponse<POJO>()
 					.withException(e);
 		}
 		// executes
@@ -497,14 +686,14 @@ public class PrestaShopAsyncMapper {
 			response = this.webservice.executeRequest(request);
 		} catch (IOException | PrestaShopServerException e) {
 			e.printStackTrace();
-			return new PrestaShopMapperResponse<T>()
+			return new PrestaShopMapperResponse<POJO>()
 					.withException(e);
 		}
 		
 		InputStream stream = response.getStream();
 		System.out.println("END");
 		// finally, execute the parser
-		return new PrestaShopMapperResponse<T>()
+		return new PrestaShopMapperResponse<POJO>()
 				.withResource((request instanceof HeadRequest) ? null : this.parser.parse(clazz, stream))
 				.withHash(this.getResponseHash(response))
 				.withHeaders(response.getHeaders());
