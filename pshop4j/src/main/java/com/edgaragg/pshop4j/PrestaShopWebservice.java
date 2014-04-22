@@ -26,12 +26,12 @@ import com.edgaragg.pshop4j.pojos.storedesc.StoreDescription;
 public class PrestaShopWebservice {
 	
 	private static final Pattern ERROR_PATTERN = Pattern.compile("[\\w\\W\\n]*<code><!\\[CDATA\\[(\\d*)\\]\\]></code>[\\w\\W\\n]*<message><!\\[CDATA\\[(.*)\\]\\]></message>[\\w\\W\\n]*");
+	private static PlatformTarget target = PlatformTarget.OTHER;
 	
 	private String url;
 	private String key;
 	private StoreDescription description;
 	
-
 	/**
 	 * PrestaShopWebservice constructor
 	 * @param url
@@ -136,5 +136,14 @@ public class PrestaShopWebservice {
 	 */
 	public void setKey(String key) {
 		this.key = key;
+	}
+	
+	
+	public static void setTarget(PlatformTarget t){
+		PrestaShopWebservice.target = t;
+	}
+	
+	public static PlatformTarget getTarget(){
+		return PrestaShopWebservice.target;
 	}
 }

@@ -8,6 +8,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.edgaragg.pshop4j.PlatformTarget;
+import com.edgaragg.pshop4j.PrestaShopWebservice;
+
 
 
 /**
@@ -42,8 +45,22 @@ public abstract class PrestaShopRequest {
 		URL prestashopURL = new URL(this.getConnectionUrl(url));
 		String contentType = this.getContentType();
 		HttpURLConnection httpCon = (HttpURLConnection) prestashopURL.openConnection();
-		httpCon.setDoOutput(true);
-		httpCon.setRequestMethod(this.getMethod());
+		
+		// Http connection configuration is different under android
+		if(PrestaShopWebservice.getTarget().equals(PlatformTarget.ANDROID)){
+			httpCon.setDoOutput(true);
+			httpCon.setRequestMethod(this.getMethod());	
+		}else{
+			String method = this.getMethod();
+			if(!method.equals("GET")){
+				if(method.equals("POST")){
+					httpCon.setDoInput(true);	
+				}else{
+					httpCon.setRequestMethod(method);
+				}
+			}
+		}
+				
 		if(contentType.length() > 0){
 			httpCon.setRequestProperty("Content-Type", contentType);
 		}
